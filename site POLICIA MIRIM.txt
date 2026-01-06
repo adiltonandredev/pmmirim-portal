@@ -1,0 +1,21 @@
+
+PAGINA PRINCIPAL(publica)
+
+em MENU: 
+"A Instituição" - Inserir submenus: 
+* "A Policia Militar Mirim" - Um histórico sobre a inicio da instituição até hoje. Nossa Missão, visão e valores, princípios;
+* "Estrutura" - Mostrar toda a estrutura da Instituição;
+* "Diretoria" - Apresenta toda equipe de diretoria...inclusive com fotos;
+
+MENU: 
+"Cursos" - Inserir submenus: Cursos e atividades oferecidas pela Instituição para os alunos
+
+"Parceiros e Colaboradores" - Será apresentado os parceiros que ajudam a manter a instituição
+
+Preciso que insira em algum lugar na pagina principal:
+* Empresas parceiras onde ficara passando banners(carousel) das empresas parceiros;
+* Aniversariantes do mês;
+* Aluno destaque;
+(Não esquecer de implementar no administrador as funções)
+
+Quero que tenha interação com o FEED DO INSTAGRAM onde aparecerá de forma sincronizada os feeds do instagram.
