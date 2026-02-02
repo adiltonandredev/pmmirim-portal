@@ -34,8 +34,8 @@ export async function createPost(formData: FormData) {
 
   const validation = createPostSchema.safeParse(data)
   if (!validation.success) {
-    console.error("Validation errors:", validation.error.errors)
-    return { error: validation.error.errors[0]?.message || "Erro de validação" }
+    console.error("Validation errors:", validation.error.issues)
+    return { error: validation.error.issues[0]?.message || "Erro de validação" }
   }
   
   const coverImageFile = formData.get("coverImage") as File
