@@ -55,7 +55,7 @@ export default async function EstruturaPage() {
                     )}
                     <div
                       className="prose prose-lg max-w-none text-slate-700"
-                      dangerouslySetInnerHTML={{ __html: structure.content }}
+                      dangerouslySetInnerHTML={{ __html: structure.content || "" }}
                     />
                   </CardContent>
                 </Card>

@@ -304,8 +304,12 @@ model OrganizationalStructure {
   id          String   @id @default(cuid())
   title       String
   description String?  @db.Text
-  order       Int      @default(0)
   
+  // Estes são os campos que estavam faltando:
+  content     String?  @db.LongText
+  chartImage  String?  @db.LongText
+
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
