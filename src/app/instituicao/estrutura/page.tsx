@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { getSettings } from "@/lib/settings";
+import { getSiteSettings } from "@/lib/settings";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
@@ -8,7 +8,7 @@ import Image from "next/image";
  * Mostra organogramas e descrição da estrutura hierárquica
  */
 export default async function EstruturaPage() {
-  const settings = await getSettings();
+  const settings = await getSiteSettings();
   
   const structures = await prisma.organizationalStructure.findMany({
     orderBy: { order: "asc" },

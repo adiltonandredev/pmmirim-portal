@@ -298,3 +298,14 @@ model GalleryImage {
 
   @@map("gallery_images")
 }
+
+// Modelo para a Estrutura Organizacional (Organograma)
+model OrganizationalStructure {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  order       Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
