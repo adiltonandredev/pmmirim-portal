@@ -64,34 +64,13 @@ export async function createPost(formData: FormData) {
         summary: data.summary,
         content: data.content,
         type: data.type,
-        eventDate: data.eventDate ? new Date(data.eventDate) : null,
+        eventDate: data.eventDate ? new Date(String(data.eventDate)) : null,
         location: data.location || null,
         isFeatured: data.isFeatured || false,
         published: data.published !== false,
         coverImage: coverImageUrl || null,
       },
     })
-
-    if (data.isFeatured && coverImageUrl && data.published) {
-      const maxOrder = await prisma.carouselItem.findFirst({
-        orderBy: { order: 'desc' },
-        select: { order: true }
-      })
-
-      await prisma.carouselItem.create({
-        data: {
-          title: data.title,
-          description: data.summary,
-          imageUrl: coverImageUrl,
-          actionUrl: `/noticias/${slug}`,
-          actionText: "Leia Mais",
-          isActive: true,
-          order: (maxOrder?.order || 0) + 1,
-        },
-      })
-
-      console.log(`✅ Notícia "${data.title}" adicionada ao carousel automaticamente!`)
-    }
 
   } catch (error) {
     console.error(error)
