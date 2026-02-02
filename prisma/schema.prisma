@@ -83,12 +83,16 @@ model Post {
   coverImage  String?  @db.LongText
   published   Boolean  @default(false)
   type        PostType @default(NEWS)
-  featured    Boolean  @default(false)  
+  featured    Boolean  @default(false)
+
+  // --- ADICIONE ESTAS DUAS LINHAS: ---
+  eventDate   DateTime?
+  location    String?
+  // -----------------------------------
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  // Relacionamento com Comentários (Adicione apenas esta linha no Post existente)
-  comments    Comment[] 
+  comments    Comment[]
 }
 
 // Coloque o modelo Comment no final do arquivo

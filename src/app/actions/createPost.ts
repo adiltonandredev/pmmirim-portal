@@ -66,7 +66,7 @@ export async function createPost(formData: FormData) {
         type: data.type,
         eventDate: data.eventDate ? new Date(String(data.eventDate)) : null,
         location: data.location || null,
-        isFeatured: data.isFeatured || false,
+        featured: data.isFeatured || false,
         published: data.published !== false,
         coverImage: coverImageUrl || null,
       },
