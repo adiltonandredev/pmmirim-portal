@@ -9,10 +9,12 @@ import { uploadImage } from "@/lib/upload"
 export async function updatePost(formData: FormData) {
   const session = await auth()
   
+  // Verifica permissão
   if (!session || (session.user.role !== "ADMIN" && session.user.role !== "EDITOR")) {
     return { error: "Não autorizado" }
   }
 
+  // Pega os dados do formulário
   const postId = formData.get("id") as string
   const title = formData.get("title") as string
   const summary = formData.get("summary") as string
@@ -24,6 +26,7 @@ export async function updatePost(formData: FormData) {
   
   const coverImageFile = formData.get("coverImage") as File
 
+  // Lógica da imagem
   let coverImageUrl: string | null = null
 
   if (removeImage) {
@@ -38,74 +41,40 @@ export async function updatePost(formData: FormData) {
   }
 
   try {
+    // Prepara os dados para salvar
     const updateData: any = {
       title,
       summary,
       content,
       type,
       published: status === "published",
-      isFeatured,
+      
+      // CORREÇÃO 1: O nome no banco é 'featured', não 'isFeatured'
+      featured: isFeatured, 
     }
 
+    // Só atualiza a imagem se houve mudança
     if (coverImageUrl !== null || removeImage) {
       updateData.coverImage = coverImageUrl
     }
 
-    const post = await prisma.post.update({
+    // Salva no banco
+    await prisma.post.update({
       where: { id: postId },
       data: updateData,
     })
 
-    const existingCarouselItem = await prisma.carouselItem.findFirst({
-      where: {
-        actionUrl: `/noticias/${post.slug}`
-      }
-    })
-
-    if (isFeatured && post.coverImage && status === "published") {
-      if (existingCarouselItem) {
-        await prisma.carouselItem.update({
-          where: { id: existingCarouselItem.id },
-          data: {
-            title: post.title,
-            description: post.summary,
-            imageUrl: post.coverImage,
-            isActive: true,
-          }
-        })
-        console.log(`✅ Slide do carousel atualizado para "${post.title}"`)
-      } else {
-        const maxOrder = await prisma.carouselItem.findFirst({
-          orderBy: { order: 'desc' },
-          select: { order: true }
-        })
-
-        await prisma.carouselItem.create({
-          data: {
-            title: post.title,
-            description: post.summary,
-            imageUrl: post.coverImage,
-            actionUrl: `/noticias/${post.slug}`,
-            actionText: "Leia Mais",
-            isActive: true,
-            order: (maxOrder?.order || 0) + 1,
-          },
-        })
-        console.log(`✅ Notícia "${post.title}" adicionada ao carousel!`)
-      }
-    } else if (!isFeatured && existingCarouselItem) {
-      await prisma.carouselItem.delete({
-        where: { id: existingCarouselItem.id }
-      })
-      console.log(`✅ Notícia "${post.title}" removida do carousel`)
-    }
+    // CORREÇÃO 2: APAGUEI TODO O BLOCO DO CAROUSEL AQUI (que estava quebrando o site)
 
   } catch (error) {
+    console.error(error)
     return { error: "Erro ao atualizar post." }
   }
 
+  // Atualiza as páginas
   revalidatePath("/admin/posts")
   revalidatePath("/")
   revalidatePath("/noticias")
+  
   redirect("/admin/posts")
 }
