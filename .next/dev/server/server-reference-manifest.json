@@ -1,32 +1,5 @@
 {
-  "node": {
-    "00b7c7aab6b3139c69184e8a3b5748649a5d22702a": {
-      "workers": {
-        "app/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%2200b7c7aab6b3139c69184e8a3b5748649a5d22702a%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%22408f9619e715aa877febf13b91bc3627897f04994a%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/page": "rsc"
-      },
-      "filename": "../C:\\pmmirim-portal\\src\\app\\actions\\instagram.ts",
-      "exportedName": "getInstagramFeed"
-    },
-    "408f9619e715aa877febf13b91bc3627897f04994a": {
-      "workers": {
-        "app/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%2200b7c7aab6b3139c69184e8a3b5748649a5d22702a%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%22408f9619e715aa877febf13b91bc3627897f04994a%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/page": "rsc"
-      },
-      "filename": "../C:\\pmmirim-portal\\src\\app\\actions\\instagram.ts",
-      "exportedName": "saveInstagramSettings"
-    }
-  },
+  "node": {},
   "edge": {},
   "encryptionKey": "YQvLXdOVpKQLal5ep00sg+F6bCLz1EGDs/LZCAWQ8OM="
 }
