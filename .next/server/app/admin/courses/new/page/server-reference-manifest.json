@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4064bb6951be399a71e6c49788a76238e850e42e8a": {
+      "workers": {
+        "app/admin/courses/new/page": {
+          "moduleId": 42303,
+          "async": false,
+          "exportedName": "createCourse",
+          "filename": "src/app/actions/courses.ts"
+        }
+      },
+      "layer": {
+        "app/admin/courses/new/page": "action-browser"
+      },
+      "exportedName": "createCourse",
+      "filename": "src/app/actions/courses.ts"
+    },
+    "408e9b187562794d6da5e7f8f3f516c03380d786e2": {
+      "workers": {
+        "app/admin/courses/new/page": {
+          "moduleId": 42303,
+          "async": false,
+          "exportedName": "updateCourse",
+          "filename": "src/app/actions/courses.ts"
+        }
+      },
+      "layer": {
+        "app/admin/courses/new/page": "action-browser"
+      },
+      "exportedName": "updateCourse",
+      "filename": "src/app/actions/courses.ts"
+    },
+    "401628db911d95f41b15dc4a76335400ed4d4ce6ea": {
+      "workers": {
+        "app/admin/courses/new/page": {
+          "moduleId": 42303,
+          "async": false,
+          "exportedName": "uploadImage",
+          "filename": "src/app/actions/upload.ts"
+        }
+      },
+      "layer": {
+        "app/admin/courses/new/page": "action-browser"
+      },
+      "exportedName": "uploadImage",
+      "filename": "src/app/actions/upload.ts"
+    }
+  },
+  "edge": {}
+}

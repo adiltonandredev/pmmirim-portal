@@ -1,0 +1,35 @@
+{
+  "node": {
+    "408c6ac672c1556d44826396207e5c2aecc3e0b9d4": {
+      "workers": {
+        "app/admin/institution/history/page": {
+          "moduleId": 86868,
+          "async": false,
+          "exportedName": "updateInstitutionHistory",
+          "filename": "src/app/actions/institution.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/history/page": "rsc"
+      },
+      "exportedName": "updateInstitutionHistory",
+      "filename": "src/app/actions/institution.ts"
+    },
+    "401628db911d95f41b15dc4a76335400ed4d4ce6ea": {
+      "workers": {
+        "app/admin/institution/history/page": {
+          "moduleId": 86868,
+          "async": false,
+          "exportedName": "uploadImage",
+          "filename": "src/app/actions/upload.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/history/page": "action-browser"
+      },
+      "exportedName": "uploadImage",
+      "filename": "src/app/actions/upload.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,35 @@
+{
+  "node": {
+    "405faf590e8a13cf7156ec36a38743faf0f0af3a13": {
+      "workers": {
+        "app/admin/featured-student/new/page": {
+          "moduleId": 60508,
+          "async": false,
+          "exportedName": "createFeaturedStudent",
+          "filename": "src/app/actions/students.ts"
+        }
+      },
+      "layer": {
+        "app/admin/featured-student/new/page": "action-browser"
+      },
+      "exportedName": "createFeaturedStudent",
+      "filename": "src/app/actions/students.ts"
+    },
+    "407083e883aa7b162a537c5369da69858dea5ff92a": {
+      "workers": {
+        "app/admin/featured-student/new/page": {
+          "moduleId": 60508,
+          "async": false,
+          "exportedName": "updateFeaturedStudent",
+          "filename": "src/app/actions/students.ts"
+        }
+      },
+      "layer": {
+        "app/admin/featured-student/new/page": "action-browser"
+      },
+      "exportedName": "updateFeaturedStudent",
+      "filename": "src/app/actions/students.ts"
+    }
+  },
+  "edge": {}
+}

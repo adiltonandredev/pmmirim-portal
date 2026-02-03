@@ -1,0 +1,20 @@
+{
+  "node": {
+    "409d9d782e918820a3084048ae9202bfa8e11fdd0d": {
+      "workers": {
+        "app/admin/gallery/new/page": {
+          "moduleId": 69533,
+          "async": false,
+          "exportedName": "createGallery",
+          "filename": "src/app/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/gallery/new/page": "action-browser"
+      },
+      "exportedName": "createGallery",
+      "filename": "src/app/actions/gallery.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,35 @@
+{
+  "node": {
+    "40ca586776e1d219b94aa8122d9d4079b39e5a55b4": {
+      "workers": {
+        "app/admin/settings/page": {
+          "moduleId": 43620,
+          "async": false,
+          "exportedName": "updateSettings",
+          "filename": "src/app/actions/settings.ts"
+        }
+      },
+      "layer": {
+        "app/admin/settings/page": "action-browser"
+      },
+      "exportedName": "updateSettings",
+      "filename": "src/app/actions/settings.ts"
+    },
+    "40f71f19fa23265c01769d35c0b64fd57c6e7c45f0": {
+      "workers": {
+        "app/admin/settings/page": {
+          "moduleId": 43620,
+          "async": false,
+          "exportedName": "updateInstagramSettings",
+          "filename": "src/app/actions/settings.ts"
+        }
+      },
+      "layer": {
+        "app/admin/settings/page": "action-browser"
+      },
+      "exportedName": "updateInstagramSettings",
+      "filename": "src/app/actions/settings.ts"
+    }
+  },
+  "edge": {}
+}

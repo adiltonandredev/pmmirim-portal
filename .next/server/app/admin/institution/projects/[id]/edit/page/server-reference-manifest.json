@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4048d4f7fe9665c5eb6ae7caaca38cbc6fd552f7bb": {
+      "workers": {
+        "app/admin/institution/projects/[id]/edit/page": {
+          "moduleId": 94762,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/app/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateProject",
+      "filename": "src/app/actions/projects.ts"
+    },
+    "408840bc6909836447a24b541c943a12b2907865a2": {
+      "workers": {
+        "app/admin/institution/projects/[id]/edit/page": {
+          "moduleId": 94762,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/app/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "createProject",
+      "filename": "src/app/actions/projects.ts"
+    },
+    "401628db911d95f41b15dc4a76335400ed4d4ce6ea": {
+      "workers": {
+        "app/admin/institution/projects/[id]/edit/page": {
+          "moduleId": 94762,
+          "async": false,
+          "exportedName": "uploadImage",
+          "filename": "src/app/actions/upload.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "uploadImage",
+      "filename": "src/app/actions/upload.ts"
+    }
+  },
+  "edge": {}
+}

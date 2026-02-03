@@ -1,0 +1,35 @@
+{
+  "node": {
+    "00066019b3aa2203a2639d4362cd53710ea0697bdf": {
+      "workers": {
+        "app/page": {
+          "moduleId": 39954,
+          "async": false,
+          "exportedName": "getInstagramFeed",
+          "filename": "src/app/actions/instagram.ts"
+        }
+      },
+      "layer": {
+        "app/page": "rsc"
+      },
+      "exportedName": "getInstagramFeed",
+      "filename": "src/app/actions/instagram.ts"
+    },
+    "401cceb71193a2a85cc773ad8dd23b72a4392e9fa2": {
+      "workers": {
+        "app/page": {
+          "moduleId": 39954,
+          "async": false,
+          "exportedName": "saveInstagramSettings",
+          "filename": "src/app/actions/instagram.ts"
+        }
+      },
+      "layer": {
+        "app/page": "rsc"
+      },
+      "exportedName": "saveInstagramSettings",
+      "filename": "src/app/actions/instagram.ts"
+    }
+  },
+  "edge": {}
+}

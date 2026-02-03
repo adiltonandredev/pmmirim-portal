@@ -1,0 +1,20 @@
+{
+  "node": {
+    "400d0394cc64edc7d52be7a2eb37c17801bbc0aacb": {
+      "workers": {
+        "app/admin/users/[id]/edit/page": {
+          "moduleId": 94609,
+          "async": false,
+          "exportedName": "updateUser",
+          "filename": "src/app/actions/users.ts"
+        }
+      },
+      "layer": {
+        "app/admin/users/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateUser",
+      "filename": "src/app/actions/users.ts"
+    }
+  },
+  "edge": {}
+}

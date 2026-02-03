@@ -1,0 +1,35 @@
+{
+  "node": {
+    "407a83ab8d9fc81907190df3845e351e8b9cab2b7f": {
+      "workers": {
+        "app/admin/banners/new/page": {
+          "moduleId": 1997,
+          "async": false,
+          "exportedName": "updateBanner",
+          "filename": "src/app/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/banners/new/page": "action-browser"
+      },
+      "exportedName": "updateBanner",
+      "filename": "src/app/actions/banners.ts"
+    },
+    "408798389a74036830df79f798babcba1913186541": {
+      "workers": {
+        "app/admin/banners/new/page": {
+          "moduleId": 1997,
+          "async": false,
+          "exportedName": "createBanner",
+          "filename": "src/app/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/banners/new/page": "action-browser"
+      },
+      "exportedName": "createBanner",
+      "filename": "src/app/actions/banners.ts"
+    }
+  },
+  "edge": {}
+}

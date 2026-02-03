@@ -1,0 +1,50 @@
+{
+  "node": {
+    "409a087f5bdada1c30ab8aad517aa83555fe084edd": {
+      "workers": {
+        "app/admin/events/page": {
+          "moduleId": 83848,
+          "async": false,
+          "exportedName": "updateEvent",
+          "filename": "src/app/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/events/page": "rsc"
+      },
+      "exportedName": "updateEvent",
+      "filename": "src/app/actions/events.ts"
+    },
+    "40b2ce2022ebe6200c5329aa8ffd4ad2b78c494b0b": {
+      "workers": {
+        "app/admin/events/page": {
+          "moduleId": 83848,
+          "async": false,
+          "exportedName": "deleteEvent",
+          "filename": "src/app/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/events/page": "rsc"
+      },
+      "exportedName": "deleteEvent",
+      "filename": "src/app/actions/events.ts"
+    },
+    "40c045dacbf1c78586821a812bf6f001bd5f413b8a": {
+      "workers": {
+        "app/admin/events/page": {
+          "moduleId": 83848,
+          "async": false,
+          "exportedName": "createEvent",
+          "filename": "src/app/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/events/page": "rsc"
+      },
+      "exportedName": "createEvent",
+      "filename": "src/app/actions/events.ts"
+    }
+  },
+  "edge": {}
+}

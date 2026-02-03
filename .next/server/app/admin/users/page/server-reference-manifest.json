@@ -1,0 +1,50 @@
+{
+  "node": {
+    "400d0394cc64edc7d52be7a2eb37c17801bbc0aacb": {
+      "workers": {
+        "app/admin/users/page": {
+          "moduleId": 43093,
+          "async": false,
+          "exportedName": "updateUser",
+          "filename": "src/app/actions/users.ts"
+        }
+      },
+      "layer": {
+        "app/admin/users/page": "rsc"
+      },
+      "exportedName": "updateUser",
+      "filename": "src/app/actions/users.ts"
+    },
+    "403aef4243634b236429ba8d48a4dcc226948f93d5": {
+      "workers": {
+        "app/admin/users/page": {
+          "moduleId": 43093,
+          "async": false,
+          "exportedName": "createUser",
+          "filename": "src/app/actions/users.ts"
+        }
+      },
+      "layer": {
+        "app/admin/users/page": "rsc"
+      },
+      "exportedName": "createUser",
+      "filename": "src/app/actions/users.ts"
+    },
+    "40732e0caeee109949bf4f225440efa0b1186c62e2": {
+      "workers": {
+        "app/admin/users/page": {
+          "moduleId": 43093,
+          "async": false,
+          "exportedName": "deleteUser",
+          "filename": "src/app/actions/users.ts"
+        }
+      },
+      "layer": {
+        "app/admin/users/page": "rsc"
+      },
+      "exportedName": "deleteUser",
+      "filename": "src/app/actions/users.ts"
+    }
+  },
+  "edge": {}
+}

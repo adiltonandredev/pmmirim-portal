@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4048d4f7fe9665c5eb6ae7caaca38cbc6fd552f7bb": {
+      "workers": {
+        "app/admin/institution/projects/page": {
+          "moduleId": 97814,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/app/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/page": "rsc"
+      },
+      "exportedName": "updateProject",
+      "filename": "src/app/actions/projects.ts"
+    },
+    "408840bc6909836447a24b541c943a12b2907865a2": {
+      "workers": {
+        "app/admin/institution/projects/page": {
+          "moduleId": 97814,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/app/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/page": "rsc"
+      },
+      "exportedName": "createProject",
+      "filename": "src/app/actions/projects.ts"
+    },
+    "40bbfe617e9171d2ab6f0290afa9966720ca7dd4ad": {
+      "workers": {
+        "app/admin/institution/projects/page": {
+          "moduleId": 97814,
+          "async": false,
+          "exportedName": "deleteProject",
+          "filename": "src/app/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/projects/page": "rsc"
+      },
+      "exportedName": "deleteProject",
+      "filename": "src/app/actions/projects.ts"
+    }
+  },
+  "edge": {}
+}

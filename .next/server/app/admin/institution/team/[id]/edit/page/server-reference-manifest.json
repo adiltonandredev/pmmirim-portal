@@ -1,0 +1,35 @@
+{
+  "node": {
+    "40a5f44924e44ddd17e17d920f36c235d18522fbd1": {
+      "workers": {
+        "app/admin/institution/team/[id]/edit/page": {
+          "moduleId": 57295,
+          "async": false,
+          "exportedName": "updateTeamMember",
+          "filename": "src/app/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/team/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateTeamMember",
+      "filename": "src/app/actions/team.ts"
+    },
+    "409aaad86672a127821d1c9a809d7a6feef569a2ae": {
+      "workers": {
+        "app/admin/institution/team/[id]/edit/page": {
+          "moduleId": 57295,
+          "async": false,
+          "exportedName": "createTeamMember",
+          "filename": "src/app/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/institution/team/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "createTeamMember",
+      "filename": "src/app/actions/team.ts"
+    }
+  },
+  "edge": {}
+}

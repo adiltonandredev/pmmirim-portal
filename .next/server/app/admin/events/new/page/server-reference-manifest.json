@@ -1,0 +1,35 @@
+{
+  "node": {
+    "409a087f5bdada1c30ab8aad517aa83555fe084edd": {
+      "workers": {
+        "app/admin/events/new/page": {
+          "moduleId": 86584,
+          "async": false,
+          "exportedName": "updateEvent",
+          "filename": "src/app/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/events/new/page": "action-browser"
+      },
+      "exportedName": "updateEvent",
+      "filename": "src/app/actions/events.ts"
+    },
+    "40c045dacbf1c78586821a812bf6f001bd5f413b8a": {
+      "workers": {
+        "app/admin/events/new/page": {
+          "moduleId": 86584,
+          "async": false,
+          "exportedName": "createEvent",
+          "filename": "src/app/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/events/new/page": "action-browser"
+      },
+      "exportedName": "createEvent",
+      "filename": "src/app/actions/events.ts"
+    }
+  },
+  "edge": {}
+}
