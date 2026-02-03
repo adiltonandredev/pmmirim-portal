@@ -57,7 +57,7 @@ export async function updatePartner(formData: FormData) {
       where: { id },
       data: {
         name,
-        url,
+        website: url,
         logoUrl,
         active,
       },
