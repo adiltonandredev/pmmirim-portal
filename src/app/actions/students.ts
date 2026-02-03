@@ -116,17 +116,23 @@ export async function updateFeaturedStudent(data: ActionData) {
   }
 }
 
-export async function deleteFeaturedStudent(data: ActionData | string) {
-    const id = typeof data === 'string' ? data : getValue(data, "id") as string;
-    if (!id) return;
+export async function deleteFeaturedStudent(formData: FormData) {
+  // Agora pegamos o ID direto do FormData, sem malabarismos
+  const id = formData.get("id") as string;
+  
+  if (!id) return;
 
-    try {
-      await prisma.featuredStudent.delete({ where: { id } })
-      revalidatePath("/admin/featured-student")
-      revalidatePath("/")
-      return { success: true };
-    } catch (error) {
-      console.error("Erro ao deletar:", error);
-      throw error;
-    }
+  try {
+    // Atenção: Confirme se o nome da tabela no seu prisma é 'featuredStudent' ou 'student'
+    // Pelo seu código anterior, parece ser 'featuredStudent'
+    await prisma.featuredStudent.delete({ where: { id } })
+    
+    revalidatePath("/admin/featured-student")
+    revalidatePath("/")
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+    throw error;
+  }
 }

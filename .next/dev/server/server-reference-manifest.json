@@ -1,31 +1,5 @@
 {
   "node": {
-    "40372ee23b8335409948fd71704baa737981e1e5cd": {
-      "workers": {
-        "app/admin/settings/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%2C%5B%7B%22id%22%3A%2240372ee23b8335409948fd71704baa737981e1e5cd%22%2C%22exportedName%22%3A%22updateSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%7D%2C%7B%22id%22%3A%2240a30bb60b2b1dc7546759f80bbeb17d87e7ed91f4%22%2C%22exportedName%22%3A%22updateInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/admin/settings/page": "action-browser"
-      },
-      "filename": "../C:\\pmmirim-portal\\src\\app\\actions\\settings.ts",
-      "exportedName": "updateSettings"
-    },
-    "40a30bb60b2b1dc7546759f80bbeb17d87e7ed91f4": {
-      "workers": {
-        "app/admin/settings/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%2C%5B%7B%22id%22%3A%2240372ee23b8335409948fd71704baa737981e1e5cd%22%2C%22exportedName%22%3A%22updateSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%7D%2C%7B%22id%22%3A%2240a30bb60b2b1dc7546759f80bbeb17d87e7ed91f4%22%2C%22exportedName%22%3A%22updateInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Capp%5C%5Cactions%5C%5Csettings.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/admin/settings/page": "action-browser"
-      },
-      "filename": "../C:\\pmmirim-portal\\src\\app\\actions\\settings.ts",
-      "exportedName": "updateInstagramSettings"
-    },
     "00b7c7aab6b3139c69184e8a3b5748649a5d22702a": {
       "workers": {
         "app/page": {
