@@ -7,10 +7,23 @@ import { join } from "path"
 import { existsSync } from "fs"
 import { saveFile } from "@/lib/file-upload"
 
-// ==========================================
-// PARTE 1: FUNÇÕES EXIGIDAS PELO ALBUM MANAGER (NOVO)
-// ==========================================
+// Helper para pegar ID seja vindo de Texto (Componente) ou FormData (Formulário)
+function getId(data: string | FormData): string {
+  if (typeof data === 'string') return data
+  return data.get("id") as string
+}
 
+// Helper para deletar arquivos sem quebrar
+async function tryDeleteFile(path: string) {
+    try {
+        const fullPath = join(process.cwd(), "public", path)
+        if (existsSync(fullPath)) await unlink(fullPath)
+    } catch (e) {}
+}
+
+// ==========================================
+// 1. SALVAR / ATUALIZAR ÁLBUM
+// ==========================================
 export async function saveAlbum(formData: FormData) {
   const id = formData.get("id") as string
   const title = formData.get("title") as string
@@ -21,14 +34,12 @@ export async function saveAlbum(formData: FormData) {
   const coverFile = formData.get("coverImage") as File
   let coverImageUrl = undefined
 
-  // Upload da capa se existir
   if (coverFile && coverFile.size > 0) {
      coverImageUrl = await saveFile(coverFile, "albums")
   }
 
   try {
     if (id) {
-      // UPDATE
       await prisma.album.update({
         where: { id },
         data: {
@@ -40,7 +51,6 @@ export async function saveAlbum(formData: FormData) {
         },
       })
     } else {
-      // CREATE
       await prisma.album.create({
         data: {
           title,
@@ -62,14 +72,16 @@ export async function saveAlbum(formData: FormData) {
   }
 }
 
-export async function deleteAlbum(formData: FormData) {
-  const id = formData.get("id") as string
+// ==========================================
+// 2. DELETAR ÁLBUM (Híbrido: String ou FormData)
+// ==========================================
+export async function deleteAlbum(data: string | FormData) {
+  const id = getId(data)
   if (!id) return
 
   try {
     const album = await prisma.album.findUnique({ where: { id }, include: { photos: true } })
     
-    // Limpeza de arquivos (Opcional, mas recomendado)
     if (album) {
         if (album.coverImage) tryDeleteFile(album.coverImage)
         for (const photo of album.photos) {
@@ -79,32 +91,51 @@ export async function deleteAlbum(formData: FormData) {
 
     await prisma.album.delete({ where: { id } })
     revalidatePath("/admin/galeria")
+    return { success: true } // O componente espera esse retorno
   } catch (error) {
     console.error("Erro deleteAlbum:", error)
+    return { error: "Erro ao deletar" }
   }
 }
 
+// ==========================================
+// 3. UPLOAD DE FOTOS (Com retorno de contagem)
+// ==========================================
 export async function uploadAlbumPhotos(formData: FormData) {
   const albumId = formData.get("albumId") as string
-  const files = formData.getAll("photos") as File[] // O componente deve enviar com name="photos"
+  const files = formData.getAll("photos") as File[] 
 
-  if (!albumId) return
+  if (!albumId) return { success: false, error: "ID do álbum faltando" }
 
-  for (const file of files) {
-    if (file.size > 0) {
-      const url = await saveFile(file, "albums")
-      if (url) {
-        await prisma.photo.create({
-          data: { albumId, url }
-        })
-      }
+  let count = 0
+  try {
+    for (const file of files) {
+        if (file.size > 0) {
+        const url = await saveFile(file, "albums")
+        if (url) {
+            await prisma.photo.create({
+            data: { albumId, url }
+            })
+            count++
+        }
+        }
     }
+    revalidatePath(`/admin/galeria`)
+    
+    // RETORNO QUE O COMPONENTE ESPERA (result.success, result.count)
+    return { success: true, count } 
+
+  } catch (error) {
+      console.error(error)
+      return { success: false, error: "Erro ao enviar fotos" }
   }
-  revalidatePath(`/admin/galeria`) // Atualiza a lista
 }
 
-export async function deletePhoto(formData: FormData) {
-  const id = formData.get("id") as string
+// ==========================================
+// 4. DELETAR FOTO ÚNICA (Híbrido)
+// ==========================================
+export async function deletePhoto(data: string | FormData) {
+  const id = getId(data)
   if (!id) return
 
   try {
@@ -114,27 +145,19 @@ export async function deletePhoto(formData: FormData) {
         await prisma.photo.delete({ where: { id } })
     }
     revalidatePath("/admin/galeria")
+    return { success: true }
   } catch (error) {
     console.error("Erro deletePhoto:", error)
+    return { error: "Erro ao deletar foto" }
   }
 }
 
-// Helper para deletar arquivos sem quebrar o app
-async function tryDeleteFile(path: string) {
-    try {
-        const fullPath = join(process.cwd(), "public", path)
-        if (existsSync(fullPath)) await unlink(fullPath)
-    } catch (e) {}
-}
-
 
 // ==========================================
-// PARTE 2: LEGADO / COMPATIBILIDADE (MODELO GALLERY)
-// Mantivemos para não quebrar outras partes do site
+// PARTE LEGADO (GALLERY) - Mantido para compatibilidade
 // ==========================================
 
 export async function createGallery(formData: FormData) {
-  // ... (código existente mantido para compatibilidade)
   const title = formData.get("title") as string
   const coverFile = formData.get("coverImage") as File
   const slug = title.toLowerCase().replace(/\s+/g, "_") + "_" + Date.now().toString().slice(-4)
@@ -144,7 +167,6 @@ export async function createGallery(formData: FormData) {
 }
 
 export async function uploadGalleryImages(galleryId: string, formData: FormData) {
-  // ... (código existente mantido)
   const files = formData.getAll("images") as File[]
   for (const file of files) {
       const url = await saveFile(file, "gallery")
@@ -153,7 +175,6 @@ export async function uploadGalleryImages(galleryId: string, formData: FormData)
 }
 
 export async function deleteSingleImage(imageId: string, galleryId: string) {
-    // ... (código existente mantido)
     const image = await prisma.galleryImage.findUnique({ where: { id: imageId } })
     if (image) {
         tryDeleteFile(image.url)
@@ -162,15 +183,12 @@ export async function deleteSingleImage(imageId: string, galleryId: string) {
 }
 
 export async function deleteGallery(formData: FormData) {
-    // ... (código existente mantido)
     const id = formData.get("id") as string
     await prisma.gallery.delete({ where: { id } })
     revalidatePath("/admin/gallery")
 }
 
 export async function getAlbums() {
-    // Busca do modelo Gallery (se for o que a página pública usa)
-    // Se a página pública usar o modelo Album, troque aqui para prisma.album.findMany
     const albums = await prisma.gallery.findMany({
         orderBy: { createdAt: 'desc' },
         include: { _count: { select: { images: true } } }
@@ -186,7 +204,6 @@ export async function getGallery(id: string) {
 }
 
 export async function getAlbum(slugOrId: string) {
-    // Lógica híbrida para manter compatibilidade
     let gallery = await prisma.gallery.findUnique({
         where: { slug: slugOrId },
         include: { images: { orderBy: { id: 'desc' } } }

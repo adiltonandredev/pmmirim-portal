@@ -3,9 +3,13 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { saveFile } from "@/lib/file-upload"
+import { unlink } from "fs/promises"
+import { join } from "path"
+import { existsSync } from "fs"
 
 type BannerType = "HOME" | "PARTNER" | "SPONSOR";
 
+// --- CREATE (MANTIDO) ---
 export async function createBanner(formData: FormData) {
   try {
     const title = formData.get("title") as string
@@ -15,7 +19,6 @@ export async function createBanner(formData: FormData) {
     const order = parseInt(formData.get("order") as string) || 0
     const active = formData.get("active") === "on"
     
-    // SALVA NA PASTA "banners"
     const file = formData.get("image") as File
     const imageUrl = await saveFile(file, "banners")
 
@@ -44,6 +47,7 @@ export async function createBanner(formData: FormData) {
   }
 }
 
+// --- UPDATE (MANTIDO) ---
 export async function updateBanner(formData: FormData) {
   try {
     const id = formData.get("id") as string
@@ -56,7 +60,6 @@ export async function updateBanner(formData: FormData) {
     const order = parseInt(formData.get("order") as string) || 0
     const active = formData.get("active") === "on"
     
-    // Lógica de Atualização
     const file = formData.get("image") as File
     let imageUrl = formData.get("existingImageUrl") as string
 
@@ -88,15 +91,46 @@ export async function updateBanner(formData: FormData) {
   }
 }
 
-export async function deleteBanner(formData: FormData) {
-  const id = formData.get("id") as string
+// --- DELETE (CORRIGIDO PARA ACEITAR .BIND) ---
+// Agora aceita (id, formData) para funcionar com o .bind(null, id) do componente
+export async function deleteBanner(id: string, formData: FormData) {
   if (!id) return
 
   try {
+    // Tenta limpar a imagem do disco
+    const banner = await prisma.banner.findUnique({ where: { id } })
+    if (banner?.imageUrl) {
+        try {
+            const filePath = join(process.cwd(), "public", banner.imageUrl)
+            if (existsSync(filePath)) await unlink(filePath)
+        } catch (e) {}
+    }
+
     await prisma.banner.delete({ where: { id } })
+    
     revalidatePath("/admin/banners")
     revalidatePath("/")
   } catch (error) {
     console.error("Erro ao excluir banner:", error)
   }
+}
+
+// --- TOGGLE ACTIVE (NOVA FUNÇÃO) ---
+// Criada para resolver o erro de importação no BannerCard
+// Aceita (id, active) porque o componente faz bind(null, id, active)
+export async function toggleBannerActive(id: string, currentState: boolean) {
+    if (!id) return
+  
+    try {
+      await prisma.banner.update({
+        where: { id },
+        data: { active: !currentState } // Inverte o estado recebido
+      })
+        
+      revalidatePath("/admin/banners")
+      revalidatePath("/")
+      
+    } catch (error) {
+      console.error("Erro ao alternar banner:", error)
+    }
 }

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { saveAlbum, deleteAlbum, deletePhoto, uploadAlbumPhotos } from "@/app/actions/gallery"
 import { uploadImage } from "@/app/actions/upload"
 import { Button } from "@/components/ui/button"
-import { Trash2, Edit, Plus, Save, X, Upload, Image as ImageIcon, Calendar, ArrowLeft, Loader2, FolderOpen, MousePointerClick } from "lucide-react"
+import { Trash2, Edit, Plus, Save, X, Upload, Image as ImageIcon, Calendar, ArrowLeft, Loader2, FolderOpen } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
 
@@ -56,23 +56,28 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
 
   // --- SALVAR DADOS DO ÁLBUM ---
   async function handleSaveAlbum(formData: FormData) {
-    setIsSavingAlbum(true)
-    try {
-        if (currentAlbum.coverImage) formData.set("coverImage", currentAlbum.coverImage)
-        await saveAlbum(formData)
-        toast.success("Dados do álbum salvos com sucesso!")
-        
+    setIsSavingAlbum(true)
+    try {
+        if (currentAlbum.coverImage) formData.set("coverImage", currentAlbum.coverImage)
+        await saveAlbum(formData)
+        toast.success("Dados do álbum salvos com sucesso!")
+        
         // CORREÇÃO: Removemos o 'if' para que ele SEMPRE recarregue a página
         // Isso garante que tanto 'Novo' quanto 'Editar' voltem para a lista atualizada
-        setTimeout(() => window.location.reload(), 1000)
+        setTimeout(() => window.location.reload(), 1000)
 
-    } catch (error) { toast.error("Erro ao salvar.") } 
-    finally { setIsSavingAlbum(false) }
-  }
+    } catch (error) { toast.error("Erro ao salvar.") } 
+    finally { setIsSavingAlbum(false) }
+  }
 
+  // CORREÇÃO 1: Delete via FormData
   async function handleDeleteAlbum(id: string) {
     if (!confirm("Isso apagará o álbum e todas as fotos. Confirmar?")) return
-    await deleteAlbum(id)
+    
+    const formData = new FormData()
+    formData.append("id", id)
+    
+    await deleteAlbum(formData)
     toast.success("Álbum removido.")
     window.location.reload()
   }
@@ -118,27 +123,29 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
     }
 
     setIsUploadingPhotos(true)
-    // Mostra toast de carregamento
     const toastId = toast.loading(`Enviando ${selectedFiles.length} fotos... Aguarde.`)
     
     try {
         const formData = new FormData()
         selectedFiles.forEach(file => {
-           formData.append("files", file)
+           // CORREÇÃO 2: Nome do campo deve ser 'photos' para bater com a Action
+           formData.append("photos", file)
         })
 
-        const result = await uploadAlbumPhotos(currentAlbum.id, formData)
+        // CORREÇÃO 3: Enviando tudo num único argumento
+        formData.append("albumId", currentAlbum.id)
         
-        if (result.success) {
+        const result = await uploadAlbumPhotos(formData)
+        
+        if (result && result.success) {
            toast.success(`${result.count} fotos enviadas com sucesso!`, { id: toastId })
            setSelectedFiles([]) // Limpa a seleção
            
-           // Aguarda 1.5s para o usuário ver a mensagem de sucesso antes de atualizar a lista
            setTimeout(() => {
              window.location.reload()
            }, 1500)
         } else {
-           toast.error(result.error || "Erro ao processar.", { id: toastId })
+           toast.error(result?.error || "Erro ao processar.", { id: toastId })
         }
 
     } catch (e) {
@@ -148,9 +155,15 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
     }
   }
 
+  // CORREÇÃO 4: Delete Foto via FormData
   async function handleDeletePhoto(photoId: string) {
      if(!confirm("Apagar esta foto?")) return
-     await deletePhoto(photoId)
+     
+     const formData = new FormData()
+     formData.append("id", photoId)
+     
+     await deletePhoto(formData)
+     
      const updatedPhotos = currentAlbum.photos.filter((p: any) => p.id !== photoId)
      setCurrentAlbum({ ...currentAlbum, photos: updatedPhotos })
      toast.success("Foto removida")
@@ -211,19 +224,19 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
   return (
     <div className="space-y-6 bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-8 animate-in fade-in zoom-in-95">
        <div className="flex items-center justify-between border-b border-slate-100 pb-6 mb-6">
-          <div className="flex items-center gap-4">
+         <div className="flex items-center gap-4">
              <Button variant="outline" size="icon" onClick={handleBack} className="rounded-full"><ArrowLeft size={20}/></Button>
              <div>
                 <h2 className="text-2xl font-bold text-slate-800">{currentAlbum.id ? "Editar Álbum" : "Novo Álbum"}</h2>
                 {currentAlbum.id && <p className="text-xs text-slate-400 font-mono mt-1">ID: {currentAlbum.id}</p>}
              </div>
-          </div>
+         </div>
        </div>
 
        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* --- COLUNA ESQUERDA: DADOS --- */}
-          <div className="lg:col-span-4 space-y-6">
+         
+         {/* --- COLUNA ESQUERDA: DADOS --- */}
+         <div className="lg:col-span-4 space-y-6">
              <div className="bg-slate-50 p-5 rounded-xl border border-slate-200">
                 <h3 className="font-bold text-slate-700 mb-4 flex items-center gap-2"><ImageIcon size={18}/> Capa do Álbum</h3>
                 <div className="relative w-full aspect-video bg-white rounded-lg border-2 border-dashed border-slate-300 overflow-hidden mb-4 group cursor-pointer hover:border-blue-400 transition-colors" onClick={() => coverInputRef.current?.click()}>
@@ -261,10 +274,10 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
                    {isSavingAlbum ? "Salvando..." : "Salvar Dados"}
                 </Button>
              </form>
-          </div>
+         </div>
 
-          {/* --- COLUNA DIREITA: FOTOS (DRAG & DROP) --- */}
-          <div className="lg:col-span-8 flex flex-col h-full min-h-[600px]">
+         {/* --- COLUNA DIREITA: FOTOS (DRAG & DROP) --- */}
+         <div className="lg:col-span-8 flex flex-col h-full min-h-[600px]">
              
              {/* 1. Área de Drag & Drop */}
              {currentAlbum.id ? (
@@ -348,7 +361,7 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
                     )}
                 </div>
              </div>
-          </div>
+         </div>
        </div>
     </div>
   )

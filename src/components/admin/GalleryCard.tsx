@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Calendar, Image as ImageIcon } from "lucide-react"
-import { deleteGalleryItem } from "@/app/actions/gallery" // Ajuste o nome da sua action
+import { deleteGalleryItem } from "@/app/actions/gallery"
 
 interface GalleryItemProps {
   item: {
