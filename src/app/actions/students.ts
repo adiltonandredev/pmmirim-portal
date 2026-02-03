@@ -117,22 +117,21 @@ export async function updateFeaturedStudent(data: ActionData) {
 }
 
 export async function deleteFeaturedStudent(formData: FormData) {
-  // Agora pegamos o ID direto do FormData, sem malabarismos
+  // Pegando o ID direto e reto
   const id = formData.get("id") as string;
   
   if (!id) return;
 
   try {
-    // Atenção: Confirme se o nome da tabela no seu prisma é 'featuredStudent' ou 'student'
-    // Pelo seu código anterior, parece ser 'featuredStudent'
-    await prisma.featuredStudent.delete({ where: { id } })
+    await prisma.featuredStudent.delete({
+      where: { id }
+    });
     
-    revalidatePath("/admin/featured-student")
-    revalidatePath("/")
+    revalidatePath("/admin/featured-student");
+    revalidatePath("/");
     
-    return { success: true };
+    // Sem retorno (void) para agradar o formulário
   } catch (error) {
     console.error("Erro ao deletar:", error);
-    throw error;
   }
 }
