@@ -20,7 +20,7 @@ export async function createPartner(formData: FormData) {
     await prisma.partner.create({
       data: {
         name,
-        url: url || "",
+        website: url || "",
         logoUrl,
         active,
       },
