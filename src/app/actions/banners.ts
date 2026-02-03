@@ -9,7 +9,13 @@ import { existsSync } from "fs"
 
 type BannerType = "HOME" | "PARTNER" | "SPONSOR";
 
-// --- CREATE (MANTIDO) ---
+// HELPER: Pega o ID não importa se veio Texto ou FormData
+function getId(data: string | FormData): string {
+  if (typeof data === 'string') return data
+  return data.get("id") as string
+}
+
+// --- CREATE ---
 export async function createBanner(formData: FormData) {
   try {
     const title = formData.get("title") as string
@@ -47,7 +53,7 @@ export async function createBanner(formData: FormData) {
   }
 }
 
-// --- UPDATE (MANTIDO) ---
+// --- UPDATE ---
 export async function updateBanner(formData: FormData) {
   try {
     const id = formData.get("id") as string
@@ -91,13 +97,13 @@ export async function updateBanner(formData: FormData) {
   }
 }
 
-// --- DELETE (CORRIGIDO PARA ACEITAR .BIND) ---
-// Agora aceita (id, formData) para funcionar com o .bind(null, id) do componente
-export async function deleteBanner(id: string, formData: FormData) {
+// --- DELETE (CORRIGIDO / HÍBRIDO) ---
+// Aceita 'data' sendo STRING (do .bind) ou FORMDATA (do botão DeleteButton)
+export async function deleteBanner(data: string | FormData) {
+  const id = getId(data)
   if (!id) return
 
   try {
-    // Tenta limpar a imagem do disco
     const banner = await prisma.banner.findUnique({ where: { id } })
     if (banner?.imageUrl) {
         try {
@@ -115,16 +121,14 @@ export async function deleteBanner(id: string, formData: FormData) {
   }
 }
 
-// --- TOGGLE ACTIVE (NOVA FUNÇÃO) ---
-// Criada para resolver o erro de importação no BannerCard
-// Aceita (id, active) porque o componente faz bind(null, id, active)
+// --- TOGGLE ACTIVE ---
 export async function toggleBannerActive(id: string, currentState: boolean) {
     if (!id) return
   
     try {
       await prisma.banner.update({
         where: { id },
-        data: { active: !currentState } // Inverte o estado recebido
+        data: { active: !currentState }
       })
         
       revalidatePath("/admin/banners")
