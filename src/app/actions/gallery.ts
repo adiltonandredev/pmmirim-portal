@@ -217,3 +217,51 @@ export async function getAlbum(slugOrId: string) {
     if (!gallery) return null
     return { ...gallery, coverImage: gallery.coverUrl, photos: gallery.images }
 }
+
+// ==========================================
+// COMPATIBILIDADE COM O FORMULÁRIO ANTIGO (GalleryForm)
+// Adicionamos isso para o build não quebrar
+// ==========================================
+
+export async function createGalleryItem(formData: FormData) {
+  try {
+    // Reutiliza a função createGallery que já existe
+    await createGallery(formData)
+    return { success: true }
+  } catch (e) {
+    return { error: "Erro ao criar galeria" }
+  }
+}
+
+export async function updateGalleryItem(formData: FormData) {
+  const id = formData.get("id") as string
+  const title = formData.get("title") as string
+  const coverFile = formData.get("coverImage") as File // O form antigo costuma usar esse nome
+
+  if (!id) return { error: "ID faltando" }
+
+  try {
+    let coverUrl = undefined
+    
+    // Se enviou nova capa, salva
+    if (coverFile && coverFile.size > 0) {
+       coverUrl = await saveFile(coverFile, "gallery")
+    }
+
+    // Atualiza no banco (Modelo Gallery antigo)
+    await prisma.gallery.update({
+       where: { id },
+       data: {
+           title,
+           ...(coverUrl && { coverUrl }) // Só atualiza se tiver url nova
+       }
+    })
+    
+    revalidatePath("/admin/gallery")
+    revalidatePath("/galeria")
+    return { success: true }
+  } catch (e) {
+      console.error("Erro updateGalleryItem:", e)
+      return { error: "Erro ao atualizar" }
+  }
+}

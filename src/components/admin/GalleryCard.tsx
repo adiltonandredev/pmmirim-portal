@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Calendar, Image as ImageIcon } from "lucide-react"
-import { deleteGalleryItem } from "@/app/actions/gallery"
+import { deleteGallery } from "@/app/actions/gallery"
 
 interface GalleryItemProps {
   item: {
@@ -64,7 +64,7 @@ export function GalleryCard({ item }: GalleryItemProps) {
              </Link>
 
              {/* Form com input hidden (Padrão Seguro) */}
-             <form action={deleteGalleryItem}>
+             <form action={deleteGallery}>
                 <input type="hidden" name="id" value={item.id} />
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:bg-red-50 hover:text-red-600">
                     <Trash2 size={16} />
