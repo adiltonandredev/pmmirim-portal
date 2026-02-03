@@ -51,7 +51,6 @@ model SiteSettings {
   updatedAt    DateTime @updatedAt
 }
 
-// Enum para os tipos de Banner (Locais onde aparecem)
 enum BannerType {
   HOME          // Banner Principal (Home)
   PARTNER       // Banner Parceiros (1920x600)
@@ -95,7 +94,6 @@ model Post {
   comments    Comment[]
 }
 
-// Coloque o modelo Comment no final do arquivo
 model Comment {
   id        String   @id @default(cuid())
   author    String   
@@ -144,7 +142,6 @@ model InstitutionHistory {
   updatedAt   DateTime @updatedAt
 }
 
-// Modelo para membros da diretoria
 model BoardMember {
   id          String   @id @default(cuid())
   name        String
@@ -182,7 +179,6 @@ model Course {
   updatedAt   DateTime @updatedAt
 }
 
-// Modelo para aluno destaque
 model FeaturedStudent {
   id          String   @id @default(cuid())
   studentName String
@@ -196,7 +192,6 @@ model FeaturedStudent {
   createdAt   DateTime @default(now())
 }
 
-// Modelo para configurações do Instagram
 model InstagramSettings {
   id          String   @id @default(cuid())
   accessToken String?  @db.Text
@@ -227,7 +222,6 @@ model Student {
   updatedAt DateTime @updatedAt
 }
 
-// Modelo para aniversariantes do mês
 model Birthday {
   id        String   @id @default(uuid())
   name      String
@@ -303,7 +297,6 @@ model GalleryImage {
   @@map("gallery_images")
 }
 
-// Modelo para a Estrutura Organizacional (Organograma)
 model OrganizationalStructure {
   id          String   @id @default(cuid())
   title       String
