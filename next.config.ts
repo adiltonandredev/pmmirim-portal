@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // Permite carregar imagens de qualquer lugar (útil para desenvolvimento)
+        hostname: 'utfs.io', // Permite carregar imagens de qualquer lugar (útil para desenvolvimento)
       },
     ],
   },
