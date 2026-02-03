@@ -1,40 +1,40 @@
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { UTApi } from "uploadthing/server";
+
+// Inicializa a API do UploadThing
+const utapi = new UTApi();
 
 /**
- * Salva um arquivo na pasta public/uploads/{folder}
+ * Envia um arquivo para o UploadThing (Nuvem)
  * @param file O arquivo vindo do formulário
- * @param folder O nome da subpasta (ex: 'news', 'team', 'banners')
- * @returns A URL pública para acessar a imagem (ex: /uploads/news/foto.jpg)
+ * @param folder (Opcional - mantido apenas para compatibilidade, o UploadThing gerencia isso)
+ * @returns A URL pública da imagem (https://utfs.io/...) ou string vazia se falhar
  */
 export async function saveFile(file: File | null, folder: string = "general"): Promise<string> {
+  // 1. Validações básicas (igual ao seu código antigo)
   if (!file || typeof file !== "object" || !file.size) return "";
 
   try {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    console.log(`Enviando para UploadThing: ${file.name}`);
 
-    // Limpa o nome do arquivo para evitar caracteres estranhos
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    // Cria um nome único: TIMESTAMP-NOME
-    const filename = `${Date.now()}-${safeName}`;
-
-    // Define o caminho no servidor: ./public/uploads/pasta
-    const uploadDir = join(process.cwd(), "public", "uploads", folder);
+    // 2. Envia para a nuvem
+    // O UploadThing espera um array, então passamos [file]
+    const response = await utapi.uploadFiles([file]);
     
-    // Cria a pasta se ela não existir
-    await mkdir(uploadDir, { recursive: true });
+    // Pegamos a resposta do primeiro (e único) arquivo
+    const uploadedFile = response[0];
 
-    // Caminho completo do arquivo
-    const finalPath = join(uploadDir, filename);
+    // 3. Verifica erro na resposta da API
+    if (uploadedFile.error) {
+      console.error("Erro no UploadThing:", uploadedFile.error);
+      return "";
+    }
 
-    // Grava o arquivo no disco
-    await writeFile(finalPath, buffer);
+    // 4. Sucesso! Retorna o link https://...
+    console.log("Upload concluído:", uploadedFile.data.url);
+    return uploadedFile.data.url;
 
-    // Retorna o caminho público (URL)
-    return `/uploads/${folder}/${filename}`;
   } catch (error) {
-    console.error(`Erro ao salvar arquivo em ${folder}:`, error);
+    console.error("Erro fatal no upload:", error);
     return "";
   }
 }
