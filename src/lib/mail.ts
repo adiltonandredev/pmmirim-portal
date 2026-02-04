@@ -1,22 +1,24 @@
 import nodemailer from "nodemailer";
 
 export async function sendPasswordResetEmail(email: string, token: string) {
-  // Configuração do servidor (MANTIDO)
+  
+  // 1. Configuração alinhada com as Variáveis da Vercel
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: false, 
+    host: process.env.EMAIL_SERVER_HOST,      // Antes era SMTP_HOST
+    port: Number(process.env.EMAIL_SERVER_PORT) || 587,
+    secure: false, // true para 465, false para outras portas (587 usa STARTTLS)
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: process.env.EMAIL_SERVER_USER,    // Antes era SMTP_USER
+      pass: process.env.EMAIL_SERVER_PASSWORD, // Antes era SMTP_PASS
     },
   });
 
   const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/login/redefinir-senha?token=${token}`;
 
-  // Novo Layout Profissional (HTML)
+  // 2. Envio do E-mail
   await transporter.sendMail({
-    from: '"Portal Polícia Militar Mirim" <nao-responda@pmmirimmedici.org.br>',
+    // O Gmail exige que o 'from' seja igual ao usuário autenticado ou um alias válido
+    from: `"Portal Polícia Militar Mirim" <${process.env.EMAIL_FROM}>`, 
     to: email,
     subject: "Redefinição de Senha - Acesso Administrativo",
     html: `
@@ -38,7 +40,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
       <body>
         <div class="container">
           <div class="header">
-             <h1>Polícia Mirim</h1>
+             <h1>Polícia Militar Mirim</h1>
           </div>
           
           <div class="content">
@@ -58,7 +60,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 
           <div class="footer">
             <p>&copy; ${new Date().getFullYear()} Polícia Mirim de Presidente Médici - RO.<br>Todos os direitos reservados.</p>
-            <p>Este é um e-mail automático, por favor não responda.</p>
+            <p>Este é um e-mail automático.</p>
           </div>
         </div>
       </body>
