@@ -46,9 +46,8 @@ export function AlbumManager({ initialAlbums }: { initialAlbums: any[] }) {
     if (!file) return
     const toastId = toast.loading("Enviando capa...")
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const url = await uploadImage(formData)
+      // Passa o arquivo diretamente, sem criar FormData
+      const url = await uploadImage(file)
       setCurrentAlbum({ ...currentAlbum, coverImage: url })
       toast.success("Capa atualizada!", { id: toastId })
     } catch (e) { toast.error("Erro no upload da capa", { id: toastId }) }
