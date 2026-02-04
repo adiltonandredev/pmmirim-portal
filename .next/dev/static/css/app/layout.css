@@ -1220,10 +1220,6 @@
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .-translate-y-full {
-    --tw-translate-y: -100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
   .translate-y-0 {
     --tw-translate-y: calc(var(--spacing) * 0);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -2041,6 +2037,9 @@
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
+  }
+  .bg-red-900 {
+    background-color: var(--color-red-900);
   }
   .bg-red-950 {
     background-color: var(--color-red-950);
@@ -6034,6 +6033,12 @@
   .lg\:basis-1\/4 {
     @media (width >= 64rem) {
       flex-basis: calc(1/4 * 100%);
+    }
+  }
+  .lg\:-translate-y-full {
+    @media (width >= 64rem) {
+      --tw-translate-y: -100%;
+      translate: var(--tw-translate-x) var(--tw-translate-y);
     }
   }
   .lg\:columns-4 {
