@@ -2,10 +2,10 @@
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-// IMPORTA A NOVA FUNÇÃO DE SALVAR ARQUIVO
 import { saveFile } from "@/lib/file-upload"
+// 1. IMPORTAÇÃO DA AUDITORIA
+import { logAdminAction } from "@/lib/audit" 
 
-// Gerador de Slug
 function generateSlug(title: string): string {
     return title
         .toLowerCase()
@@ -20,8 +20,6 @@ export async function createPost(formData: FormData) {
     const summary = formData.get("summary") as string;
     const content = formData.get("content") as string;
     
-    // --- MUDANÇA AQUI: USA O SAVEFILE ---
-    // Salva na pasta "news"
     const file = formData.get("coverImage") as File;
     const coverImage = await saveFile(file, "news"); 
 
@@ -37,12 +35,15 @@ export async function createPost(formData: FormData) {
         slug,
         summary: summary || "",
         content: content || "",
-        coverImage, // Agora salva a URL: /uploads/news/arquivo.jpg
+        coverImage, 
         type: "NEWS",
         published: formData.get("published") === "on",
         featured: formData.get("featured") === "on",
       },
     })
+
+    // 2. REGISTRA A CRIAÇÃO
+    await logAdminAction("CRIOU", "Notícia", `Título: ${title}`);
 
     revalidatePath("/admin/posts")
     revalidatePath("/")
@@ -65,11 +66,9 @@ export async function updatePost(formData: FormData) {
     const summary = formData.get("summary") as string;
     const content = formData.get("content") as string;
 
-    // --- MUDANÇA AQUI: ---
     const file = formData.get("coverImage") as File;
     let coverImage = formData.get("existingCoverImage") as string;
 
-    // Se enviou arquivo novo, salva no disco e substitui a URL
     if (file && file.size > 0) {
         coverImage = await saveFile(file, "news");
     }
@@ -86,6 +85,9 @@ export async function updatePost(formData: FormData) {
         featured: formData.get("featured") === "on",
       },
     })
+
+    // 3. REGISTRA A EDIÇÃO
+    await logAdminAction("EDITOU", "Notícia", `Título: ${title}`);
 
     revalidatePath("/admin/posts")
     revalidatePath("/")
@@ -104,7 +106,14 @@ export async function deletePost(formData: FormData) {
     if (!id) return;
 
     try {
+      // (Opcional) Buscamos o título antes de deletar para o log ficar bonito
+      const post = await prisma.post.findUnique({ where: { id }, select: { title: true } });
+
       await prisma.post.delete({ where: { id } })
+      
+      // 4. REGISTRA A EXCLUSÃO
+      await logAdminAction("EXCLUIU", "Notícia", `Título: ${post?.title || "ID: " + id}`);
+
       revalidatePath("/admin/posts")
       revalidatePath("/")
     } catch (error) {
