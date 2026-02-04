@@ -1,36 +1,43 @@
-'use server'
+import { UTApi } from "uploadthing/server";
 
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+// Inicializa a API do UploadThing
+const utapi = new UTApi();
 
-export async function uploadImage(formData: FormData) {
-  const file = formData.get('file') as File
-  
-  if (!file) {
-    throw new Error('Nenhum arquivo enviado')
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+export async function uploadImage(file: File | null): Promise<string | null> {
+  // 1. Validações Iniciais (Mantendo sua lógica original)
+  if (!file || file.size === 0) return null;
+
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    throw new Error("Tipo de arquivo não permitido. Use JPG, PNG, WEBP ou GIF.");
   }
 
-  const bytes = await file.arrayBuffer()
-  const buffer = Buffer.from(bytes)
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error("Arquivo muito grande. Tamanho máximo: 5MB.");
+  }
 
-  // Cria um nome único para o arquivo para não substituir outros
-  const filename = `${Date.now()}-${file.name.replace(/\s/g, '-')}`
-  
-  // Caminho onde será salvo (dentro de public/uploads)
-  const uploadDir = join(process.cwd(), 'public', 'uploads')
-  
-  // Garante que a pasta existe
   try {
-    await mkdir(uploadDir, { recursive: true })
-  } catch (e) {
-    // Ignora erro se a pasta já existir
+    console.log(`Enviando para UploadThing: ${file.name}`);
+
+    // 2. Envia para a nuvem (Substituindo o fs.writeFile)
+    const response = await utapi.uploadFiles([file]);
+    const uploadedFile = response[0];
+
+    // 3. Verifica erros do UploadThing
+    if (uploadedFile.error) {
+      console.error("Erro no UploadThing:", uploadedFile.error);
+      // Retorna null para indicar falha, igual seu código original faria
+      return null;
+    }
+
+    // 4. Sucesso! Retorna o link da nuvem
+    console.log("Upload concluído:", uploadedFile.data.url);
+    return uploadedFile.data.url;
+
+  } catch (error) {
+    console.error("Erro fatal no upload:", error);
+    return null;
   }
-
-  const path = join(uploadDir, filename)
-
-  // Salva o arquivo no disco
-  await writeFile(path, buffer)
-
-  // Retorna a URL pública para o editor usar
-  return `/uploads/${filename}`
 }
