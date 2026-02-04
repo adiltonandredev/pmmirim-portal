@@ -128,9 +128,8 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     }
     try {
       setIsUploading(true)
-      const formData = new FormData()
-      formData.append('file', file)
-      const url = await uploadImage(formData)
+      // Envia o arquivo direto, sem FormData
+      const url = await uploadImage(file)
       if (url && editor) {
         editor.chain().focus().setImage({ src: url }).run()
       }
