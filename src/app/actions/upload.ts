@@ -1,3 +1,5 @@
+"use server";
+
 import { UTApi } from "uploadthing/server";
 
 // Inicializa a API do UploadThing
