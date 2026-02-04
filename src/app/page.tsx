@@ -174,7 +174,7 @@ export default async function Home() {
       <section className="container mx-auto px-4 py-12">
         <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 border-l-8 border-blue-600 pl-4 uppercase">
-                Aconteceu na PMMIRIM
+                Aconteceu na Polícia Militar Mirim
             </h2>
             <Link href="/noticias" className="text-blue-600 font-bold hover:text-blue-800 flex items-center gap-2 group uppercase text-sm">
                 Ver todas <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
