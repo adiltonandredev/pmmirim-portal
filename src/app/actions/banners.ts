@@ -6,10 +6,11 @@ import { saveFile } from "@/lib/file-upload"
 import { unlink } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
+// 👇 1. IMPORTAÇÃO DO ESPIÃO
+import { logAdminAction } from "@/lib/audit"
 
 type BannerType = "HOME" | "PARTNER" | "SPONSOR";
 
-// HELPER: Pega o ID não importa se veio Texto ou FormData
 function getId(data: string | FormData): string {
   if (typeof data === 'string') return data
   return data.get("id") as string
@@ -41,6 +42,9 @@ export async function createBanner(formData: FormData) {
         type: type || "HOME"
       }
     })
+
+    // 👇 2. LOG DE CRIAÇÃO
+    await logAdminAction("CRIOU", "Banner", `Título: ${title} (${type})`);
 
     revalidatePath("/")
     revalidatePath("/parceiros")
@@ -86,6 +90,9 @@ export async function updateBanner(formData: FormData) {
       }
     })
 
+    // 👇 3. LOG DE EDIÇÃO
+    await logAdminAction("EDITOU", "Banner", `Título: ${title}`);
+
     revalidatePath("/")
     revalidatePath("/parceiros")
     revalidatePath("/admin/banners")
@@ -97,8 +104,7 @@ export async function updateBanner(formData: FormData) {
   }
 }
 
-// --- DELETE (CORRIGIDO / HÍBRIDO) ---
-// Aceita 'data' sendo STRING (do .bind) ou FORMDATA (do botão DeleteButton)
+// --- DELETE ---
 export async function deleteBanner(data: string | FormData) {
   const id = getId(data)
   if (!id) return
@@ -114,6 +120,9 @@ export async function deleteBanner(data: string | FormData) {
 
     await prisma.banner.delete({ where: { id } })
     
+    // 👇 4. LOG DE EXCLUSÃO
+    await logAdminAction("EXCLUIU", "Banner", `Título: ${banner?.title || "ID: " + id}`);
+
     revalidatePath("/admin/banners")
     revalidatePath("/")
   } catch (error) {
@@ -130,6 +139,9 @@ export async function toggleBannerActive(id: string, currentState: boolean) {
         where: { id },
         data: { active: !currentState }
       })
+
+      // 👇 5. LOG DE ATIVAR/DESATIVAR
+      await logAdminAction("EDITOU", "Banner", `Alterou status para: ${!currentState ? "Ativo" : "Inativo"}`);
         
       revalidatePath("/admin/banners")
       revalidatePath("/")

@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { saveFile } from "@/lib/file-upload"
+// 👇 1. IMPORTAÇÃO DO ESPIÃO
+import { logAdminAction } from "@/lib/audit"
 
 export async function createEvent(formData: FormData) {
   try {
@@ -16,7 +18,6 @@ export async function createEvent(formData: FormData) {
         finalDate = new Date(dateStr);
     }
 
-    // SALVA O BANNER NA PASTA "events"
     const file = formData.get("bannerUrl") as File;
     const bannerUrl = await saveFile(file, "events");
 
@@ -28,9 +29,12 @@ export async function createEvent(formData: FormData) {
         date: finalDate,
         location: location || "",
         description: description || "",
-        bannerUrl, // Salva o caminho /uploads/events/...
+        bannerUrl,
       },
     })
+
+    // 👇 2. LOG DE CRIAÇÃO
+    await logAdminAction("CRIOU", "Evento", `Título: ${title}`);
 
     revalidatePath("/admin/events")
     revalidatePath("/")
@@ -56,7 +60,6 @@ export async function updateEvent(formData: FormData) {
         finalDate = new Date(dateStr);
     }
 
-    // ATUALIZAÇÃO DE IMAGEM
     const file = formData.get("bannerUrl") as File;
     let bannerUrl = formData.get("existingBannerUrl") as string;
 
@@ -75,6 +78,9 @@ export async function updateEvent(formData: FormData) {
       },
     })
 
+    // 👇 3. LOG DE EDIÇÃO
+    await logAdminAction("EDITOU", "Evento", `Título: ${title}`);
+
     revalidatePath("/admin/events")
     revalidatePath("/")
     return { success: true };
@@ -89,7 +95,14 @@ export async function deleteEvent(formData: FormData) {
     if (!id) return;
 
     try {
+      // (Opcional) Pega o nome antes de deletar
+      const event = await prisma.event.findUnique({ where: { id }, select: { title: true } });
+
       await prisma.event.delete({ where: { id } })
+      
+      // 👇 4. LOG DE EXCLUSÃO
+      await logAdminAction("EXCLUIU", "Evento", `Título: ${event?.title || id}`);
+
       revalidatePath("/admin/events")
       revalidatePath("/")
     } catch (error) {
