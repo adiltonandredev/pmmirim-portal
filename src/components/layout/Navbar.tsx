@@ -71,7 +71,7 @@ export function Navbar({ logoUrl }: NavbarProps) {
     <header 
       // AQUI ESTÁ A CORREÇÃO DA COR DE FUNDO
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
+        isVisible ? "translate-y-0" : "translate-y-0 lg:-translate-y-full"
       } ${
         isScrolled 
           // QUANDO ROLA: Fundo Escuro (Slate-900) com 90% Opacidade + Borda + Sombra + Blur
