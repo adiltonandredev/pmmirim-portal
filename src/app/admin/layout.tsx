@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import AdminLayoutWrapper from "@/components/admin/AdminLayoutWrapper";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma"; // <--- 1. Importar o Prisma
+import { prisma } from "@/lib/prisma"; 
+import { AutoLogout } from "@/components/admin/AutoLogout"; // <--- Importação (Já estava aqui)
 
 export const metadata: Metadata = {
   title: "Painel Administrativo",
@@ -17,12 +18,14 @@ export default async function AdminRootLayout({
   const session = await auth();
   if (!session) redirect("/login");
 
-  // 2. BUSCAR A LOGO NO BANCO DE DADOS
+  // Busca a logo
   const settings = await prisma.siteSettings.findFirst();
 
   return (
-    // 3. ENVIAR A LOGO PARA O WRAPPER
     <AdminLayoutWrapper logo={settings?.logoUrl}>
+      {/* --- ADICIONE ESTA LINHA AQUI --- */}
+      <AutoLogout /> 
+      
       {children}
     </AdminLayoutWrapper>
   );
