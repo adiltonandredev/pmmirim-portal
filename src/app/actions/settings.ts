@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { saveFile } from "@/lib/file-upload"
+// 👇 1. IMPORTAÇÃO
+import { logAdminAction } from "@/lib/audit"
 
 export async function updateSettings(formData: FormData) {
   try {
@@ -20,14 +22,10 @@ export async function updateSettings(formData: FormData) {
       instagramUrl: formData.get("instagramUrl") as string,
       facebookUrl: formData.get("facebookUrl") as string,
       youtubeUrl: formData.get("youtubeUrl") as string,
-      
-      // --- ADICIONE ESTES DOIS CAMPOS ---
       impactedYouth: formData.get("impactedYouth") as string,
       yearsOfHistory: formData.get("yearsOfHistory") as string,
-      // ----------------------------------
     }
 
-    // SALVA LOGO NA PASTA "settings"
     const file = formData.get("logo") as File
     let logoUrl = existing?.logoUrl
 
@@ -38,23 +36,20 @@ export async function updateSettings(formData: FormData) {
     if (existing) {
       await prisma.siteSettings.update({
         where: { id: existing.id },
-        data: {
-            ...data,
-            ...(logoUrl && { logoUrl }) 
-        }
+        data: { ...data, ...(logoUrl && { logoUrl }) }
       })
     } else {
       await prisma.siteSettings.create({
-        data: {
-            ...data,
-            logoUrl
-        }
+        data: { ...data, logoUrl }
       })
     }
 
+    // 👇 2. LOG DE ALTERAÇÃO GERAL
+    await logAdminAction("EDITOU", "Configurações", "Atualizou dados institucionais do site");
+
     revalidatePath("/")
     revalidatePath("/admin/settings")
-    revalidatePath("/projetos") // <--- Adicionei para atualizar a página de projetos
+    revalidatePath("/projetos")
     
     return { success: true }
 
@@ -87,6 +82,9 @@ export async function updateInstagramSettings(formData: FormData) {
       await prisma.instagramSettings.create({ data })
     }
     
+    // 👇 3. LOG DE ALTERAÇÃO DO INSTAGRAM
+    await logAdminAction("EDITOU", "Instagram", `Usuário: ${data.username}`);
+
     revalidatePath("/")
     return { success: true }
   } catch (error) {

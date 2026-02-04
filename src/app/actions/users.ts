@@ -4,13 +4,14 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { revalidatePath } from "next/cache"
 import { hash } from "bcryptjs"
+// 👇 1. IMPORTAÇÃO
+import { logAdminAction } from "@/lib/audit"
 
 // 1. CRIAR USUÁRIO
 export async function createUser(formData: FormData) {
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   
-  // Pega o cargo ou define padrão
   const roleRaw = formData.get("role") as string
   const role = (roleRaw === "ADMIN" || roleRaw === "USER") ? roleRaw : "USER"
 
@@ -20,7 +21,6 @@ export async function createUser(formData: FormData) {
   const session = await auth()
   if (!session || session.user.role !== "ADMIN") return { error: "Sem permissão." }
 
-  // Validação: Senhas iguais?
   if (password !== confirmPassword) {
       return { error: "A confirmação de senha não confere." }
   }
@@ -35,10 +35,12 @@ export async function createUser(formData: FormData) {
         name, 
         email, 
         password: hashedPassword, 
-        // O truque 'as any' remove o erro vermelho do TypeScript
         role: role as any 
     },
   })
+
+  // 👇 2. LOG DE CRIAÇÃO
+  await logAdminAction("CRIOU", "Usuário", `Nome: ${name} | Cargo: ${role}`);
 
   revalidatePath("/admin/users")
   return { success: "Criado com sucesso!" }
@@ -59,10 +61,8 @@ export async function updateUser(formData: FormData) {
   const session = await auth()
   if (!session || session.user.role !== "ADMIN") return { error: "Não autorizado" }
 
-  // Prepara os dados. Usamos 'as any' no role para evitar erro de tipo.
   const dataToUpdate: any = { name, email, role: role as any }
 
-  // Só troca senha se digitou algo
   if (password && password.trim() !== "") {
       if (password !== confirmPassword) return { error: "As senhas não conferem!" }
       dataToUpdate.password = await hash(password, 10)
@@ -70,6 +70,10 @@ export async function updateUser(formData: FormData) {
 
   try {
       await prisma.user.update({ where: { id }, data: dataToUpdate })
+      
+      // 👇 3. LOG DE EDIÇÃO
+      await logAdminAction("EDITOU", "Usuário", `Nome: ${name}`);
+
       revalidatePath("/admin/users")
       return { success: "Atualizado!" }
   } catch (error) {
@@ -86,7 +90,14 @@ export async function deleteUser(formData: FormData) {
   if (session.user.id === userId) return 
 
   try {
+    // Busca o nome antes de excluir para o log ficar bonito
+    const alvo = await prisma.user.findUnique({ where: { id: userId }, select: { name: true, email: true } })
+
     await prisma.user.delete({ where: { id: userId } })
+
+    // 👇 4. LOG DE EXCLUSÃO
+    await logAdminAction("EXCLUIU", "Usuário", `Nome: ${alvo?.name || alvo?.email || userId}`);
+
     revalidatePath("/admin/users")
   } catch (error) {
     console.error("Erro ao excluir:", error)
