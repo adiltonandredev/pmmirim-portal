@@ -3,7 +3,7 @@ import AdminLayoutWrapper from "@/components/admin/AdminLayoutWrapper";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma"; 
-import { AutoLogout } from "@/components/admin/AutoLogout"; // <--- Importação (Já estava aqui)
+import { AutoLogout } from "@/components/admin/AutoLogout"; 
 
 export const metadata: Metadata = {
   title: "Painel Administrativo",
@@ -18,12 +18,16 @@ export default async function AdminRootLayout({
   const session = await auth();
   if (!session) redirect("/login");
 
-  // Busca a logo
+  // Busca a logo no banco
   const settings = await prisma.siteSettings.findFirst();
 
   return (
-    <AdminLayoutWrapper logo={settings?.logoUrl}>
-      {/* --- ADICIONE ESTA LINHA AQUI --- */}
+    // 👇 MUDANÇA AQUI: Passamos o 'role' (cargo) da sessão para o Wrapper
+    // O (session?.user as any)?.role evita erros de TypeScript se a tipagem não estiver 100%
+    <AdminLayoutWrapper 
+        logo={settings?.logoUrl} 
+        role={(session?.user as any)?.role} 
+    >
       <AutoLogout /> 
       
       {children}
