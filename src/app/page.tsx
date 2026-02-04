@@ -299,7 +299,7 @@ export default async function Home() {
       {projectPosts.length > 0 && (
         <section className="container mx-auto px-4 py-12 bg-white">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 border-l-4 border-green-600 pl-4">Projetos PMMIRIM</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 border-l-4 border-green-600 pl-4">Projetos Polícia Militar Mirim</h2>
             <Link href="/projetos" className="text-green-600 font-semibold hover:text-green-700 flex items-center gap-2 group">Ver todos <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} /></Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -333,10 +333,10 @@ export default async function Home() {
          </div>
          <div className="container mx-auto px-4 text-center relative z-10">
             <div className="inline-flex items-center justify-center p-5 bg-white/5 backdrop-blur-md rounded-full mb-8 border border-white/20 shadow-2xl"><ShieldCheck size={56} className="text-yellow-400" /></div>
-            <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight uppercase tracking-tight text-white drop-shadow-lg">Faça Parte da <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Polícia Mirim</span></h2>
-            <p className="text-blue-50 max-w-3xl mx-auto mb-12 text-lg md:text-xl leading-relaxed font-light">Construindo um futuro melhor através da disciplina, honra e educação. Junte-se a nós nessa missão transformadora.</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-6 leading-tight uppercase tracking-tight text-white drop-shadow-lg">Faça Parte da <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">Polícia Militar Mirim</span></h2>
+            <p className="text-blue-50 max-w-3xl mx-auto mb-12 text-lg md:text-xl leading-relaxed font-light">Educai as crianças para que não seja necessário punir os adultos. Junte-se a nós nessa missão transformadora.</p>
             <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-lg mx-auto">
-                <Link href="/sobre" className="flex-1"><Button size="lg" className="w-full bg-yellow-500 text-blue-900 hover:bg-white hover:text-blue-900 font-black h-14 text-lg shadow-xl hover:shadow-yellow-500/20 transition-all border-0">Conheça nossa História</Button></Link>
+                <Link href="/instituicao/historia" className="flex-1"><Button size="lg" className="w-full bg-yellow-500 text-blue-900 hover:bg-white hover:text-blue-900 font-black h-14 text-lg shadow-xl hover:shadow-yellow-500/20 transition-all border-0">Conheça nossa História</Button></Link>
                 <Link href="/contato" className="flex-1"><Button size="lg" variant="outline" className="w-full bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white font-black h-14 text-lg backdrop-blur-sm">Fale Conosco</Button></Link>
             </div>
          </div>

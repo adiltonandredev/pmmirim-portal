@@ -90,7 +90,7 @@ export function Navbar({ logoUrl }: NavbarProps) {
                 <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-white/20 bg-slate-800 shadow-md group-hover:border-white/50 group-hover:scale-105 transition-all duration-300 shrink-0">
                     <Image 
                         src={logoUrl} 
-                        alt="Logo Polícia Mirim" 
+                        alt="Logo Polícia Militar Mirim" 
                         fill 
                         className="object-cover"
                         sizes="(max-width: 768px) 48px, 56px"
