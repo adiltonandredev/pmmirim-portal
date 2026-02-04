@@ -13,12 +13,12 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String
-  role      Role     @default(EDITOR)
-  createdAt DateTime @default(now())
+  id               String     @id @default(cuid())
+  name             String?
+  email            String     @unique
+  password         String
+  role             Role       @default(EDITOR)
+  createdAt        DateTime   @default(now())
   resetToken       String?
   resetTokenExpiry DateTime?
   logs             AuditLog[] 
@@ -26,9 +26,9 @@ model User {
 
 model AuditLog {
   id        String   @id @default(cuid())
-  action    String   // Ex: "CRIOU", "EDITOU", "EXCLUIU", "LOGIN"
-  resource  String   // Ex: "Notícia", "Banner", "Usuário"
-  details   String?  // Ex: "Título: Formatura 2024"
+  action    String   
+  resource  String   
+  details   String?  
   createdAt DateTime @default(now())
   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -36,71 +36,68 @@ model AuditLog {
 }
 
 model SiteSettings {
-  id           String   @id @default(cuid())
-  siteName     String   @default("Polícia Militar Mirim")
-  cnpj          String?  // CNPJ
-  legalName     String?  // Razão Social
-  description  String?  @db.Text
+  id             String   @id @default(cuid())
+  siteName       String   @default("Polícia Militar Mirim")
+  cnpj           String?  
+  legalName      String?  
+  description    String?  @db.Text
 
   // Contato
-  contactPhone String?
-  contactEmail String?
-  businessHours String?  // Horário de Funcionamento
-  address      String?
+  contactPhone   String?
+  contactEmail   String?
+  businessHours  String?  
+  address        String?
   
   // Visual e Social
-  logoUrl      String?
-  instagramUrl String?
-  facebookUrl  String?
-  youtubeUrl   String?  
+  logoUrl        String?
+  instagramUrl   String?
+  facebookUrl    String?
+  youtubeUrl     String?  
 
   // --- NOVOS CAMPOS PARA A PÁGINA PROJETOS ---
-  impactedYouth  String   @default("100+") // Ex: "1200+"
-  yearsOfHistory String   @default("20")   // Ex: "18"
+  impactedYouth  String   @default("100+") 
+  yearsOfHistory String   @default("20")   
   
-  updatedAt    DateTime @updatedAt
+  updatedAt      DateTime @updatedAt
 }
 
 enum BannerType {
-  HOME          // Banner Principal (Home)
-  PARTNER       // Banner Parceiros (1920x600)
-  SPONSOR       // Banner Patrocinadores (1920x1080)
+  HOME          
+  PARTNER       
+  SPONSOR       
 }
 
 model Banner {
-  id          String     @id @default(cuid())
+  id          String      @id @default(cuid())
   title       String?
   description String?
-  imageUrl    String     @db.LongText
+  imageUrl    String      @db.LongText
   link        String?
-  order       Int        @default(0)
-  active      Boolean    @default(true)
+  order       Int         @default(0)
+  active      Boolean     @default(true)
   
-  // O tipo define onde ele aparece e qual o tamanho ideal
-  type        BannerType @default(HOME)
+  type        BannerType  @default(HOME)
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Post {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
-  slug        String   @unique
-  content     String   @db.Text
-  summary     String?  @db.Text
-  coverImage  String?  @db.LongText
-  published   Boolean  @default(false)
-  type        PostType @default(NEWS)
-  featured    Boolean  @default(false)
+  slug        String    @unique
+  content     String    @db.Text
+  summary     String?   @db.Text
+  coverImage  String?   @db.LongText
+  published   Boolean   @default(false)
+  type        PostType  @default(NEWS)
+  featured    Boolean   @default(false)
 
-  // --- ADICIONE ESTAS DUAS LINHAS: ---
   eventDate   DateTime?
   location    String?
-  // -----------------------------------
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   comments    Comment[]
 }
 
@@ -109,7 +106,6 @@ model Comment {
   author    String   
   content   String   @db.Text
   
-  // Relacionamento inverso
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   
@@ -124,11 +120,11 @@ enum PostType {
 }
 
 model Partner {
-  id        String   @id @default(cuid())
-  name      String
-  logoUrl   String   @db.Text
-  website   String?  @db.Text
-  active    Boolean  @default(true)
+  id      String   @id @default(cuid())
+  name    String
+  logoUrl String   @db.Text
+  website String?  @db.Text
+  active  Boolean  @default(true)
 }
 
 model ContactMessage {
@@ -153,16 +149,16 @@ model InstitutionHistory {
 }
 
 model BoardMember {
-  id          String   @id @default(cuid())
-  name        String
-  position    String
-  bio         String?  @db.Text
-  photoUrl    String?  @db.Text
-  email       String?
-  phone       String?
-  order       Int      @default(0)
-  active      Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String
+  position  String
+  bio       String?  @db.Text
+  photoUrl  String?  @db.Text
+  email     String?
+  phone     String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
 }
 
 model Course {
@@ -170,16 +166,14 @@ model Course {
   title       String
   slug        String   @unique
   
-  description String?  @db.Text // Descrição curta para o card
-  content     String?  @db.Text // Ementa completa (Editor de texto)
+  description String?  @db.Text 
+  content     String?  @db.Text 
   
-  // Padronizando para coverImage para bater com o formulário
   coverImage  String?  @db.LongText 
 
   duration    String?
   targetAge   String?
   
-  // Novos campos de patrocínio e status
   sponsorName String?
   sponsorLogo String?  @db.Text
   active      Boolean  @default(true)
@@ -221,16 +215,7 @@ model Event {
   updatedAt   DateTime @updatedAt
 }
 
-model Student {
-  id        String   @id @default(cuid())
-  name      String
-  birthDate DateTime
-  turma     String?
-  photoUrl  String?
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// REMOVI O STUDENT ANTIGO QUE ESTAVA AQUI!
 
 model Birthday {
   id        String   @id @default(uuid())
@@ -251,10 +236,8 @@ model TeamMember {
   image     String?  @db.LongText
   bio       String?
   
-  // --- NOVOS CAMPOS ---
-  instagram String?  // Link do perfil
-  email     String?  // Endereço de e-mail
-  // --------------------
+  instagram String?  
+  email     String?  
 
   order     Int      @default(0)
   active    Boolean  @default(true)
@@ -266,12 +249,12 @@ model TeamMember {
 model Album {
   id          String   @id @default(cuid())
   title       String
-  date        DateTime // Data do evento
-  coverImage  String?  // Foto de capa do álbum
+  date        DateTime 
+  coverImage  String?  
   description String?
   active      Boolean  @default(true)
   
-  photos      Photo[]  // Relacionamento: Um álbum tem várias fotos
+  photos      Photo[]  
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -279,7 +262,7 @@ model Album {
 
 model Photo {
   id        String   @id @default(cuid())
-  url       String   // Link da imagem
+  url       String   
   albumId   String
   album     Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
   
@@ -293,7 +276,7 @@ model Gallery {
   coverUrl  String?
   createdAt DateTime @default(now())
   
-  images    GalleryImage[] // Relacionamento
+  images    GalleryImage[] 
 
   @@map("galleries")
 }
@@ -312,11 +295,78 @@ model OrganizationalStructure {
   title       String
   description String?  @db.Text
   
-  // Estes são os campos que estavam faltando:
   content     String?  @db.LongText
   chartImage  String?  @db.LongText
 
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// --- ÁREA DO ALUNO (MONITORAMENTO ESCOLAR) ---
+
+model Student {
+  id            String    @id @default(cuid())
+  name          String
+  matricula     String    @unique // Login do aluno
+  password      String    // Senha de acesso
+  
+  // Dados Pessoais
+  birthDate     DateTime?
+  cpf           String?
+  phone         String?   // Contato dos pais
+  address       String?
+  photoUrl      String?   // Foto fardado (opcional)
+
+  // Dados da Escola Regular (Onde ele estuda de verdade)
+  schoolName    String?   // Ex: "Escola Carlos Drummond"
+  schoolGrade   String?   // Ex: "7º Ano B"
+  shift         String?   // Ex: "Matutino" / "Vespertino"
+
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  reports       SchoolReport[] // Os boletins que ele traz
+  attendances   Attendance[]   // Presença nas atividades da Polícia Mirim
+}
+
+// O Boletim que ele traz da escola (Ex: 1º Trimestre)
+model SchoolReport {
+  id            String    @id @default(cuid())
+  term          String    // Ex: "1º Trimestre", "2º Bimestre"
+  year          Int       // Ex: 2024
+  
+  // O sistema vai calcular e salvar isso aqui
+  average       Float     // A média final (Ex: 8.5)
+  status        String    // "VERDE", "AMARELO", "VERMELHO"
+  
+  // Detalhe das matérias (Como na imagem do Excel que você mandou)
+  grades        SubjectGrade[]
+
+  student       Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId     String
+  
+  createdAt     DateTime  @default(now())
+}
+
+// Nota de cada matéria dentro do boletim (Opcional, mas bom para gerar o gráfico)
+model SubjectGrade {
+  id            String       @id @default(cuid())
+  subject       String       // Ex: "Matemática", "Português", "Biologia"
+  grade         Float        // Ex: 9.5
+  
+  report        SchoolReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  reportId      String
+}
+
+// Presença nos treinos/encontros da Polícia Mirim
+model Attendance {
+  id            String    @id @default(cuid())
+  date          DateTime
+  status        String    // "PRESENTE", "FALTA", "JUSTIFICADO"
+  observation   String?   // Ex: "Chegou atrasado", "Sem uniforme"
+  
+  student       Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId     String
 }

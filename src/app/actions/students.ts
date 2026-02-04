@@ -2,136 +2,137 @@
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { hash } from "bcryptjs"
+import { logAdminAction } from "@/lib/audit"
+import { saveFile } from "@/lib/file-upload"
 
-type ActionData = FormData | Record<string, unknown>;
+// --- CRIAR ALUNO ---
+export async function createStudent(formData: FormData) {
+  try {
+    const name = formData.get("name") as string
+    const matricula = formData.get("matricula") as string
+    const password = formData.get("password") as string
+    
+    // Dados da Escola
+    const schoolName = formData.get("schoolName") as string
+    const schoolGrade = formData.get("schoolGrade") as string // Ex: 7º Ano
+    const shift = formData.get("shift") as string // Matutino/Vespertino
 
-function getValue(data: ActionData, key: string): unknown {
-  if (data instanceof FormData) return data.get(key);
-  return data[key];
-}
+    // Dados Pessoais
+    const cpf = formData.get("cpf") as string
+    const phone = formData.get("phone") as string
+    const birthDateStr = formData.get("birthDate") as string
+    
+    // Foto (Opcional)
+    const file = formData.get("photo") as File
+    const photoUrl = await saveFile(file, "students")
 
-// === PROCESSAMENTO DE IMAGEM ROBUSTO (Igual ao Aniversariantes) ===
-async function processImage(photoInput: unknown, existingUrl?: string): Promise<string> {
-  if (
-    photoInput &&
-    typeof photoInput === 'object' &&
-    photoInput !== null &&
-    'size' in photoInput &&
-    'arrayBuffer' in photoInput &&
-    (photoInput as any).size > 0
-  ) {
-    try {
-      const file = photoInput as File;
-      const buffer = await file.arrayBuffer();
-      const base64 = Buffer.from(buffer).toString('base64');
-      const mimeType = file.type || 'image/jpeg';
-      return `data:${mimeType};base64,${base64}`;
-    } catch (e) {
-      console.error("Erro imagem aluno:", e);
-      return existingUrl || "";
+    if (!name || !matricula || !password) {
+        return { error: "Nome, Matrícula e Senha são obrigatórios." }
     }
-  }
-  return existingUrl || "";
-}
 
-// === ACTIONS ===
+    // Verifica se matrícula já existe
+    const existing = await prisma.student.findUnique({ where: { matricula } })
+    if (existing) {
+        return { error: "Esta matrícula já está em uso." }
+    }
 
-export async function createFeaturedStudent(data: ActionData) {
-  try {
-    const studentName = getValue(data, "studentName") as string;
-    const achievement = getValue(data, "achievement") as string;
-    const turma = getValue(data, "class") as string;
-    const description = getValue(data, "description") as string;
-    const month = Number(getValue(data, "month"));
-    const year = Number(getValue(data, "year"));
+    const hashedPassword = await hash(password, 10)
 
-    const photoInput = getValue(data, "photoUrl");
-    const photoUrl = await processImage(photoInput);
-
-    if (!studentName) throw new Error("Nome é obrigatório.");
-
-    await prisma.featuredStudent.create({
+    await prisma.student.create({
       data: {
-        studentName,
-        achievement: achievement || "Destaque do Mês",
-        class: turma || "",
-        description: description || "",
-        month: month || new Date().getMonth() + 1,
-        year: year || new Date().getFullYear(),
-        photoUrl,
-        active: true,
-      },
+        name,
+        matricula,
+        password: hashedPassword,
+        schoolName,
+        schoolGrade,
+        shift,
+        cpf,
+        phone,
+        birthDate: birthDateStr ? new Date(birthDateStr) : null,
+        photoUrl
+      }
     })
 
-    revalidatePath("/admin/featured-student")
-    revalidatePath("/")
-    return { success: true };
+    await logAdminAction("CRIOU", "Aluno", `Nome: ${name} | Matrícula: ${matricula}`)
+
+    revalidatePath("/admin/students")
+    return { success: true }
+
   } catch (error) {
-    console.error("ERRO CRIAR ALUNO:", error);
-    throw error;
+    console.error("Erro ao criar aluno:", error)
+    return { error: "Erro interno ao cadastrar aluno." }
   }
 }
 
-export async function updateFeaturedStudent(data: ActionData) {
+// --- ATUALIZAR ALUNO ---
+export async function updateStudent(formData: FormData) {
   try {
-    const id = getValue(data, "id") as string;
-    const finalId = id || (data instanceof FormData ? data.get("id") as string : null);
+    const id = formData.get("id") as string
+    const name = formData.get("name") as string
+    const matricula = formData.get("matricula") as string
+    const password = formData.get("password") as string // Se vier vazio, não troca
+    
+    const schoolName = formData.get("schoolName") as string
+    const schoolGrade = formData.get("schoolGrade") as string
+    const shift = formData.get("shift") as string
 
-    if (!finalId) throw new Error("ID não encontrado.");
+    const cpf = formData.get("cpf") as string
+    const phone = formData.get("phone") as string
+    const birthDateStr = formData.get("birthDate") as string
 
-    const studentName = getValue(data, "studentName") as string;
-    const achievement = getValue(data, "achievement") as string;
-    const turma = getValue(data, "class") as string;
-    const description = getValue(data, "description") as string;
-    const month = Number(getValue(data, "month"));
-    const year = Number(getValue(data, "year"));
+    // Foto
+    const file = formData.get("photo") as File
+    let photoUrl = formData.get("existingPhotoUrl") as string
+    if (file && file.size > 0) {
+        photoUrl = await saveFile(file, "students")
+    }
 
-    const photoInput = getValue(data, "photoUrl");
-    const existingPhotoUrl = getValue(data, "existingPhotoUrl") as string;
-    const photoUrl = await processImage(photoInput, existingPhotoUrl);
+    const data: any = {
+        name,
+        matricula,
+        schoolName,
+        schoolGrade,
+        shift,
+        cpf,
+        phone,
+        birthDate: birthDateStr ? new Date(birthDateStr) : null,
+        photoUrl
+    }
 
-    const activeRaw = getValue(data, "active");
-    const active = activeRaw === "on" || activeRaw === true;
+    // Só atualiza senha se o admin digitou uma nova
+    if (password && password.trim() !== "") {
+        data.password = await hash(password, 10)
+    }
 
-    await prisma.featuredStudent.update({
-      where: { id: finalId },
-      data: {
-        studentName,
-        achievement,
-        class: turma,
-        description,
-        month,
-        year,
-        photoUrl,
-        active,
-      },
+    await prisma.student.update({
+        where: { id },
+        data
     })
 
-    revalidatePath("/admin/featured-student")
-    revalidatePath("/")
-    return { success: true };
+    await logAdminAction("EDITOU", "Aluno", `Nome: ${name}`)
+
+    revalidatePath("/admin/students")
+    return { success: true }
+
   } catch (error) {
-    console.error("ERRO ATUALIZAR ALUNO:", error);
-    throw error;
+    console.error("Erro ao editar aluno:", error)
+    return { error: "Erro ao atualizar dados." }
   }
 }
 
-export async function deleteFeaturedStudent(formData: FormData) {
-  // Pegando o ID direto e reto
-  const id = formData.get("id") as string;
-  
-  if (!id) return;
-
-  try {
-    await prisma.featuredStudent.delete({
-      where: { id }
-    });
+// --- EXCLUIR ALUNO ---
+export async function deleteStudent(formData: FormData) {
+    const id = formData.get("id") as string
     
-    revalidatePath("/admin/featured-student");
-    revalidatePath("/");
-    
-    // Sem retorno (void) para agradar o formulário
-  } catch (error) {
-    console.error("Erro ao deletar:", error);
-  }
+    try {
+        const student = await prisma.student.findUnique({ where: { id } })
+        await prisma.student.delete({ where: { id } })
+        
+        await logAdminAction("EXCLUIU", "Aluno", `Nome: ${student?.name || id}`)
+        
+        revalidatePath("/admin/students")
+    } catch (error) {
+        console.error(error)
+    }
 }
