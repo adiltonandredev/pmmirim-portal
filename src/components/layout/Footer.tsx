@@ -34,7 +34,7 @@ async function getInstagramFeed() {
 }
 
 export async function Footer({ siteInfo }: { siteInfo?: SiteInfo }) {
-  const mapSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.473539829763!2d-61.90566492587786!3d-11.173859628043682!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93c613007010a30d%3A0xc31c0344485303a7!2sPolicia%20Mirim%20de%20Presidente%20M%C3%A9dici!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr"; 
+  const mapSrc = "https://www.google.com/maps/place/Pol%C3%ADcia+Mirim+de+Presidente+M%C3%A9dici/@-11.1657555,-61.8999233,104m/data=!3m1!1e3!4m6!3m5!1s0x93c9a5439d44a325:0xaea02712f2e6205a!8m2!3d-11.1657551!4d-61.8997782!16s%2Fg%2F11rv2t61jb?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDMwMS4xIKXMDSoASAFQAw%3D%3D"; 
 
   const instagramData = await getInstagramFeed();
   const hoursText = siteInfo?.openingHours || "Seg. a Sexta: 07:30 às 11:30\n13:30 às 17:30";
@@ -176,7 +176,7 @@ export async function Footer({ siteInfo }: { siteInfo?: SiteInfo }) {
                     className="w-full h-full absolute inset-0 opacity-70 group-hover:opacity-100 transition-all duration-700"
                 ></iframe>
             </div>
-            <p className="text-xs text-white/50 mt-2 text-center">Rua Paraná - Presidente Médici</p>
+            <p className="text-xs text-white/50 mt-2 text-center">Rua Paraná, 3502 - Presidente Médici</p>
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ export async function Footer({ siteInfo }: { siteInfo?: SiteInfo }) {
                <Link href="/privacidade" className="hover:text-brand-yellow transition-colors">Privacidade</Link>
                <Link href="/termos" className="hover:text-brand-yellow transition-colors">Termos de Uso</Link>
                <Link href="/login" className="hover:text-brand-yellow transition-colors flex items-center gap-1">
-                  <Shield size={12}/> Admin
+                  <Shield size={12}/> Painel Administrativo
                </Link>
             </div>
           </div>
