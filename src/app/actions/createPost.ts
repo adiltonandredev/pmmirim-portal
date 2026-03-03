@@ -15,19 +15,27 @@ export async function createPost(formData: FormData) {
   }
 
   const data = {
-    title: formData.get("title") as string,
-    summary: formData.get("summary") as string,
-    content: formData.get("content") as string,
-    type: formData.get("type") as any,
-    eventDate: formData.get("eventDate") as string,
-    location: formData.get("location") as string,
+    title: formData.get("title") as string || "",
+    summary: formData.get("summary") as string || "",
+    content: formData.get("content") as string || "",
+    type: (formData.get("type") as any) || "NEWS",
+    eventDate: (formData.get("eventDate") as string) || null,
+    location: (formData.get("location") as string) || null,
     isFeatured: formData.get("isFeatured") === "true",
     published: formData.get("published") === "true"
   }
 
+  console.log("Form data received:", {
+    title: data.title,
+    summary: data.summary.substring(0, 50),
+    content: data.content.substring(0, 50),
+    type: data.type
+  })
+
   const validation = createPostSchema.safeParse(data)
   if (!validation.success) {
-    return { error: validation.error.errors[0].message }
+    console.error("Validation errors:", validation.error.issues)
+    return { error: validation.error.issues[0]?.message || "Erro de validação" }
   }
   
   const coverImageFile = formData.get("coverImage") as File
@@ -56,34 +64,13 @@ export async function createPost(formData: FormData) {
         summary: data.summary,
         content: data.content,
         type: data.type,
-        eventDate: data.eventDate ? new Date(data.eventDate) : null,
+        eventDate: data.eventDate ? new Date(String(data.eventDate)) : null,
         location: data.location || null,
-        isFeatured: data.isFeatured || false,
+        featured: data.isFeatured || false,
         published: data.published !== false,
         coverImage: coverImageUrl || null,
       },
     })
-
-    if (data.isFeatured && coverImageUrl && data.published) {
-      const maxOrder = await prisma.carouselItem.findFirst({
-        orderBy: { order: 'desc' },
-        select: { order: true }
-      })
-
-      await prisma.carouselItem.create({
-        data: {
-          title: data.title,
-          description: data.summary,
-          imageUrl: coverImageUrl,
-          actionUrl: `/noticias/${slug}`,
-          actionText: "Leia Mais",
-          isActive: true,
-          order: (maxOrder?.order || 0) + 1,
-        },
-      })
-
-      console.log(`✅ Notícia "${data.title}" adicionada ao carousel automaticamente!`)
-    }
 
   } catch (error) {
     console.error(error)

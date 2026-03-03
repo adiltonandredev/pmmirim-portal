@@ -1,5 +1,4 @@
-// auth.config.ts
-import type { NextAuthConfig } from "next-auth"
+import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
@@ -7,35 +6,43 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin")
-
+      const isLoggedIn = !!auth?.user;
+      
+      // Verifica se a rota começa com /admin
+      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
+      
+      // Lógica de Proteção
       if (isOnAdmin) {
-        if (isLoggedIn) return true
-        return false // Redireciona para login
+        if (isLoggedIn) return true; // Logado no admin? Pode entrar.
+        return false; // Não logado no admin? Bloqueia (vai pro login).
       }
       
-      // Se estiver logado e tentar ir para login, manda pro admin
+      // Lógica de Redirecionamento Inverso
+      // (Se já está logado e tenta ver a tela de login, joga pro painel)
       if (isLoggedIn && nextUrl.pathname === "/login") {
-        return Response.redirect(new URL("/admin", nextUrl))
+         return Response.redirect(new URL("/admin", nextUrl));
       }
       
-      return true
+      // IMPORTANTE: Para qualquer outra página (Home, Sobre, etc),
+      // retorna true para permitir o acesso público.
+      return true;
     },
     jwt({ token, user }) {
       if (user) {
-        token.id = user.id
-        token.role = user.role
+        token.id = user.id;
+        token.role = user.role;
       }
-      return token
+      return token;
     },
     session({ session, token }) {
-      if (token) {
-        session.user.id = token.id
-        session.user.role = token.role
+      if (token && session.user) {
+        // @ts-ignore
+        session.user.id = token.id as string;
+        // @ts-ignore
+        session.user.role = token.role as string;
       }
-      return session
+      return session;
     }
   },
-  providers: [], // Deixe vazio aqui por enquanto
-} satisfies NextAuthConfig
+  providers: [], 
+} satisfies NextAuthConfig;

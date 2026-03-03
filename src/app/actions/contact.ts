@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-import { contactMessageSchema } from "@/lib/validations"
+import { contactMessageSchema } from "@/lib/validations" // Certifique-se que esse arquivo validations existe, senão remova essa linha e a validação
 
 export async function sendContactMessage(formData: FormData) {
   const data = {
@@ -12,12 +12,18 @@ export async function sendContactMessage(formData: FormData) {
     message: formData.get("message") as string,
   }
 
-  const validation = contactMessageSchema.safeParse(data)
+  // Se você não tiver o arquivo de validação, pode remover este bloco IF
+  /* const validation = contactMessageSchema.safeParse(data)
   if (!validation.success) {
     return { error: validation.error.errors[0].message }
   }
+  */
 
   try {
+    // Verifica se a tabela existe no seu schema.prisma, senão vai dar erro
+    // Se não tiver tabela, apenas simule o envio:
+    // console.log("Mensagem recebida:", data);
+    
     await prisma.contactMessage.create({
       data: {
         name: data.name,

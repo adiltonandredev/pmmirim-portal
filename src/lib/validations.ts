@@ -4,7 +4,7 @@ export const createUserSchema = z.object({
   name: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
-  role: z.enum(["ADMIN", "EDITOR"], { errorMap: () => ({ message: "Role inválido" }) })
+  role: z.enum(["ADMIN", "EDITOR"], { message: "Role inválido" })
 })
 
 export const updateUserSchema = z.object({
@@ -20,8 +20,8 @@ export const createPostSchema = z.object({
   summary: z.string().min(10, "Resumo deve ter no mínimo 10 caracteres"),
   content: z.string().min(20, "Conteúdo deve ter no mínimo 20 caracteres"),
   type: z.enum(["NEWS", "EVENT", "ACTIVITY", "PROJECT"]),
-  eventDate: z.string().optional(),
-  location: z.string().optional(),
+  eventDate: z.string().optional().nullable(),
+  location: z.string().optional().nullable(),
   isFeatured: z.boolean().optional(),
   published: z.boolean().optional()
 })

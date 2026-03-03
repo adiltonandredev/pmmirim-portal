@@ -1,150 +1,137 @@
-import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { getSiteSettings } from "@/lib/settings"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import Image from "next/image"
 import Link from "next/link"
-import { Calendar, MapPin } from "lucide-react"
-import { Navbar } from "@/components/Navbar"
-import { Footer } from "@/components/Footer"
+import { CalendarDays, ArrowRight, Search, Newspaper } from "lucide-react"
+import { PostType } from "@prisma/client"
+import { BackButton } from "@/components/ui/back-button" // <--- Importando botão padrão
+import { NewsSearch } from "@/components/news/NewsSearch"
+import { PageHero } from "@/components/ui/page-hero"
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  return {
-    title: `Notícias - ${settings.siteName}`,
-    description: `Últimas notícias e eventos - ${settings.siteDescription}`,
-  }
+export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: 'Notícias - PMMirim Portal',
+  description: 'Confira todas as notícias e atividades da Polícia Mirim.',
 }
 
-export default async function NoticiasPage({
-  searchParams,
-}: {
-  searchParams: { page?: string; type?: string }
-}) {
-  const page = parseInt(searchParams.page || "1")
-  const type = searchParams.type as "NEWS" | "EVENT" | "ACTIVITY" | "PROJECT" | undefined
-  const perPage = 9
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
-  const where = {
-    published: true,
-    ...(type && { type })
-  }
+export default async function NewsIndexPage(props: Props) {
+  const searchParams = await props.searchParams;
 
-  const [posts, total, settings] = await Promise.all([
-    prisma.post.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip: (page - 1) * perPage,
-      take: perPage,
-    }),
-    prisma.post.count({ where }),
-    getSiteSettings(),
-  ])
+  const termoBusca = (searchParams.busca as string) || "";
+  const categoriaAtual = (searchParams.categoria as string) || undefined;
 
-  const totalPages = Math.ceil(total / perPage)
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+      type: categoriaAtual ? (categoriaAtual as PostType) : undefined,
+      OR: termoBusca
+        ? [
+          { title: { contains: termoBusca } },
+          { summary: { contains: termoBusca } },
+        ]
+        : undefined,
+    },
+    orderBy: { createdAt: 'desc' },
+  })
 
   return (
-    <>
-      <Navbar settings={settings} />
-      <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-              Notícias e Eventos
-            </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Fique por dentro das últimas novidades da {settings.siteName}
-            </p>
-          </div>
+    <main className="min-h-screen bg-slate-50 flex flex-col">
+      <PageHero
+        title="Notícias & Eventos"
+        subtitle="Fique por dentro das últimas novidades e atividades."
+        icon={Newspaper}
+        themeColor="red"
+        bgColor="bg-red-950"
+        bgImage="/bg/bg-noticias.png"
+      />
 
-          <div className="flex flex-wrap gap-2 justify-center mb-8">
-            {["all", "NEWS", "EVENT", "ACTIVITY", "PROJECT"].map((t) => (
-              <Link
-                key={t}
-                href={`/noticias${t !== "all" ? `?type=${t}` : ""}`}
-                className={`px-4 py-2 rounded-full transition-all ${
-                  (t === "all" && !type) || type === t
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                }`}
-              >
-                {t === "all" ? "Todos" : t === "NEWS" ? "Notícias" : t === "EVENT" ? "Eventos" : t === "ACTIVITY" ? "Atividades" : "Projetos"}
+      {/* 2. BARRA DE BUSCA (Centralizada e sobrepondo o banner) */}
+      <div className="container mx-auto px-4 relative -mt-6 z-30 mb-10">
+        <div className="max-w-xl mx-auto pt-6 shadow-2xl rounded-xl bg-white overflow-hidden border border-slate-100">
+          <NewsSearch />
+        </div>
+      </div>
+
+      {/* 3. GRID DE NOTÍCIAS (Agora dentro de um CONTAINER para alinhar as margens) */}
+      <section className="container mx-auto px-4 pb-20">
+        
+        {posts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post) => (
+              <Link key={post.id} href={`/noticias/${post.slug}`} className="group h-full block">
+                <article className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full">
+
+                  {/* Imagem */}
+                  <div className="h-56 w-full relative bg-slate-200 overflow-hidden">
+                    {post.coverImage ? (
+                      <img
+                        src={post.coverImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+                        <Newspaper size={40} opacity={0.2} />
+                      </div>
+                    )}
+
+                    {/* Overlay Vermelho no Hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-red-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                    {/* Badge de Categoria */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-white/90 backdrop-blur-sm text-red-700 text-[10px] font-black px-3 py-1.5 rounded-md uppercase tracking-wider shadow-sm border border-white/50">
+                        {post.type === 'NEWS' && 'Notícia'}
+                        {post.type === 'EVENT' && 'Evento'}
+                        {post.type === 'ACTIVITY' && 'Atividade'}
+                        {post.type === 'PROJECT' && 'Projeto'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Conteúdo */}
+                  <div className="p-6 md:p-8 flex flex-col flex-1">
+                    <div className="text-xs text-red-600 mb-4 flex items-center gap-2 font-bold uppercase tracking-wide">
+                      <CalendarDays size={14} />
+                      {new Date(post.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                    </div>
+
+                    <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-red-700 transition-colors line-clamp-2 leading-tight">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6 flex-1 text-justify">
+                      {post.summary}
+                    </p>
+
+                    <div className="mt-auto pt-6 border-t border-slate-100">
+                      <span className="text-slate-900 font-bold text-xs uppercase tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all group-hover:text-red-600">
+                        Ler Completo <ArrowRight size={14} className="text-red-500" />
+                      </span>
+                    </div>
+                  </div>
+                </article>
               </Link>
             ))}
           </div>
-
-          {posts.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-slate-500 text-lg">Nenhuma notícia encontrada.</p>
+        ) : (
+          <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-300 shadow-sm mt-8">
+            <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-400">
+              <Search size={40} />
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {posts.map((post) => (
-                  <Link key={post.id} href={`/noticias/${post.slug}`}>
-                    <Card className="h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                      {post.coverImage && (
-                        <div className="relative h-48 overflow-hidden">
-                          <Image
-                            src={post.coverImage}
-                            alt={post.title}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <CardHeader>
-                        <div className="flex items-center gap-2 text-xs text-blue-600 font-semibold mb-2">
-                          <span className="px-2 py-1 bg-blue-100 rounded-full">
-                            {post.type === "NEWS" ? "Notícia" : post.type === "EVENT" ? "Evento" : post.type === "ACTIVITY" ? "Atividade" : "Projeto"}
-                          </span>
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                          {post.title}
-                        </h3>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-slate-600 line-clamp-3 mb-4">{post.summary}</p>
-                        <div className="flex items-center gap-4 text-xs text-slate-500">
-                          <div className="flex items-center gap-1">
-                            <Calendar size={14} />
-                            {new Date(post.createdAt).toLocaleDateString("pt-BR")}
-                          </div>
-                          {post.location && (
-                            <div className="flex items-center gap-1">
-                              <MapPin size={14} />
-                              {post.location}
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
+            <h3 className="text-2xl font-bold text-slate-800 mb-2">Nenhum resultado encontrado</h3>
+            <p className="text-slate-500 max-w-md mx-auto leading-relaxed">
+              Não encontramos nada com os termos pesquisados. Tente mudar a categoria ou simplificar sua busca.
+            </p>
+          </div>
+        )}
 
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <Link
-                      key={p}
-                      href={`/noticias?page=${p}${type ? `&type=${type}` : ""}`}
-                      className={`px-4 py-2 rounded-lg transition-all ${
-                        p === page
-                          ? "bg-blue-600 text-white shadow-lg"
-                          : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </main>
-      <Footer settings={settings} />
-    </>
+        {/* Botão Voltar Padronizado */}
+        <BackButton className="mt-16" />
+      </section>
+    </main>
   )
 }

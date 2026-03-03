@@ -1,12 +1,12 @@
 import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { getSiteSettings } from "@/lib/settings"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
+import { BackButton } from "@/components/ui/back-button"
 import Image from "next/image"
 import Link from "next/link"
-import { Award, Users, Target } from "lucide-react"
-import { Navbar } from "@/components/Navbar"
-import { Footer } from "@/components/Footer"
+import { Award, Users, Target, ArrowRight, Lightbulb } from "lucide-react"
+import { PageHero } from "@/components/ui/page-hero"
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
@@ -19,9 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ProjetosPage({
   searchParams,
 }: {
-  searchParams: { page?: string }
+  searchParams: Promise<{ page?: string }>
 }) {
-  const page = parseInt(searchParams.page || "1")
+  const params = await searchParams;
+  const page = parseInt(params.page || "1")
   const perPage = 9
 
   const where = {
@@ -29,6 +30,7 @@ export default async function ProjetosPage({
     type: "PROJECT" as const
   }
 
+  // Buscamos Projetos, Total e Configurações
   const [projects, total, settings] = await Promise.all([
     prisma.post.findMany({
       where,
@@ -43,124 +45,149 @@ export default async function ProjetosPage({
   const totalPages = Math.ceil(total / perPage)
 
   return (
-    <>
-      <Navbar settings={settings} />
-      <main className="min-h-screen bg-gradient-to-b from-green-50 via-white to-slate-50">
-        <div className="bg-gradient-to-r from-green-600 to-green-800 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
-              <Award size={40} />
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+
+      <PageHero
+        title="Nossos Projetos"
+        subtitle="Conheça as iniciativas que transformam vidas e constroem cidadania através da educação e valores."
+        icon={Lightbulb}
+        themeColor="green"
+        bgColor="bg-green-950"
+        bgImage="/bg/bg-projetos.png"
+      />
+
+      {/* 2. CONTEÚDO (Sobreposição -mt-6) */}
+      <main className="flex-1 container mx-auto px-4 -mt-6 relative z-20 pb-20">
+
+        {/* SEÇÃO DE ESTATÍSTICAS (DINÂMICA) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          
+          {/* JOVENS IMPACTADOS (Vem do Admin) */}
+          <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+            <div className="p-4 bg-emerald-100 text-emerald-600 rounded-xl">
+              <Users size={32} strokeWidth={2.5} />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Projetos PMMIRIM
-            </h1>
-            <p className="text-lg text-green-100 max-w-2xl mx-auto">
-              Conheça os projetos que transformam vidas e constroem cidadania através da educação e valores
-            </p>
+            <div>
+              {/* Usa o valor do banco ou o padrão "500+" */}
+              <h3 className="text-3xl font-black text-slate-900 leading-none">
+                {settings?.impactedYouth || "500+"}
+              </h3>
+              <p className="text-slate-500 text-sm font-bold uppercase tracking-wide">Jovens Impactados</p>
+            </div>
+          </div>
+
+          {/* PROJETOS ATIVOS (Automático) */}
+          <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+            <div className="p-4 bg-blue-100 text-blue-600 rounded-xl">
+              <Target size={32} strokeWidth={2.5} />
+            </div>
+            <div>
+              <h3 className="text-3xl font-black text-slate-900 leading-none">{total}</h3>
+              <p className="text-slate-500 text-sm font-bold uppercase tracking-wide">Projetos Ativos</p>
+            </div>
+          </div>
+
+          {/* ANOS DE HISTÓRIA (Vem do Admin) */}
+          <div className="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+            <div className="p-4 bg-yellow-100 text-yellow-600 rounded-xl">
+              <Award size={32} strokeWidth={2.5} />
+            </div>
+            <div>
+               {/* Usa o valor do banco ou o padrão "15" */}
+              <h3 className="text-3xl font-black text-slate-900 leading-none">
+                {settings?.yearsOfHistory || "15"}
+              </h3>
+              <p className="text-slate-500 text-sm font-bold uppercase tracking-wide">Anos de História</p>
+            </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-600">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Users className="text-green-600" size={28} />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900">500+</h3>
-              </div>
-              <p className="text-slate-600">Jovens impactados pelos projetos</p>
+        {/* LISTAGEM DE PROJETOS (Mantida) */}
+        {projects.length === 0 ? (
+          <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-300 shadow-sm">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+              <Award size={40} />
             </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-600">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Target className="text-blue-600" size={28} />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900">{total}</h3>
-              </div>
-              <p className="text-slate-600">Projetos em andamento ou concluídos</p>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-yellow-600">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="p-3 bg-yellow-100 rounded-lg">
-                  <Award className="text-yellow-600" size={28} />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900">15</h3>
-              </div>
-              <p className="text-slate-600">Anos dedicados à comunidade</p>
-            </div>
+            <h3 className="text-xl font-bold text-slate-700">Nenhum projeto encontrado</h3>
+            <p className="text-slate-500 mt-2">Novos projetos serão adicionados em breve.</p>
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {projects.map((project) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const bgImage = project.coverImage || (project as any).imageUrl || "";
 
-          {projects.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-slate-300">
-              <Award className="mx-auto mb-4 text-slate-400" size={64} />
-              <p className="text-slate-500 text-lg">Nenhum projeto publicado ainda.</p>
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                {projects.map((project, index) => (
-                  <Link key={project.id} href={`/projetos/${project.slug}`} style={{animationDelay: `${index * 100}ms`}}>
-                    <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden group border-2 border-transparent hover:border-green-600">
-                      <div className="relative h-56 overflow-hidden bg-gradient-to-br from-green-200 to-green-300">
-                        {project.coverImage ? (
+                return (
+                  <Link key={project.id} href={`/projetos/${project.slug}`} className="group h-full">
+                    <Card className="h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden bg-white flex flex-col rounded-2xl">
+
+                      {/* Imagem do Card */}
+                      <div className="relative h-60 overflow-hidden bg-slate-200">
+                        {bgImage ? (
                           <Image
-                            src={project.coverImage}
+                            src={bgImage}
                             alt={project.title}
                             fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            className="object-cover group-hover:scale-110 transition-transform duration-700"
                           />
                         ) : (
-                          <div className="absolute inset-0 flex items-center justify-center text-green-500">
-                            <Award size={64} />
+                          <div className="absolute inset-0 flex items-center justify-center text-emerald-400 bg-emerald-50">
+                            <Award size={48} opacity={0.5} />
                           </div>
                         )}
-                        <div className="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+
+                        {/* Overlay Verde */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-emerald-700 text-[10px] font-black px-3 py-1.5 rounded-md shadow-lg uppercase tracking-wider border border-white/50">
                           Projeto
                         </div>
                       </div>
-                      <CardHeader>
-                        <h3 className="text-xl font-bold text-slate-900 group-hover:text-green-600 transition-colors line-clamp-2 mb-2">
+
+                      <CardContent className="p-6 md:p-8 flex flex-col flex-grow">
+                        <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-3 leading-tight">
                           {project.title}
                         </h3>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-slate-600 line-clamp-4 mb-4 leading-relaxed">
+
+                        <p className="text-slate-600 text-sm line-clamp-3 mb-6 leading-relaxed text-justify flex-1">
                           {project.summary}
                         </p>
-                        <span className="text-green-600 font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                          Saiba mais →
-                        </span>
+
+                        <div className="mt-auto pt-4 border-t border-slate-100">
+                          <span className="text-emerald-600 font-bold text-xs uppercase tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all">
+                            Saiba mais <ArrowRight size={14} />
+                          </span>
+                        </div>
                       </CardContent>
                     </Card>
                   </Link>
+                );
+              })}
+            </div>
+
+            {/* PAGINAÇÃO */}
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-2 pb-12">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                  <Link
+                    key={p}
+                    href={`/projetos?page=${p}`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-bold transition-all shadow-sm ${p === page
+                        ? "bg-emerald-600 text-white shadow-emerald-200 ring-2 ring-emerald-600 ring-offset-2"
+                        : "bg-white text-slate-600 hover:bg-slate-50 hover:text-emerald-600 border border-slate-200"
+                      }`}
+                  >
+                    {p}
+                  </Link>
                 ))}
               </div>
-
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                    <Link
-                      key={p}
-                      href={`/projetos?page=${p}`}
-                      className={`px-4 py-2 rounded-lg transition-all ${
-                        p === page
-                          ? "bg-green-600 text-white shadow-lg"
-                          : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+            )}
+          </>
+        )}
+        
+        <BackButton className="mt-16" />
       </main>
-      <Footer settings={settings} />
-    </>
+    </div>
   )
 }

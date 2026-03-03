@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { revalidatePath } from "next/cache"
 import { uploadImage } from "@/lib/upload"
-import { clearSettingsCache } from "@/lib/settings"
 
 export async function updateSiteSettings(formData: FormData) {
   const session = await auth()
@@ -60,8 +59,6 @@ export async function updateSiteSettings(formData: FormData) {
       where: { id: settingsId },
       data,
     })
-
-    clearSettingsCache()
     
     revalidatePath("/")
     revalidatePath("/admin/settings")

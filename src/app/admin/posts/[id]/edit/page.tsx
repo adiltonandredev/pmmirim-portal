@@ -1,35 +1,36 @@
 import { prisma } from "@/lib/prisma"
-import { updatePost } from "@/app/actions/updatePost"
-import Link from "next/link"
+import { PostForm } from "@/components/admin/PostForm"
 import { notFound } from "next/navigation"
-import { EditPostForm } from "@/components/EditPostForm"
+import { FileText } from "lucide-react"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 
-export default async function EditPostPage({ params }: { params: { id: string } }) {
-  const { id } = await params
-  
-  const post = await prisma.post.findUnique({
-    where: { id },
-  })
+export const dynamic = "force-dynamic"
+type Props = { params: Promise<{ id: string }> }
 
-  if (!post) {
-    notFound()
-  }
+export default async function EditPostPage(props: Props) {
+  const params = await props.params;
+  const post = await prisma.post.findUnique({ where: { id: params.id } })
+
+  if (!post) return notFound()
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Editar Notícia</h1>
-        <Link 
-          href="/admin/posts"
-          className="text-gray-500 hover:text-gray-700"
-        >
-          Cancelar
-        </Link>
-      </div>
+    <PageContainer>
+      
+      {/* O Título e Botão Voltar ficam AQUI (Layout System) */}
+      <PageHeader>
+        <PageTitle 
+            title="Editar Notícia" 
+            subtitle="Gerencie o conteúdo desta publicação."
+            icon={FileText} 
+            backLink="/admin/posts" 
+        />
+      </PageHeader>
 
-      <div className="bg-white rounded-lg shadow p-8 border border-gray-200">
-        <EditPostForm post={post} />
-      </div>
-    </div>
+      {/* O Formulário limpo fica AQUI */}
+      <PageContent>
+         <PostForm post={post} />
+      </PageContent>
+
+    </PageContainer>
   )
 }

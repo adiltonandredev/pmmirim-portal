@@ -21,7 +21,7 @@ export async function createUser(formData: FormData) {
 
   const validation = createUserSchema.safeParse(data)
   if (!validation.success) {
-    return { error: validation.error.errors[0].message }
+    return { error: validation.error.issues[0].message }
   }
 
   const existingUser = await prisma.user.findUnique({
