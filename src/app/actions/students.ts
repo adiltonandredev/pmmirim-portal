@@ -136,3 +136,106 @@ export async function deleteStudent(formData: FormData) {
         console.error(error)
     }
 }
+
+// ==========================================
+// FUNÇÕES PARA O ALUNO DESTAQUE (FEATURED)
+// ==========================================
+
+export async function createFeaturedStudent(formData: FormData) {
+  try {
+    const studentName = formData.get("studentName") as string;
+    const studentClass = formData.get("class") as string; // 'class' é palavra reservada, usamos studentClass
+    const achievement = formData.get("achievement") as string;
+    const description = formData.get("description") as string;
+    const month = parseInt(formData.get("month") as string, 10);
+    const year = parseInt(formData.get("year") as string, 10);
+    const active = formData.get("active") === "on";
+
+    // Foto (Opcional)
+    const file = formData.get("photoUrl") as File;
+    let photoUrl = null;
+    if (file && file.size > 0) {
+        photoUrl = await saveFile(file, "featured-students");
+    }
+
+    await prisma.featuredStudent.create({
+      data: {
+        studentName,
+        class: studentClass,
+        achievement,
+        description,
+        month,
+        year,
+        active,
+        photoUrl
+      }
+    });
+
+    await logAdminAction("CRIOU", "Aluno Destaque", `Nome: ${studentName}`);
+
+    revalidatePath("/admin/featured-student");
+    return { success: true };
+
+  } catch (error) {
+    console.error("Erro ao criar aluno destaque:", error);
+    return { error: "Erro interno ao cadastrar destaque." };
+  }
+}
+
+export async function updateFeaturedStudent(formData: FormData) {
+  try {
+    const id = formData.get("id") as string;
+    const studentName = formData.get("studentName") as string;
+    const studentClass = formData.get("class") as string;
+    const achievement = formData.get("achievement") as string;
+    const description = formData.get("description") as string;
+    const month = parseInt(formData.get("month") as string, 10);
+    const year = parseInt(formData.get("year") as string, 10);
+    const active = formData.get("active") === "on";
+
+    // Foto
+    const file = formData.get("photoUrl") as File;
+    let photoUrl = formData.get("existingPhotoUrl") as string;
+    if (file && file.size > 0) {
+        photoUrl = await saveFile(file, "featured-students");
+    }
+
+    await prisma.featuredStudent.update({
+      where: { id },
+      data: {
+        studentName,
+        class: studentClass,
+        achievement,
+        description,
+        month,
+        year,
+        active,
+        photoUrl
+      }
+    });
+
+    await logAdminAction("EDITOU", "Aluno Destaque", `Nome: ${studentName}`);
+
+    revalidatePath("/admin/featured-student");
+    return { success: true };
+
+  } catch (error) {
+    console.error("Erro ao editar destaque:", error);
+    return { error: "Erro ao atualizar dados do destaque." };
+  }
+}
+
+export async function deleteFeaturedStudent(formData: FormData) {
+    const id = formData.get("id") as string;
+    
+    try {
+        const student = await prisma.featuredStudent.findUnique({ where: { id } });
+        await prisma.featuredStudent.delete({ where: { id } });
+        
+        await logAdminAction("EXCLUIU", "Aluno Destaque", `Nome: ${student?.studentName || id}`);
+        
+        revalidatePath("/admin/featured-student");
+    } catch (error) {
+        console.error("Erro ao deletar aluno destaque:", error);
+    }
+}
