@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { sendContactMessage } from "@/app/actions/contact"
+import { sendContactMessage } from "@/actions/contact"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

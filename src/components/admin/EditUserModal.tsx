@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from "react"
-import { updateUser } from "@/app/actions/updateUser"
+import { updateUser } from "@/actions/updateUser"
 
 // Definimos o tipo de dado que esperamos receber
 type UserProps = {

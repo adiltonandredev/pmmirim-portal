@@ -191,7 +191,7 @@ export async function Footer({ siteInfo }: { siteInfo?: SiteInfo }) {
             <div className="flex gap-6 text-sm text-white/60">
               <Link href="/privacidade" className="hover:text-brand-yellow transition-colors">Privacidade</Link>
               <Link href="/termos" className="hover:text-brand-yellow transition-colors">Termos de Uso</Link>
-              <Link href="/login" className="hover:text-brand-yellow transition-colors flex items-center gap-1">
+              <Link href="/admin/login" className="hover:text-brand-yellow transition-colors flex items-center gap-1">
                 <Shield size={12} /> Painel Administrativo
               </Link>
             </div>

@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from "react"
-import { createUser } from "@/app/actions/createUser"
+import { createUser } from "@/actions/createUser"
 
 export function CreateUserModal() {
   const [isOpen, setIsOpen] = useState(false)

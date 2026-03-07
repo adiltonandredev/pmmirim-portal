@@ -3,7 +3,7 @@
 import { useRef, useState, ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { createFeaturedStudent, updateFeaturedStudent } from "@/app/actions/students"; 
+import { createFeaturedStudent, updateFeaturedStudent } from "@/actions/students"; 
 import { ArrowLeft, X, UploadCloud, User, Star, GraduationCap, Calendar, BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

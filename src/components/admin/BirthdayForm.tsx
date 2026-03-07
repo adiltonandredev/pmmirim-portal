@@ -1,6 +1,6 @@
 "use client"
 
-import { updateBirthday, createBirthday } from "@/app/actions/birthdays"
+import { updateBirthday, createBirthday } from "@/actions/birthdays"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

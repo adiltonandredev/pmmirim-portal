@@ -1,6 +1,6 @@
 "use client"
 
-import { deletePost } from "@/app/actions/posts"
+import { deletePost } from "@/actions/posts"
 import { useState } from "react"
 import { Button } from "@/components/ui/button" 
 import { Trash2, Loader2 } from "lucide-react"

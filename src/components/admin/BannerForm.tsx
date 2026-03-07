@@ -1,6 +1,6 @@
 "use client"
 
-import { updateBanner, createBanner } from "@/app/actions/banners"
+import { updateBanner, createBanner } from "@/actions/banners"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

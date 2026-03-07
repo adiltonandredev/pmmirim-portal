@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Eye, EyeOff, Image as ImageIcon, Tag, GripVertical } from "lucide-react"
-import { deleteBanner, toggleBannerActive } from "@/app/actions/banners"
+import { deleteBanner, toggleBannerActive } from "@/actions/banners"
 
 // Tipagem do Banner (ajuste conforme seu Prisma se precisar)
 interface BannerProps {

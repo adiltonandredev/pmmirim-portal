@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { updatePost } from "@/app/actions/updatePost"
+import { updatePost } from "@/actions/updatePost"
 import { RichTextEditor } from "./RichTextEditor"
 import Image from "next/image"
 import { X } from "lucide-react"

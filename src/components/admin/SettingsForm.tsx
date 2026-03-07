@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { updateSettings, updateInstagramSettings } from "@/app/actions/settings";
+import { updateSettings, updateInstagramSettings } from "@/actions/settings";
 import { Save, Globe, Phone, Building2, Image as ImageIcon, MapPin, Mail, Facebook, Instagram, Youtube, Clock, Info, Loader2, Upload, Award, Users } from "lucide-react";
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";

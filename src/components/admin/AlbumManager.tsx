@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
-import { saveAlbum, deleteAlbum, deletePhoto, uploadAlbumPhotos } from "@/app/actions/gallery"
-import { uploadImage } from "@/app/actions/upload"
+import { saveAlbum, deleteAlbum, deletePhoto, uploadAlbumPhotos } from "@/actions/gallery"
+import { uploadImage } from "@/actions/upload"
 import { Button } from "@/components/ui/button"
 import { Trash2, Edit, Plus, Save, X, Upload, Image as ImageIcon, Calendar, ArrowLeft, Loader2, FolderOpen } from "lucide-react"
 import { toast } from "sonner"

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { updateEvent } from "@/app/actions/events";
+import { updateEvent } from "@/actions/events";
 import { Save, AlertCircle, MapPin, Clock, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
