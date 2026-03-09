@@ -1,6 +1,6 @@
 // src/app/contato/page.tsx
 import { Metadata } from "next"
-import { ContactForm } from "@/components/contact/ContactForm"
+import { ContactForm } from "@/components/public/contact/ContactForm"
 import { Mail, MapPin, Phone, Clock, MessageSquare, Smartphone } from "lucide-react"
 import { PageHero } from "@/components/ui/page-hero"
 import { BackButton } from "@/components/ui/back-button"

@@ -5,36 +5,51 @@ import { revalidatePath } from "next/cache"
 import { hash } from "bcryptjs"
 import { logAdminAction } from "@/lib/audit"
 import { saveFile } from "@/lib/file-upload"
+import { unlink } from "fs/promises"
+import { join } from "path"
+import { existsSync } from "fs"
 
-// --- CRIAR ALUNO ---
+// Helper para deletar arquivos
+async function tryDeleteFile(path: string) {
+    try {
+        const fullPath = join(process.cwd(), "public", path)
+        if (existsSync(fullPath)) await unlink(fullPath)
+    } catch (e) {
+        console.error("Erro ao deletar arquivo físico:", e)
+    }
+}
+
+// ==========================================
+// FUNÇÕES PARA O ALUNO REGULAR
+// ==========================================
+
 export async function createStudent(formData: FormData) {
   try {
     const name = formData.get("name") as string
     const matricula = formData.get("matricula") as string
     const password = formData.get("password") as string
     
-    // Dados da Escola
     const schoolName = formData.get("schoolName") as string
-    const schoolGrade = formData.get("schoolGrade") as string // Ex: 7º Ano
-    const shift = formData.get("shift") as string // Matutino/Vespertino
+    const schoolGrade = formData.get("schoolGrade") as string 
+    const shift = formData.get("shift") as string 
 
-    // Dados Pessoais
     const cpf = formData.get("cpf") as string
     const phone = formData.get("phone") as string
     const birthDateStr = formData.get("birthDate") as string
     
-    // Foto (Opcional)
-    const file = formData.get("photo") as File
-    const photoUrl = await saveFile(file, "students")
-
     if (!name || !matricula || !password) {
-        return { error: "Nome, Matrícula e Senha são obrigatórios." }
+        return { success: false, message: "Nome, Matrícula e Senha são obrigatórios." }
     }
 
-    // Verifica se matrícula já existe
     const existing = await prisma.student.findUnique({ where: { matricula } })
     if (existing) {
-        return { error: "Esta matrícula já está em uso." }
+        return { success: false, message: "Esta matrícula já está em uso por outro aluno." }
+    }
+
+    const file = formData.get("photo") as File
+    let photoUrl = null;
+    if (file && file.size > 0) {
+        photoUrl = await saveFile(file, "students")
     }
 
     const hashedPassword = await hash(password, 10)
@@ -57,21 +72,22 @@ export async function createStudent(formData: FormData) {
     await logAdminAction("CRIOU", "Aluno", `Nome: ${name} | Matrícula: ${matricula}`)
 
     revalidatePath("/admin/students")
-    return { success: true }
+    return { success: true, message: "Aluno cadastrado com sucesso!" }
 
   } catch (error) {
     console.error("Erro ao criar aluno:", error)
-    return { error: "Erro interno ao cadastrar aluno." }
+    return { success: false, message: "Erro interno ao cadastrar aluno." }
   }
 }
 
-// --- ATUALIZAR ALUNO ---
 export async function updateStudent(formData: FormData) {
   try {
     const id = formData.get("id") as string
+    if (!id) return { success: false, message: "ID do aluno não encontrado." }
+
     const name = formData.get("name") as string
     const matricula = formData.get("matricula") as string
-    const password = formData.get("password") as string // Se vier vazio, não troca
+    const password = formData.get("password") as string 
     
     const schoolName = formData.get("schoolName") as string
     const schoolGrade = formData.get("schoolGrade") as string
@@ -81,11 +97,11 @@ export async function updateStudent(formData: FormData) {
     const phone = formData.get("phone") as string
     const birthDateStr = formData.get("birthDate") as string
 
-    // Foto
     const file = formData.get("photo") as File
     let photoUrl = formData.get("existingPhotoUrl") as string
     if (file && file.size > 0) {
-        photoUrl = await saveFile(file, "students")
+        const uploadedPath = await saveFile(file, "students")
+        if (uploadedPath) photoUrl = uploadedPath
     }
 
     const data: any = {
@@ -100,7 +116,6 @@ export async function updateStudent(formData: FormData) {
         photoUrl
     }
 
-    // Só atualiza senha se o admin digitou uma nova
     if (password && password.trim() !== "") {
         data.password = await hash(password, 10)
     }
@@ -113,28 +128,37 @@ export async function updateStudent(formData: FormData) {
     await logAdminAction("EDITOU", "Aluno", `Nome: ${name}`)
 
     revalidatePath("/admin/students")
-    return { success: true }
+    return { success: true, message: "Dados do aluno atualizados com sucesso!" }
 
   } catch (error) {
     console.error("Erro ao editar aluno:", error)
-    return { error: "Erro ao atualizar dados." }
+    return { success: false, message: "Erro ao atualizar os dados do aluno." }
   }
 }
 
-// --- EXCLUIR ALUNO ---
 export async function deleteStudent(formData: FormData) {
+  try {
     const id = formData.get("id") as string
+    if (!id) return { success: false, message: "ID inválido." }
     
-    try {
-        const student = await prisma.student.findUnique({ where: { id } })
-        await prisma.student.delete({ where: { id } })
-        
-        await logAdminAction("EXCLUIU", "Aluno", `Nome: ${student?.name || id}`)
-        
-        revalidatePath("/admin/students")
-    } catch (error) {
-        console.error(error)
+    const student = await prisma.student.findUnique({ where: { id } })
+    
+    // Apaga a foto do HD
+    if (student?.photoUrl) {
+        await tryDeleteFile(student.photoUrl)
     }
+
+    await prisma.student.delete({ where: { id } })
+    
+    await logAdminAction("EXCLUIU", "Aluno", `Nome: ${student?.name || id}`)
+    
+    revalidatePath("/admin/students")
+    return { success: true, message: "Aluno excluído com sucesso!" }
+
+  } catch (error) {
+    console.error("Erro ao excluir aluno:", error)
+    return { success: false, message: "Erro ao excluir o aluno." }
+  }
 }
 
 // ==========================================
@@ -144,14 +168,17 @@ export async function deleteStudent(formData: FormData) {
 export async function createFeaturedStudent(formData: FormData) {
   try {
     const studentName = formData.get("studentName") as string;
-    const studentClass = formData.get("class") as string; // 'class' é palavra reservada, usamos studentClass
+    const studentClass = formData.get("class") as string; 
     const achievement = formData.get("achievement") as string;
     const description = formData.get("description") as string;
     const month = parseInt(formData.get("month") as string, 10);
     const year = parseInt(formData.get("year") as string, 10);
     const active = formData.get("active") === "on";
 
-    // Foto (Opcional)
+    if (!studentName || !achievement) {
+        return { success: false, message: "Nome e Conquista são obrigatórios." }
+    }
+
     const file = formData.get("photoUrl") as File;
     let photoUrl = null;
     if (file && file.size > 0) {
@@ -174,17 +201,20 @@ export async function createFeaturedStudent(formData: FormData) {
     await logAdminAction("CRIOU", "Aluno Destaque", `Nome: ${studentName}`);
 
     revalidatePath("/admin/featured-student");
-    return { success: true };
+    revalidatePath("/"); // Para atualizar a home
+    return { success: true, message: "Aluno destaque adicionado com sucesso!" };
 
   } catch (error) {
     console.error("Erro ao criar aluno destaque:", error);
-    return { error: "Erro interno ao cadastrar destaque." };
+    return { success: false, message: "Erro interno ao cadastrar destaque." };
   }
 }
 
 export async function updateFeaturedStudent(formData: FormData) {
   try {
     const id = formData.get("id") as string;
+    if (!id) return { success: false, message: "ID não encontrado." }
+
     const studentName = formData.get("studentName") as string;
     const studentClass = formData.get("class") as string;
     const achievement = formData.get("achievement") as string;
@@ -193,11 +223,11 @@ export async function updateFeaturedStudent(formData: FormData) {
     const year = parseInt(formData.get("year") as string, 10);
     const active = formData.get("active") === "on";
 
-    // Foto
     const file = formData.get("photoUrl") as File;
     let photoUrl = formData.get("existingPhotoUrl") as string;
     if (file && file.size > 0) {
-        photoUrl = await saveFile(file, "featured-students");
+        const uploadedPath = await saveFile(file, "featured-students");
+        if (uploadedPath) photoUrl = uploadedPath;
     }
 
     await prisma.featuredStudent.update({
@@ -217,25 +247,37 @@ export async function updateFeaturedStudent(formData: FormData) {
     await logAdminAction("EDITOU", "Aluno Destaque", `Nome: ${studentName}`);
 
     revalidatePath("/admin/featured-student");
-    return { success: true };
+    revalidatePath("/"); // Atualiza home
+    return { success: true, message: "Aluno destaque atualizado!" };
 
   } catch (error) {
     console.error("Erro ao editar destaque:", error);
-    return { error: "Erro ao atualizar dados do destaque." };
+    return { success: false, message: "Erro ao atualizar dados do destaque." };
   }
 }
 
 export async function deleteFeaturedStudent(formData: FormData) {
+  try {
     const id = formData.get("id") as string;
+    if (!id) return { success: false, message: "ID inválido." }
+
+    const student = await prisma.featuredStudent.findUnique({ where: { id } });
     
-    try {
-        const student = await prisma.featuredStudent.findUnique({ where: { id } });
-        await prisma.featuredStudent.delete({ where: { id } });
-        
-        await logAdminAction("EXCLUIU", "Aluno Destaque", `Nome: ${student?.studentName || id}`);
-        
-        revalidatePath("/admin/featured-student");
-    } catch (error) {
-        console.error("Erro ao deletar aluno destaque:", error);
+    // Apaga a foto do HD
+    if (student?.photoUrl) {
+        await tryDeleteFile(student.photoUrl)
     }
+
+    await prisma.featuredStudent.delete({ where: { id } });
+    
+    await logAdminAction("EXCLUIU", "Aluno Destaque", `Nome: ${student?.studentName || id}`);
+    
+    revalidatePath("/admin/featured-student");
+    revalidatePath("/"); 
+    
+    return { success: true, message: "Destaque excluído com sucesso!" };
+  } catch (error) {
+    console.error("Erro ao deletar aluno destaque:", error);
+    return { success: false, message: "Erro ao excluir destaque." }
+  }
 }

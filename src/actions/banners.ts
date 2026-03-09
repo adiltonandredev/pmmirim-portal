@@ -6,7 +6,6 @@ import { saveFile } from "@/lib/file-upload"
 import { unlink } from "fs/promises"
 import { join } from "path"
 import { existsSync } from "fs"
-// 👇 1. IMPORTAÇÃO DO ESPIÃO
 import { logAdminAction } from "@/lib/audit"
 
 type BannerType = "HOME" | "PARTNER" | "SPONSOR";
@@ -29,7 +28,9 @@ export async function createBanner(formData: FormData) {
     const file = formData.get("image") as File
     const imageUrl = await saveFile(file, "banners")
 
-    if (!imageUrl) return { error: "A imagem do banner é obrigatória." }
+    if (!imageUrl) {
+      return { success: false, message: "A imagem do banner é obrigatória." }
+    }
 
     await prisma.banner.create({
       data: {
@@ -43,17 +44,17 @@ export async function createBanner(formData: FormData) {
       }
     })
 
-    // 👇 2. LOG DE CRIAÇÃO
     await logAdminAction("CRIOU", "Banner", `Título: ${title} (${type})`);
 
     revalidatePath("/")
     revalidatePath("/parceiros")
     revalidatePath("/admin/banners")
-    return { success: true }
+    
+    return { success: true, message: "Banner criado com sucesso!" }
 
   } catch (error) {
     console.error("Erro ao criar banner:", error)
-    return { error: "Erro ao salvar banner." }
+    return { success: false, message: "Erro interno ao salvar o banner." }
   }
 }
 
@@ -61,7 +62,9 @@ export async function createBanner(formData: FormData) {
 export async function updateBanner(formData: FormData) {
   try {
     const id = formData.get("id") as string
-    if (!id) return { error: "ID não encontrado." }
+    if (!id) {
+      return { success: false, message: "ID do banner não encontrado." }
+    }
 
     const title = formData.get("title") as string
     const description = formData.get("description") as string
@@ -74,7 +77,7 @@ export async function updateBanner(formData: FormData) {
     let imageUrl = formData.get("existingImageUrl") as string
 
     if (file && file.size > 0) {
-        imageUrl = await saveFile(file, "banners")
+        imageUrl = await saveFile(file, "banners") || imageUrl
     }
 
     await prisma.banner.update({
@@ -90,63 +93,76 @@ export async function updateBanner(formData: FormData) {
       }
     })
 
-    // 👇 3. LOG DE EDIÇÃO
     await logAdminAction("EDITOU", "Banner", `Título: ${title}`);
 
     revalidatePath("/")
     revalidatePath("/parceiros")
     revalidatePath("/admin/banners")
-    return { success: true }
+    
+    return { success: true, message: "Banner atualizado com sucesso!" }
 
   } catch (error) {
     console.error("Erro ao atualizar banner:", error)
-    return { error: "Erro ao atualizar." }
+    return { success: false, message: "Erro interno ao atualizar o banner." }
   }
 }
 
 // --- DELETE ---
 export async function deleteBanner(data: string | FormData) {
-  const id = getId(data)
-  if (!id) return
-
   try {
+    const id = getId(data)
+    if (!id) {
+      return { success: false, message: "ID inválido para exclusão." }
+    }
+
     const banner = await prisma.banner.findUnique({ where: { id } })
+    
     if (banner?.imageUrl) {
         try {
             const filePath = join(process.cwd(), "public", banner.imageUrl)
             if (existsSync(filePath)) await unlink(filePath)
-        } catch (e) {}
+        } catch (e) {
+            console.error("Erro ao excluir arquivo físico:", e)
+        }
     }
 
     await prisma.banner.delete({ where: { id } })
     
-    // 👇 4. LOG DE EXCLUSÃO
     await logAdminAction("EXCLUIU", "Banner", `Título: ${banner?.title || "ID: " + id}`);
 
     revalidatePath("/admin/banners")
     revalidatePath("/")
+    
+    return { success: true, message: "Banner excluído com sucesso!" }
+    
   } catch (error) {
     console.error("Erro ao excluir banner:", error)
+    return { success: false, message: "Erro ao excluir o banner. Ele pode estar em uso." }
   }
 }
 
 // --- TOGGLE ACTIVE ---
 export async function toggleBannerActive(id: string, currentState: boolean) {
-    if (!id) return
-  
     try {
+      if (!id) {
+        return { success: false, message: "ID do banner não fornecido." }
+      }
+  
       await prisma.banner.update({
         where: { id },
         data: { active: !currentState }
       })
 
-      // 👇 5. LOG DE ATIVAR/DESATIVAR
-      await logAdminAction("EDITOU", "Banner", `Alterou status para: ${!currentState ? "Ativo" : "Inativo"}`);
+      const statusName = !currentState ? "Ativado" : "Inativado"
+      await logAdminAction("EDITOU", "Banner", `Alterou status para: ${statusName}`);
         
       revalidatePath("/admin/banners")
       revalidatePath("/")
       
+      return { success: true, message: `Banner ${statusName.toLowerCase()} com sucesso!` }
+      
     } catch (error) {
       console.error("Erro ao alternar banner:", error)
+      return { success: false, message: "Erro ao alterar o status do banner." }
     }
 }

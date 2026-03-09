@@ -2,41 +2,43 @@
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-import { contactMessageSchema } from "@/lib/validations" // Certifique-se que esse arquivo validations existe, senão remova essa linha e a validação
 
+// --- CREATE ---
 export async function sendContactMessage(formData: FormData) {
-  const data = {
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
-    subject: formData.get("subject") as string,
-    message: formData.get("message") as string,
-  }
-
-  // Se você não tiver o arquivo de validação, pode remover este bloco IF
-  /* const validation = contactMessageSchema.safeParse(data)
-  if (!validation.success) {
-    return { error: validation.error.errors[0].message }
-  }
-  */
-
   try {
-    // Verifica se a tabela existe no seu schema.prisma, senão vai dar erro
-    // Se não tiver tabela, apenas simule o envio:
-    // console.log("Mensagem recebida:", data);
-    
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+    const subject = formData.get("subject") as string
+    const message = formData.get("message") as string
+
+    // Validação manual simples e segura
+    if (!name || !email || !message) {
+      return { success: false, message: "Nome, e-mail e mensagem são campos obrigatórios." }
+    }
+
+    // Validação básica de formato de e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return { success: false, message: "Por favor, insira um endereço de e-mail válido." }
+    }
+
     await prisma.contactMessage.create({
       data: {
-        name: data.name,
-        email: data.email,
-        subject: data.subject || null,
-        message: data.message,
+        name,
+        email,
+        subject: subject || "Sem assunto",
+        message,
       },
     })
 
+    // Atualiza a página de contato (caso tenha algum contador) e o painel admin
     revalidatePath("/contato")
-    return { success: "Mensagem enviada com sucesso! Entraremos em contato em breve." }
+    revalidatePath("/admin/mensagens") // Atualiza a caixa de entrada do painel!
+    
+    return { success: true, message: "Mensagem enviada com sucesso! Entraremos em contato em breve." }
+
   } catch (error) {
-    console.error(error)
-    return { error: "Erro ao enviar mensagem. Tente novamente." }
+    console.error("Erro ao enviar mensagem de contato:", error)
+    return { success: false, message: "Erro interno ao enviar a mensagem. Tente novamente mais tarde." }
   }
 }

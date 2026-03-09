@@ -3,7 +3,7 @@ import Link from "next/link"
 import { CalendarDays, ArrowRight, Search, Newspaper } from "lucide-react"
 import { PostType } from "@prisma/client"
 import { BackButton } from "@/components/ui/back-button" // <--- Importando botão padrão
-import { NewsSearch } from "@/components/news/NewsSearch"
+import { NewsSearch } from "@/components/public/news/NewsSearch"
 import { PageHero } from "@/components/ui/page-hero"
 
 export const dynamic = "force-dynamic";

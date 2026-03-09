@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAlbum } from "@/actions/gallery"
-import { PhotoGrid } from "@/components/gallery/PhotoGrid"
+import { PhotoGrid } from "@/components/public/gallery/PhotoGrid"
 import { Camera, Images } from "lucide-react"
 import { notFound } from "next/navigation"
 import { PageHero } from "@/components/ui/page-hero"

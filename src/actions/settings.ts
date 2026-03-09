@@ -1,11 +1,11 @@
-'use server'
+"use server"
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { saveFile } from "@/lib/file-upload"
-// 👇 1. IMPORTAÇÃO
 import { logAdminAction } from "@/lib/audit"
 
+// --- ATUALIZAR CONFIGURAÇÕES GERAIS ---
 export async function updateSettings(formData: FormData) {
   try {
     const existing = await prisma.siteSettings.findFirst()
@@ -30,7 +30,8 @@ export async function updateSettings(formData: FormData) {
     let logoUrl = existing?.logoUrl
 
     if (file && file.size > 0) {
-        logoUrl = await saveFile(file, "settings")
+        const uploadedPath = await saveFile(file, "settings")
+        if (uploadedPath) logoUrl = uploadedPath
     }
 
     if (existing) {
@@ -44,21 +45,25 @@ export async function updateSettings(formData: FormData) {
       })
     }
 
-    // 👇 2. LOG DE ALTERAÇÃO GERAL
-    await logAdminAction("EDITOU", "Configurações", "Atualizou dados institucionais do site");
+    // Log de Auditoria
+    await logAdminAction("EDITOU", "Configurações Globais", "Atualizou dados institucionais do site");
 
-    revalidatePath("/")
+    // Revalidação em massa (já que afeta o rodapé e cabeçalho de todas as páginas)
+    revalidatePath("/", "layout")
     revalidatePath("/admin/settings")
     revalidatePath("/projetos")
     
-    return { success: true }
+    return { success: true, message: "Configurações salvas com sucesso!" }
 
   } catch (error) {
     console.error("Erro ao salvar configurações:", error)
-    return { error: "Falha ao salvar as configurações." }
+    return { success: false, message: "Falha interna ao salvar as configurações." }
   }
 }
 
+// --- ATUALIZAR INSTAGRAM (LEGADO/DUPLICADO) ---
+// Nota: Parece que você tem essa função aqui e também em outro arquivo (instagram.ts). 
+// Recomendo manter apenas em um lugar, mas padronizei esta aqui também!
 export async function updateInstagramSettings(formData: FormData) {
   try {
     const id = formData.get("id") as string
@@ -73,7 +78,7 @@ export async function updateInstagramSettings(formData: FormData) {
     const data = {
       username: formData.get("username") as string,
       accessToken: formData.get("accessToken") as string,
-      showFeed: formData.get("showFeed") === "on", 
+      enabled: formData.get("showFeed") === "on", // Adaptei o nome para bater com o banco
     }
 
     if (existing) {
@@ -82,13 +87,16 @@ export async function updateInstagramSettings(formData: FormData) {
       await prisma.instagramSettings.create({ data })
     }
     
-    // 👇 3. LOG DE ALTERAÇÃO DO INSTAGRAM
-    await logAdminAction("EDITOU", "Instagram", `Usuário: ${data.username}`);
+    // Log de Auditoria
+    await logAdminAction("EDITOU", "Configurações do Instagram", `Usuário: ${data.username || "Desconhecido"}`);
 
     revalidatePath("/")
-    return { success: true }
+    revalidatePath("/admin/settings")
+    
+    return { success: true, message: "Configurações do Instagram salvas com sucesso!" }
+    
   } catch (error) {
     console.error("Erro Instagram:", error)
-    return { error: "Erro ao salvar dados do Instagram." }
+    return { success: false, message: "Erro interno ao salvar dados do Instagram." }
   }
 }

@@ -3,44 +3,75 @@
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/auth"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
 import { uploadImage } from "@/lib/upload"
+import { logAdminAction } from "@/lib/audit" // 1. O Espião
+import { unlink } from "fs/promises"
+import { join } from "path"
+import { existsSync } from "fs"
+
+// Helper para deletar arquivos físicos e economizar espaço no servidor
+async function tryDeleteFile(path: string) {
+    if (!path) return;
+    try {
+        const fullPath = join(process.cwd(), "public", path)
+        if (existsSync(fullPath)) await unlink(fullPath)
+    } catch (e) {
+        console.error("Erro ao deletar arquivo físico:", e)
+    }
+}
 
 export async function updatePost(formData: FormData) {
-  const session = await auth()
-  
-  // Verifica permissão
-  if (!session || (session.user.role !== "ADMIN" && session.user.role !== "EDITOR")) {
-    return { error: "Não autorizado" }
-  }
-
-  // Pega os dados do formulário
-  const postId = formData.get("id") as string
-  const title = formData.get("title") as string
-  const summary = formData.get("summary") as string
-  const content = formData.get("content") as string
-  const type = formData.get("type") as any
-  const status = formData.get("status") as string
-  const isFeatured = formData.get("isFeatured") === "true"
-  const removeImage = formData.get("removeImage") === "true"
-  
-  const coverImageFile = formData.get("coverImage") as File
-
-  // Lógica da imagem
-  let coverImageUrl: string | null = null
-
-  if (removeImage) {
-    coverImageUrl = null
-  } else if (coverImageFile && coverImageFile.size > 0) {
-    try {
-      const uploadedPath = await uploadImage(coverImageFile)
-      if (uploadedPath) coverImageUrl = uploadedPath
-    } catch (error: any) {
-      return { error: error.message || "Erro ao fazer upload da imagem" }
-    }
-  }
-
   try {
+    const session = await auth()
+    
+    // Verifica permissão
+    if (!session || (session.user.role !== "ADMIN" && session.user.role !== "EDITOR")) {
+      return { success: false, message: "Acesso negado. Apenas administradores e editores podem editar posts." }
+    }
+
+    // Pega os dados do formulário
+    const postId = formData.get("id") as string
+    if (!postId) {
+        return { success: false, message: "ID do post não encontrado." }
+    }
+
+    const title = formData.get("title") as string
+    const summary = formData.get("summary") as string
+    const content = formData.get("content") as string
+    const type = formData.get("type") as any
+    const status = formData.get("status") as string
+    const isFeatured = formData.get("isFeatured") === "true"
+    const removeImage = formData.get("removeImage") === "true"
+    
+    const coverImageFile = formData.get("coverImage") as File
+
+    // Busca o post antigo para saber a imagem atual (para limpar o HD se necessário)
+    const oldPost = await prisma.post.findUnique({ where: { id: postId } })
+
+    // Lógica da imagem
+    let coverImageUrl: string | null = null
+    let imageChanged = false;
+
+    if (removeImage) {
+      coverImageUrl = null
+      imageChanged = true;
+      // Se mandou remover, apaga a antiga do HD
+      if (oldPost?.coverImage) await tryDeleteFile(oldPost.coverImage);
+      
+    } else if (coverImageFile && coverImageFile.size > 0) {
+      try {
+        const uploadedPath = await uploadImage(coverImageFile)
+        if (uploadedPath) {
+            coverImageUrl = uploadedPath
+            imageChanged = true;
+            // Se fez upload de nova, apaga a antiga do HD
+            if (oldPost?.coverImage) await tryDeleteFile(oldPost.coverImage);
+        }
+      } catch (error: any) {
+        return { success: false, message: error.message || "Erro ao fazer upload da imagem" }
+      }
+    }
+
     // Prepara os dados para salvar
     const updateData: any = {
       title,
@@ -48,13 +79,11 @@ export async function updatePost(formData: FormData) {
       content,
       type,
       published: status === "published",
-      
-      // CORREÇÃO 1: O nome no banco é 'featured', não 'isFeatured'
       featured: isFeatured, 
     }
 
-    // Só atualiza a imagem se houve mudança
-    if (coverImageUrl !== null || removeImage) {
+    // Só atualiza a imagem no banco se houve mudança
+    if (imageChanged) {
       updateData.coverImage = coverImageUrl
     }
 
@@ -64,17 +93,20 @@ export async function updatePost(formData: FormData) {
       data: updateData,
     })
 
-    // CORREÇÃO 2: APAGUEI TODO O BLOCO DO CAROUSEL AQUI (que estava quebrando o site)
+    // REGISTRA A EDIÇÃO NA AUDITORIA
+    const typeName = type === "NEWS" ? "Notícia" : type === "EVENT" ? "Evento" : "Projeto";
+    await logAdminAction("EDITOU", "Post", `Título: ${title} (${typeName})`)
+
+    // Atualiza as páginas
+    revalidatePath("/admin/posts")
+    revalidatePath("/")
+    revalidatePath("/noticias")
+    
+    // RETORNO PADRONIZADO (Sem redirect no backend)
+    return { success: true, message: "Post atualizado com sucesso!" }
 
   } catch (error) {
-    console.error(error)
-    return { error: "Erro ao atualizar post." }
+    console.error("Erro ao atualizar post:", error)
+    return { success: false, message: "Erro interno ao atualizar post." }
   }
-
-  // Atualiza as páginas
-  revalidatePath("/admin/posts")
-  revalidatePath("/")
-  revalidatePath("/noticias")
-  
-  redirect("/admin/posts")
 }

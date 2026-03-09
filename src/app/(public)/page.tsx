@@ -1,11 +1,11 @@
 // src/app/page.tsx
-import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { HeroCarousel } from "@/components/public/home/HeroCarousel";
 import { FloatingSocial } from "@/components/layout/FloatingSocial";
-import { FeaturedStudentSection } from "@/components/home/FeaturedStudentSection";
-import { InstagramFeed } from "@/components/home/InstagramFeed";
-import { PartnersAutoCarousel } from "@/components/home/PartnersAutoCarousel";
-import { SponsorsCarousel } from "@/components/home/SponsorsCarousel";
-import { InfoCards } from "@/components/home/InfoCards"; // <--- NOVO COMPONENTE
+import { FeaturedStudentSection } from "@/components/public/home/FeaturedStudentSection";
+import { InstagramFeed } from "@/components/public/home/InstagramFeed";
+import { PartnersAutoCarousel } from "@/components/public/home/PartnersAutoCarousel";
+import { SponsorsCarousel } from "@/components/public/home/SponsorsCarousel";
+import { InfoCards } from "@/components/public/home/InfoCards"; // <--- NOVO COMPONENTE
 import { Button } from "@/components/ui/button";
 import { Cake, Handshake, User, List, ArrowRight, Award, Newspaper, CalendarDays, ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";

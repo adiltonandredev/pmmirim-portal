@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { BackButton } from "@/components/ui/back-button"
 import { PageHero } from "@/components/ui/page-hero"
 import { Handshake } from "lucide-react"
-import { PartnersGrid } from "@/components/home/PartnersGrid" 
+import { PartnersGrid } from "@/components/public/home/PartnersGrid" 
 
 export const dynamic = "force-dynamic"
 

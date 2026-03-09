@@ -3,8 +3,10 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { saveFile } from "@/lib/file-upload"
-// 1. IMPORTAÇÃO DA AUDITORIA
-import { logAdminAction } from "@/lib/audit" 
+import { unlink } from "fs/promises"
+import { join } from "path"
+import { existsSync } from "fs"
+import { logAdminAction } from "@/lib/audit" // 1. IMPORTAÇÃO DA AUDITORIA
 
 function generateSlug(title: string): string {
     return title
@@ -14,20 +16,27 @@ function generateSlug(title: string): string {
         .replace(/\s+/g, "-");
 }
 
+// --- CRIAR POST (NOTÍCIA) ---
 export async function createPost(formData: FormData) {
   try {
     const title = formData.get("title") as string;
     const summary = formData.get("summary") as string;
     const content = formData.get("content") as string;
     
-    const file = formData.get("coverImage") as File;
-    const coverImage = await saveFile(file, "news"); 
+    if (!title) {
+        return { success: false, message: "O título da notícia é obrigatório." };
+    }
 
-    if (!title) return { error: "O título é obrigatório." };
+    const file = formData.get("coverImage") as File;
+    let coverImage = null;
+    
+    if (file && file.size > 0) {
+        coverImage = await saveFile(file, "news"); 
+    }
 
     let slug = generateSlug(title);
     const existing = await prisma.post.findUnique({ where: { slug } });
-    if (existing) slug = `${slug}-${Date.now()}`;
+    if (existing) slug = `${slug}-${Date.now().toString().slice(-4)}`;
 
     await prisma.post.create({
       data: {
@@ -49,18 +58,21 @@ export async function createPost(formData: FormData) {
     revalidatePath("/")
     revalidatePath("/noticias")
 
-    return { success: true };
+    return { success: true, message: "Notícia criada com sucesso!" };
 
   } catch (error) {
     console.error("ERRO AO CRIAR POST:", error);
-    return { error: "Erro ao criar notícia." };
+    return { success: false, message: "Erro interno ao criar notícia." };
   }
 }
 
+// --- ATUALIZAR POST (NOTÍCIA) ---
 export async function updatePost(formData: FormData) {
   try {
     const id = formData.get("id") as string;
-    if (!id) return { error: "ID não encontrado." };
+    if (!id) {
+        return { success: false, message: "ID da notícia não encontrado." };
+    }
 
     const title = formData.get("title") as string;
     const summary = formData.get("summary") as string;
@@ -70,7 +82,8 @@ export async function updatePost(formData: FormData) {
     let coverImage = formData.get("existingCoverImage") as string;
 
     if (file && file.size > 0) {
-        coverImage = await saveFile(file, "news");
+        const uploadedPath = await saveFile(file, "news");
+        if (uploadedPath) coverImage = uploadedPath;
     }
 
     await prisma.post.update({
@@ -93,30 +106,49 @@ export async function updatePost(formData: FormData) {
     revalidatePath("/")
     revalidatePath("/noticias")
 
-    return { success: true };
+    return { success: true, message: "Notícia atualizada com sucesso!" };
 
   } catch (error) {
     console.error("ERRO AO ATUALIZAR POST:", error);
-    return { error: "Erro ao atualizar notícia." };
+    return { success: false, message: "Erro interno ao atualizar notícia." };
   }
 }
 
+// --- DELETAR POST (NOTÍCIA) ---
 export async function deletePost(formData: FormData) {
+  try {
     const id = formData.get("id") as string;
-    if (!id) return;
-
-    try {
-      // (Opcional) Buscamos o título antes de deletar para o log ficar bonito
-      const post = await prisma.post.findUnique({ where: { id }, select: { title: true } });
-
-      await prisma.post.delete({ where: { id } })
-      
-      // 4. REGISTRA A EXCLUSÃO
-      await logAdminAction("EXCLUIU", "Notícia", `Título: ${post?.title || "ID: " + id}`);
-
-      revalidatePath("/admin/posts")
-      revalidatePath("/")
-    } catch (error) {
-      console.error("Erro ao deletar:", error);
+    if (!id) {
+        return { success: false, message: "ID inválido para exclusão." };
     }
+
+    // 1. Buscamos a notícia para saber qual é a imagem de capa dela
+    const post = await prisma.post.findUnique({ where: { id } });
+
+    // 2. Apagamos a imagem física do HD
+    if (post?.coverImage) {
+        try {
+            const filePath = join(process.cwd(), "public", post.coverImage);
+            if (existsSync(filePath)) await unlink(filePath);
+        } catch (e) {
+            console.error("Erro ao excluir imagem da notícia do disco:", e);
+        }
+    }
+
+    // 3. Deletamos do banco
+    await prisma.post.delete({ where: { id } })
+      
+    // 4. REGISTRA A EXCLUSÃO
+    await logAdminAction("EXCLUIU", "Notícia", `Título: ${post?.title || "ID: " + id}`);
+
+    revalidatePath("/admin/posts")
+    revalidatePath("/")
+    revalidatePath("/noticias")
+
+    return { success: true, message: "Notícia excluída com sucesso!" };
+
+  } catch (error) {
+    console.error("Erro ao deletar notícia:", error);
+    return { success: false, message: "Erro ao excluir a notícia. Ela pode estar em uso." };
+  }
 }

@@ -57,6 +57,7 @@
     --color-emerald-500: oklch(69.6% 0.17 162.48);
     --color-emerald-600: oklch(59.6% 0.145 163.225);
     --color-emerald-700: oklch(50.8% 0.118 165.612);
+    --color-emerald-800: oklch(43.2% 0.095 166.913);
     --color-emerald-900: oklch(37.8% 0.077 168.94);
     --color-cyan-400: oklch(78.9% 0.154 211.53);
     --color-cyan-500: oklch(71.5% 0.143 215.221);
@@ -775,9 +776,6 @@
   .table-row {
     display: table-row;
   }
-  .field-sizing-content {
-    field-sizing: content;
-  }
   .aspect-\[3\/1\] {
     aspect-ratio: 3/1;
   }
@@ -986,9 +984,6 @@
   .max-h-screen {
     max-height: 100vh;
   }
-  .min-h-16 {
-    min-height: calc(var(--spacing) * 16);
-  }
   .min-h-\[2\.5em\] {
     min-height: 2.5em;
   }
@@ -1000,6 +995,9 @@
   }
   .min-h-\[70px\] {
     min-height: 70px;
+  }
+  .min-h-\[80px\] {
+    min-height: 80px;
   }
   .min-h-\[90px\] {
     min-height: 90px;
@@ -1317,6 +1315,9 @@
   }
   .resize-none {
     resize: none;
+  }
+  .resize-y {
+    resize: vertical;
   }
   .scroll-my-1 {
     scroll-margin-block: calc(var(--spacing) * 1);
@@ -2999,6 +3000,9 @@
   .text-emerald-700 {
     color: var(--color-emerald-700);
   }
+  .text-emerald-800 {
+    color: var(--color-emerald-800);
+  }
   .text-foreground {
     color: var(--foreground);
   }
@@ -4081,6 +4085,11 @@
       color: var(--muted-foreground);
     }
   }
+  .placeholder\:text-slate-500 {
+    &::placeholder {
+      color: var(--color-slate-500);
+    }
+  }
   .after\:clear-both {
     &::after {
       content: var(--tw-content);
@@ -4885,6 +4894,11 @@
       border-color: var(--color-pink-500);
     }
   }
+  .focus\:border-red-500 {
+    &:focus {
+      border-color: var(--color-red-500);
+    }
+  }
   .focus\:bg-accent {
     &:focus {
       background-color: var(--accent);
@@ -4919,6 +4933,11 @@
   .focus\:ring-blue-900 {
     &:focus {
       --tw-ring-color: var(--color-blue-900);
+    }
+  }
+  .focus\:ring-red-500 {
+    &:focus {
+      --tw-ring-color: var(--color-red-500);
     }
   }
   .focus\:ring-ring {
@@ -4976,6 +4995,11 @@
       @supports (color: color-mix(in lab, red, red)) {
         --tw-ring-color: color-mix(in oklab, var(--destructive) 20%, transparent);
       }
+    }
+  }
+  .focus-visible\:ring-primary {
+    &:focus-visible {
+      --tw-ring-color: var(--primary);
     }
   }
   .focus-visible\:ring-ring {
