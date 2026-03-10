@@ -8,10 +8,11 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 interface DeleteButtonProps {
-  action: (id: any) => Promise<any>; // Aceita uma função que recebe um ID
-  itemId?: string;
-  itemName?: string;
-  className?: string;
+    // AJUSTADO: Agora tipado para aceitar o retorno padrão das suas actions
+    action: (id: string) => Promise<{ success: boolean; message?: string }>;
+    itemId?: string;
+    itemName?: string;
+    className?: string;
 }
 
 export function DeleteButton({ action, itemId, itemName = "este item", className }: DeleteButtonProps) {
@@ -26,28 +27,32 @@ export function DeleteButton({ action, itemId, itemName = "este item", className
     }, [])
 
     const handleConfirm = async () => {
-        setIsDeleting(true)
+        // 1. Verificação de segurança para o TypeScript parar de reclamar
+        if (!itemId) {
+            toast.error("ID do item não encontrado.");
+            return;
+        }
 
-        const formData = new FormData()
-        if (itemId) formData.append("id", itemId)
+        setIsDeleting(true);
 
         try {
-            const result = await action(itemId)
+            // 2. Agora o TS sabe que itemId é uma string garantida aqui
+            const result = await action(itemId);
 
             if (!result.success) {
-                toast.error(result.message || "Erro ao excluir.")
+                toast.error(result.message || "Erro ao excluir.");
             } else {
-                toast.success(result.message || "Item excluído com sucesso!")
-                setIsOpen(false) // Fecha o modal
-                router.refresh() // Atualiza a tabela imediatamente
+                toast.success(result.message || "Item excluído com sucesso!");
+                setIsOpen(false);
+                router.refresh();
             }
         } catch (error) {
-            console.error("Erro ao excluir", error)
-            toast.error("Ocorreu um erro inesperado ao excluir.")
+            console.error("Erro ao excluir", error);
+            toast.error("Ocorreu um erro inesperado ao excluir.");
         } finally {
-            setIsDeleting(false)
+            setIsDeleting(false);
         }
-    }
+    };
 
     // Se não estiver montado, não renderiza o botão ainda (evita mismatches do SSR)
     if (!mounted) return null;
