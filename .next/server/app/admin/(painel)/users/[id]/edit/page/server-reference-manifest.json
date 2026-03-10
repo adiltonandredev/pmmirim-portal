@@ -1,6 +1,6 @@
 {
   "node": {
-    "404af4436b1c07dcc85ab92c4d146e6e5cdb9c62b3": {
+    "40809fdfc86a23eb5ebff283f47e3f44b1e8656f92": {
       "workers": {
         "app/admin/(painel)/users/[id]/edit/page": {
           "moduleId": 24288,

@@ -1,6 +1,6 @@
 {
   "node": {
-    "40c42f8e0c02316cb652bd8a87c16e67d3a2094d11": {
+    "400ea6d3995004169ed84767bbef7022b5dc1e92c8": {
       "workers": {
         "app/admin/(painel)/institution/history/page": {
           "moduleId": 35981,
@@ -15,7 +15,7 @@
       "exportedName": "updateInstitutionHistory",
       "filename": "src/actions/institution.ts"
     },
-    "402beff299b4d19f5782675f1da85eb03202771407": {
+    "400b824957668df5154d0362a57a6cc38b3073c8ff": {
       "workers": {
         "app/admin/(painel)/institution/history/page": {
           "moduleId": 35981,

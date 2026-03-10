@@ -1,6 +1,6 @@
 {
   "node": {
-    "4058571b653cd00c1f90264883a50f2a9305c6dbcd": {
+    "400632f0e4e80b812984e2604497f590cf4ac67af8": {
       "workers": {
         "app/admin/(painel)/posts/page": {
           "moduleId": 95709,
@@ -15,7 +15,7 @@
       "exportedName": "createPost",
       "filename": "src/actions/posts.ts"
     },
-    "40b62a383cb0b3167d77f098d39ebf13eaf7bcbb47": {
+    "408123d44e56c7c05d92aa099f945edcca56c327a7": {
       "workers": {
         "app/admin/(painel)/posts/page": {
           "moduleId": 95709,
@@ -30,7 +30,7 @@
       "exportedName": "deletePost",
       "filename": "src/actions/posts.ts"
     },
-    "40bbbde952b4f980de617a5423a1ce6469c4b15efc": {
+    "40cb0cdd750fd1c8cf5c270b474763c93b7e0d0da1": {
       "workers": {
         "app/admin/(painel)/posts/page": {
           "moduleId": 95709,

@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
+// 1. DEFINIÇÃO DE TIPO RIGOROSA
 interface DeleteButtonProps {
-    // AJUSTADO: Agora tipado para aceitar o retorno padrão das suas actions
-    action: (id: string) => Promise<{ success: boolean; message?: string }>;
-    itemId?: string;
-    itemName?: string;
-    className?: string;
+  // Definimos que a action SEMPRE retorna o padrão que você usa no projeto
+  action: (id: string) => Promise<{ success: boolean; message?: string }>;
+  itemId?: string;
+  itemName?: string;
+  className?: string;
 }
 
 export function DeleteButton({ action, itemId, itemName = "este item", className }: DeleteButtonProps) {
@@ -21,45 +22,44 @@ export function DeleteButton({ action, itemId, itemName = "este item", className
     const [isDeleting, setIsDeleting] = useState(false)
     const [mounted, setMounted] = useState(false)
 
-    // Garante que o Portal só funcione no navegador (evita erro de hidratação)
     useEffect(() => {
         setMounted(true)
     }, [])
 
     const handleConfirm = async () => {
-        // 1. Verificação de segurança para o TypeScript parar de reclamar
+        // SOLUÇÃO PARA O ERRO DO PRINT:
+        // Se o itemId não existir, a função para aqui e o TS entende que 
+        // abaixo desta linha o itemId é OBRIGATORIAMENTE uma string.
         if (!itemId) {
-            toast.error("ID do item não encontrado.");
-            return;
+            toast.error("ID do item não encontrado.")
+            return
         }
 
-        setIsDeleting(true);
+        setIsDeleting(true)
 
         try {
-            // 2. Agora o TS sabe que itemId é uma string garantida aqui
-            const result = await action(itemId);
+            // Agora o 'itemId' está garantido como string para a 'action'
+            const result = await action(itemId)
 
             if (!result.success) {
-                toast.error(result.message || "Erro ao excluir.");
+                toast.error(result.message || "Erro ao excluir.")
             } else {
-                toast.success(result.message || "Item excluído com sucesso!");
-                setIsOpen(false);
-                router.refresh();
+                toast.success(result.message || "Item excluído com sucesso!")
+                setIsOpen(false)
+                router.refresh()
             }
         } catch (error) {
-            console.error("Erro ao excluir", error);
-            toast.error("Ocorreu um erro inesperado ao excluir.");
+            console.error("Erro ao excluir", error)
+            toast.error("Ocorreu um erro inesperado ao excluir.")
         } finally {
-            setIsDeleting(false);
+            setIsDeleting(false)
         }
-    };
+    }
 
-    // Se não estiver montado, não renderiza o botão ainda (evita mismatches do SSR)
     if (!mounted) return null;
 
     return (
         <>
-            {/* BOTÃO LIXEIRA */}
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
@@ -69,12 +69,10 @@ export function DeleteButton({ action, itemId, itemName = "este item", className
                 <Trash2 size={16} className="group-hover:stroke-[2.5px]" />
             </button>
 
-            {/* MODAL VIA PORTAL */}
             {isOpen && createPortal(
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-200">
 
-                        {/* Cabeçalho */}
                         <div className="bg-red-50 p-6 flex flex-col items-center justify-center border-b border-red-100 text-center">
                             <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-3">
                                 <AlertTriangle size={24} />
@@ -85,7 +83,6 @@ export function DeleteButton({ action, itemId, itemName = "este item", className
                             </p>
                         </div>
 
-                        {/* Botões */}
                         <div className="p-4 bg-white flex gap-3">
                             <Button
                                 variant="ghost"

@@ -1,6 +1,6 @@
 {
   "node": {
-    "408ca41bd57575887d77fa1ccd385ab3170dbcebd7": {
+    "402411dad3c98b8081e9f8de44280a7781ff82be43": {
       "workers": {
         "app/admin/(painel)/institution/projects/new/page": {
           "moduleId": 53019,
@@ -15,7 +15,7 @@
       "exportedName": "updateProject",
       "filename": "src/actions/projects.ts"
     },
-    "4061640b361eb2c826c6aa91b2c7fb02f8cc32eede": {
+    "40fd4ce15422260c199f46693e7f4d32d6d205b618": {
       "workers": {
         "app/admin/(painel)/institution/projects/new/page": {
           "moduleId": 53019,
@@ -30,7 +30,7 @@
       "exportedName": "createProject",
       "filename": "src/actions/projects.ts"
     },
-    "402beff299b4d19f5782675f1da85eb03202771407": {
+    "400b824957668df5154d0362a57a6cc38b3073c8ff": {
       "workers": {
         "app/admin/(painel)/institution/projects/new/page": {
           "moduleId": 53019,

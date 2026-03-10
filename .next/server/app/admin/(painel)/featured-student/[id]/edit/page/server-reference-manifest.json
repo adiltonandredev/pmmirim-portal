@@ -1,6 +1,6 @@
 {
   "node": {
-    "4080dbbce5cf88d79e77915db95d4b01205521453f": {
+    "40603186f55387b1e1478f39b4233753bacf66df38": {
       "workers": {
         "app/admin/(painel)/featured-student/[id]/edit/page": {
           "moduleId": 33327,
@@ -15,7 +15,7 @@
       "exportedName": "createFeaturedStudent",
       "filename": "src/actions/students.ts"
     },
-    "403196daea9895a6b05109de79ba29bcb5551d3b1d": {
+    "40378fbf060ac4611216a25ccc2ca96307d129d389": {
       "workers": {
         "app/admin/(painel)/featured-student/[id]/edit/page": {
           "moduleId": 33327,

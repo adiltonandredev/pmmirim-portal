@@ -9,11 +9,11 @@ import { existsSync } from "fs"
 import { logAdminAction } from "@/lib/audit" // 1. IMPORTAÇÃO DA AUDITORIA
 
 function generateSlug(title: string): string {
-    return title
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-");
+  return title
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
 }
 
 // --- CRIAR POST (NOTÍCIA) ---
@@ -22,16 +22,16 @@ export async function createPost(formData: FormData) {
     const title = formData.get("title") as string;
     const summary = formData.get("summary") as string;
     const content = formData.get("content") as string;
-    
+
     if (!title) {
-        return { success: false, message: "O título da notícia é obrigatório." };
+      return { success: false, message: "O título da notícia é obrigatório." };
     }
 
     const file = formData.get("coverImage") as File;
     let coverImage = null;
-    
+
     if (file && file.size > 0) {
-        coverImage = await saveFile(file, "news"); 
+      coverImage = await saveFile(file, "news");
     }
 
     let slug = generateSlug(title);
@@ -44,7 +44,7 @@ export async function createPost(formData: FormData) {
         slug,
         summary: summary || "",
         content: content || "",
-        coverImage, 
+        coverImage,
         type: "NEWS",
         published: formData.get("published") === "on",
         featured: formData.get("featured") === "on",
@@ -71,7 +71,7 @@ export async function updatePost(formData: FormData) {
   try {
     const id = formData.get("id") as string;
     if (!id) {
-        return { success: false, message: "ID da notícia não encontrado." };
+      return { success: false, message: "ID da notícia não encontrado." };
     }
 
     const title = formData.get("title") as string;
@@ -82,8 +82,8 @@ export async function updatePost(formData: FormData) {
     let coverImage = formData.get("existingCoverImage") as string;
 
     if (file && file.size > 0) {
-        const uploadedPath = await saveFile(file, "news");
-        if (uploadedPath) coverImage = uploadedPath;
+      const uploadedPath = await saveFile(file, "news");
+      if (uploadedPath) coverImage = uploadedPath;
     }
 
     await prisma.post.update({
@@ -115,30 +115,38 @@ export async function updatePost(formData: FormData) {
 }
 
 // --- DELETAR POST (NOTÍCIA) ---
-export async function deletePost(formData: FormData) {
+export async function deletePost(data: string | FormData) {
   try {
-    const id = formData.get("id") as string;
-    if (!id) {
-        return { success: false, message: "ID inválido para exclusão." };
+    // 1. Identificação segura do ID para evitar erros de tipo no VS Code
+    let id: string;
+
+    if (typeof data === "string") {
+      id = data;
+    } else {
+      id = data.get("id") as string;
     }
 
-    // 1. Buscamos a notícia para saber qual é a imagem de capa dela
+    if (!id) {
+      return { success: false, message: "ID inválido para exclusão." };
+    }
+
+    // 2. Buscamos a notícia para saber qual é a imagem de capa dela
     const post = await prisma.post.findUnique({ where: { id } });
 
-    // 2. Apagamos a imagem física do HD
+    // 3. Apagamos a imagem física do HD
     if (post?.coverImage) {
-        try {
-            const filePath = join(process.cwd(), "public", post.coverImage);
-            if (existsSync(filePath)) await unlink(filePath);
-        } catch (e) {
-            console.error("Erro ao excluir imagem da notícia do disco:", e);
-        }
+      try {
+        const filePath = join(process.cwd(), "public", post.coverImage);
+        if (existsSync(filePath)) await unlink(filePath);
+      } catch (e) {
+        console.error("Erro ao excluir imagem da notícia do disco:", e);
+      }
     }
 
-    // 3. Deletamos do banco
+    // 4. Deletamos do banco
     await prisma.post.delete({ where: { id } })
-      
-    // 4. REGISTRA A EXCLUSÃO
+
+    // 5. REGISTRA A EXCLUSÃO NA AUDITORIA
     await logAdminAction("EXCLUIU", "Notícia", `Título: ${post?.title || "ID: " + id}`);
 
     revalidatePath("/admin/posts")

@@ -1,6 +1,6 @@
 {
   "node": {
-    "404d998360b253e89bcc1541c776d3cecbc5628457": {
+    "404d8ee7741062bd42f23b737f30390325a2455c0a": {
       "workers": {
         "app/admin/(painel)/events/new/page": {
           "moduleId": 86197,
@@ -15,7 +15,7 @@
       "exportedName": "updateEvent",
       "filename": "src/actions/events.ts"
     },
-    "40cf6fe5b61b7effa7a9f218cc2c54f4e39a8603da": {
+    "402a29016f47541f5669352307414d1c9a71ac46f8": {
       "workers": {
         "app/admin/(painel)/events/new/page": {
           "moduleId": 86197,

@@ -1,6 +1,6 @@
 {
   "node": {
-    "405acaf357842406779669744709fce5aaa8cea373": {
+    "405920781aaafc6219032586299cd00b06f78826e3": {
       "workers": {
         "app/admin/(painel)/courses/[id]/edit/page": {
           "moduleId": 38463,
@@ -15,7 +15,7 @@
       "exportedName": "createCourse",
       "filename": "src/actions/courses.ts"
     },
-    "402994e92efa6efc35c6a5a23e5fc2a2ff054f870e": {
+    "40b3ea733d1c3e77897514bdad9fc4afb6556cab0f": {
       "workers": {
         "app/admin/(painel)/courses/[id]/edit/page": {
           "moduleId": 38463,
@@ -30,7 +30,7 @@
       "exportedName": "updateCourse",
       "filename": "src/actions/courses.ts"
     },
-    "402beff299b4d19f5782675f1da85eb03202771407": {
+    "400b824957668df5154d0362a57a6cc38b3073c8ff": {
       "workers": {
         "app/admin/(painel)/courses/[id]/edit/page": {
           "moduleId": 38463,

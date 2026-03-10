@@ -1,6 +1,6 @@
 {
   "node": {
-    "00ab238ec55ddfb2cd37747212f23f04283cadd748": {
+    "00985777124243d0bfff763d2d457566d6123bbe15": {
       "workers": {
         "app/(public)/page": {
           "moduleId": 66640,
@@ -15,7 +15,7 @@
       "exportedName": "getInstagramFeed",
       "filename": "src/actions/instagram.ts"
     },
-    "406d09703256696ee02a38679fff9af45283bbf095": {
+    "40ac0087cf5c08f2043132093380b76c45ab28a8de": {
       "workers": {
         "app/(public)/page": {
           "moduleId": 66640,

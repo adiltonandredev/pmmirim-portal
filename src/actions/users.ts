@@ -103,30 +103,49 @@ export async function updateUser(formData: FormData) {
 }
 
 // --- 3. EXCLUIR USUÁRIO ---
-export async function deleteUser(formData: FormData) {
+export async function deleteUser(data: string | FormData) {
   try {
     const session = await auth()
     if (!session || session.user.role !== "ADMIN") {
         return { success: false, message: "Acesso negado." }
     }
 
-    const userId = formData.get("id") as string
+    // 1. Identificação segura do ID
+    let userId: string;
+    if (typeof data === "string") {
+      userId = data;
+    } else {
+      userId = data.get("id") as string;
+    }
+
     if (!userId) {
         return { success: false, message: "ID do usuário inválido." }
     }
 
-    // Trava de segurança maravilhosa!
+    // 2. Trava de segurança para não excluir a própria conta
     if (session.user.id === userId) {
         return { success: false, message: "Você não pode excluir sua própria conta." }
     }
 
-    // Busca o nome antes de excluir para o log ficar bonito
-    const alvo = await prisma.user.findUnique({ where: { id: userId }, select: { name: true, email: true } })
+    // 3. Busca os dados antes de excluir para o log
+    const alvo = await prisma.user.findUnique({ 
+      where: { id: userId }, 
+      select: { name: true, email: true } 
+    })
 
+    if (!alvo) {
+      return { success: false, message: "Usuário não encontrado." }
+    }
+
+    // 4. Exclui do banco
     await prisma.user.delete({ where: { id: userId } })
 
-    // Log de Exclusão
-    await logAdminAction("EXCLUIU", "Usuário do Sistema", `Nome: ${alvo?.name || alvo?.email || userId}`);
+    // 5. Log de Auditoria
+    await logAdminAction(
+      "EXCLUIU", 
+      "Usuário do Sistema", 
+      `Nome: ${alvo?.name || alvo?.email || userId}`
+    );
 
     revalidatePath("/admin/users")
     return { success: true, message: "Usuário excluído com sucesso!" }

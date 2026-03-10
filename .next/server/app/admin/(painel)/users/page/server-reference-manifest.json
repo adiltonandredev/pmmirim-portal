@@ -1,21 +1,21 @@
 {
   "node": {
-    "404af4436b1c07dcc85ab92c4d146e6e5cdb9c62b3": {
+    "40258d4d3e890a0daa8f0c71056cfc1031c1254848": {
       "workers": {
         "app/admin/(painel)/users/page": {
           "moduleId": 88545,
           "async": false,
-          "exportedName": "updateUser",
+          "exportedName": "createUser",
           "filename": "src/actions/users.ts"
         }
       },
       "layer": {
         "app/admin/(painel)/users/page": "rsc"
       },
-      "exportedName": "updateUser",
+      "exportedName": "createUser",
       "filename": "src/actions/users.ts"
     },
-    "4054406f3ce9815d44291dc4030bc24cbb2da92fac": {
+    "405faaa4b53fec37031fd1bf8727852d8fba1aec81": {
       "workers": {
         "app/admin/(painel)/users/page": {
           "moduleId": 88545,
@@ -30,19 +30,19 @@
       "exportedName": "deleteUser",
       "filename": "src/actions/users.ts"
     },
-    "407ad246675d45f394e3e72535d06d973884c9d0b1": {
+    "40809fdfc86a23eb5ebff283f47e3f44b1e8656f92": {
       "workers": {
         "app/admin/(painel)/users/page": {
           "moduleId": 88545,
           "async": false,
-          "exportedName": "createUser",
+          "exportedName": "updateUser",
           "filename": "src/actions/users.ts"
         }
       },
       "layer": {
         "app/admin/(painel)/users/page": "rsc"
       },
-      "exportedName": "createUser",
+      "exportedName": "updateUser",
       "filename": "src/actions/users.ts"
     }
   },

@@ -18,9 +18,9 @@ export async function createProject(formData: FormData) {
     const summary = formData.get("summary") as string
     const content = formData.get("content") as string
     const published = formData.get("published") === "on"
-    
+
     if (!title) {
-        return { success: false, message: "O título do projeto é obrigatório." }
+      return { success: false, message: "O título do projeto é obrigatório." }
     }
 
     let slug = generateSlug(title);
@@ -30,9 +30,9 @@ export async function createProject(formData: FormData) {
     // SALVA NA PASTA "projects"
     const file = formData.get("coverImage") as File
     let coverImage = null;
-    
+
     if (file && file.size > 0) {
-        coverImage = await saveFile(file, "projects")
+      coverImage = await saveFile(file, "projects")
     }
 
     await prisma.post.create({
@@ -54,7 +54,7 @@ export async function createProject(formData: FormData) {
     revalidatePath("/admin/institution/projects")
     revalidatePath("/")
     revalidatePath("/projetos") // Garantindo que a listagem de projetos atualize
-    
+
     return { success: true, message: "Projeto criado com sucesso!" }
 
   } catch (error) {
@@ -67,7 +67,7 @@ export async function updateProject(formData: FormData) {
   try {
     const id = formData.get("id") as string
     if (!id) {
-        return { success: false, message: "ID do projeto não encontrado." }
+      return { success: false, message: "ID do projeto não encontrado." }
     }
 
     const title = formData.get("title") as string
@@ -78,10 +78,10 @@ export async function updateProject(formData: FormData) {
     // ATUALIZAÇÃO IMAGEM
     const file = formData.get("coverImage") as File
     let coverImage = formData.get("existingCoverImage") as string
-    
+
     if (file && file.size > 0) {
-        const uploadedPath = await saveFile(file, "projects")
-        if (uploadedPath) coverImage = uploadedPath
+      const uploadedPath = await saveFile(file, "projects")
+      if (uploadedPath) coverImage = uploadedPath
     }
 
     await prisma.post.update({
@@ -101,7 +101,7 @@ export async function updateProject(formData: FormData) {
     revalidatePath("/admin/institution/projects")
     revalidatePath("/")
     revalidatePath("/projetos")
-    
+
     return { success: true, message: "Projeto atualizado com sucesso!" }
 
   } catch (error) {
@@ -110,35 +110,44 @@ export async function updateProject(formData: FormData) {
   }
 }
 
-export async function deleteProject(formData: FormData) {
+export async function deleteProject(data: string | FormData) {
   try {
-    const id = formData.get("id") as string
+    // 1. Isolamos a lógica para o TypeScript ter certeza do tipo antes de usar o .get()
+    let id: string;
+
+    if (typeof data === "string") {
+      id = data;
+    } else {
+      id = data.get("id") as string;
+    }
+
     if (!id) {
-        return { success: false, message: "ID inválido para exclusão." }
+      return { success: false, message: "ID inválido para exclusão." }
     }
 
-    // Busca a capa do projeto
+    // 2. Busca o projeto no banco
     const project = await prisma.post.findUnique({ where: { id } })
-    
-    // Tenta deletar a capa física
+
+    // 3. Tenta deletar a capa física se existir
     if (project?.coverImage) {
-        try {
-            const filePath = join(process.cwd(), "public", project.coverImage)
-            if (existsSync(filePath)) await unlink(filePath)
-        } catch (e) {
-            console.error("Erro ao excluir imagem do projeto do disco:", e)
-        }
+      try {
+        const filePath = join(process.cwd(), "public", project.coverImage)
+        if (existsSync(filePath)) await unlink(filePath)
+      } catch (e) {
+        console.error("Erro ao excluir imagem do projeto do disco:", e)
+      }
     }
 
+    // 4. Deleta do banco
     await prisma.post.delete({ where: { id } })
-    
+
     // Log de Auditoria
     await logAdminAction("EXCLUIU", "Projeto", `Título: ${project?.title || "ID: " + id}`);
 
     revalidatePath("/admin/institution/projects")
     revalidatePath("/")
     revalidatePath("/projetos")
-    
+
     return { success: true, message: "Projeto excluído com sucesso!" }
 
   } catch (error) {

@@ -108,9 +108,11 @@ export async function updateEvent(formData: FormData) {
 }
 
 // --- DELETE ---
-export async function deleteEvent(formData: FormData) {
+export async function deleteEvent(data: string | FormData) {
   try {
-    const id = formData.get("id") as string;
+    // Captura o ID: se vier do DeleteButton será string, se vier de formulário será FormData
+    const id = typeof data === "string" ? data : (data.get("id") as string);
+
     if (!id) {
         return { success: false, message: "ID inválido para exclusão." };
     }

@@ -1,6 +1,6 @@
 {
   "node": {
-    "005d60dc6f4b6eb08b46327111753f4696b79a8770": {
+    "006c56cfc12fd1e6947500f9024e42d248e1cb2357": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -15,7 +15,7 @@
       "exportedName": "getAlbums",
       "filename": "src/actions/gallery.ts"
     },
-    "400974bd87b10feab13bb6edf8d1bb24dcd9cd9300": {
+    "401f71dbe723ae0ac19d7aac3c978b5c2516a7d222": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -30,22 +30,7 @@
       "exportedName": "uploadAlbumPhotos",
       "filename": "src/actions/gallery.ts"
     },
-    "400e709754dd40154212f163e1f248a76d5784c753": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "createGallery",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "createGallery",
-      "filename": "src/actions/gallery.ts"
-    },
-    "4018d9388539750f5205a4aba739ee8b4e5dc286a2": {
+    "403f6a67c1d6bf313d7b38574df63bb0315bd0dec9": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -60,82 +45,7 @@
       "exportedName": "saveAlbum",
       "filename": "src/actions/gallery.ts"
     },
-    "40263b45920a51a12be607b3abcf05006745c0e19d": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "getGallery",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "getGallery",
-      "filename": "src/actions/gallery.ts"
-    },
-    "405dd1d0352e6dace7d0faf8bec31f9e93e61d94f0": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "deleteGallery",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "deleteGallery",
-      "filename": "src/actions/gallery.ts"
-    },
-    "4081ed53357421c34386d2895e4db54f14fbb1fe6b": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "getAlbum",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "getAlbum",
-      "filename": "src/actions/gallery.ts"
-    },
-    "40e1411a9d57468eddb0e6c534c464946660867f34": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "createGalleryItem",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "createGalleryItem",
-      "filename": "src/actions/gallery.ts"
-    },
-    "40eacb8572f5c182359a609bfd245155cbcf95a75e": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "deleteAlbum",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "deleteAlbum",
-      "filename": "src/actions/gallery.ts"
-    },
-    "40f67c1d0c830ab22ea39ddcbeacb8bdf08285a05d": {
+    "404df8191867aceb7706a3488e413f89543dfbcd00": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -150,7 +60,112 @@
       "exportedName": "deletePhoto",
       "filename": "src/actions/gallery.ts"
     },
-    "603ce980c36ee6e83a8b10e9f5bc507afa54302d20": {
+    "406bbdeeff57989a82b5b50ebe849163bde8b1d7bb": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "getGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "getGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "407cc98c0425be75e481beb06b6c80a0092be281d1": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "createGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "createGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40838857a561aca8ec231cc525d7bc2c0e92568051": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "deleteAlbum",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "deleteAlbum",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40b771536de7b6b6648d12d44299ab05969dfbe8e0": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "getAlbum",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "getAlbum",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40e7f2921fc82d34129bac57fc5d60db2859d1d4b2": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "deleteGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "deleteGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40f6ca387dfc574ef28b402e97b3ecdc5b8792a4a9": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "createGalleryItem",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "createGalleryItem",
+      "filename": "src/actions/gallery.ts"
+    },
+    "60773dd1f482daf0deff655f7b490a526e8244910a": {
+      "workers": {
+        "app/(public)/galeria/page": {
+          "moduleId": 12860,
+          "async": false,
+          "exportedName": "deleteSingleImage",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/galeria/page": "rsc"
+      },
+      "exportedName": "deleteSingleImage",
+      "filename": "src/actions/gallery.ts"
+    },
+    "6091959070f867e7ad1ace537d91e22d9ea6ce8ea7": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -165,7 +180,7 @@
       "exportedName": "uploadGalleryImages",
       "filename": "src/actions/gallery.ts"
     },
-    "6080935527901ae424217585665f8022b71c27efff": {
+    "60df565fa46dcf6d061b8d5cf8fd1d47107b4384d6": {
       "workers": {
         "app/(public)/galeria/page": {
           "moduleId": 12860,
@@ -178,21 +193,6 @@
         "app/(public)/galeria/page": "rsc"
       },
       "exportedName": "updateGalleryItem",
-      "filename": "src/actions/gallery.ts"
-    },
-    "609e3235e0d79a9d4f010f9d583f2a6eb5e9da40f2": {
-      "workers": {
-        "app/(public)/galeria/page": {
-          "moduleId": 12860,
-          "async": false,
-          "exportedName": "deleteSingleImage",
-          "filename": "src/actions/gallery.ts"
-        }
-      },
-      "layer": {
-        "app/(public)/galeria/page": "rsc"
-      },
-      "exportedName": "deleteSingleImage",
       "filename": "src/actions/gallery.ts"
     }
   },

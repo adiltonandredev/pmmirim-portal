@@ -1,36 +1,6 @@
 {
   "node": {
-    "400c2358274d7f99763e009e07aa0568261b5456af": {
-      "workers": {
-        "app/admin/(painel)/banners/page": {
-          "moduleId": 68260,
-          "async": false,
-          "exportedName": "deleteBanner",
-          "filename": "src/actions/banners.ts"
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/banners/page": "rsc"
-      },
-      "exportedName": "deleteBanner",
-      "filename": "src/actions/banners.ts"
-    },
-    "4086e9aed89d97117497e68e336d74cd6dde372ef5": {
-      "workers": {
-        "app/admin/(painel)/banners/page": {
-          "moduleId": 68260,
-          "async": false,
-          "exportedName": "updateBanner",
-          "filename": "src/actions/banners.ts"
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/banners/page": "rsc"
-      },
-      "exportedName": "updateBanner",
-      "filename": "src/actions/banners.ts"
-    },
-    "40d2ff9ea4a508c4430db6a0a571964b7062268728": {
+    "407a7b93ae30f349079970f4ea289fd324301e3240": {
       "workers": {
         "app/admin/(painel)/banners/page": {
           "moduleId": 68260,
@@ -45,7 +15,37 @@
       "exportedName": "createBanner",
       "filename": "src/actions/banners.ts"
     },
-    "6032569eccdcd5272eed95bb9b5e1421a905328732": {
+    "4086f5a67a40cb2612309e7b6ef82a34753de6cd59": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "deleteBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "deleteBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "40ec6c61a956e09181a1cf1e7e88a8b9fb183c59d8": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "updateBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "updateBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "60e2d7ef0737d8db1d3b18f7d3e7f0e637013ed147": {
       "workers": {
         "app/admin/(painel)/banners/page": {
           "moduleId": 68260,

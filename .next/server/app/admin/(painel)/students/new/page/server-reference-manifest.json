@@ -1,6 +1,6 @@
 {
   "node": {
-    "40af4fcfd1acffa39af148811fd74516a456881adf": {
+    "40403b1060d1baed39e5cc77b14c7906a72ce95ae8": {
       "workers": {
         "app/admin/(painel)/students/new/page": {
           "moduleId": 73052,
@@ -15,22 +15,7 @@
       "exportedName": "$$RSC_SERVER_ACTION_0",
       "filename": "src/app/admin/(painel)/students/new/page.tsx"
     },
-    "400a34efe3cc79521d141c06923b0641b1e069492f": {
-      "workers": {
-        "app/admin/(painel)/students/new/page": {
-          "moduleId": 73052,
-          "async": false,
-          "exportedName": "deleteFeaturedStudent",
-          "filename": "src/actions/students.ts"
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/students/new/page": "rsc"
-      },
-      "exportedName": "deleteFeaturedStudent",
-      "filename": "src/actions/students.ts"
-    },
-    "403196daea9895a6b05109de79ba29bcb5551d3b1d": {
+    "40378fbf060ac4611216a25ccc2ca96307d129d389": {
       "workers": {
         "app/admin/(painel)/students/new/page": {
           "moduleId": 73052,
@@ -45,37 +30,7 @@
       "exportedName": "updateFeaturedStudent",
       "filename": "src/actions/students.ts"
     },
-    "404b31ef5a1684d9e309dea2320d9db067061d204c": {
-      "workers": {
-        "app/admin/(painel)/students/new/page": {
-          "moduleId": 73052,
-          "async": false,
-          "exportedName": "deleteStudent",
-          "filename": "src/actions/students.ts"
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/students/new/page": "rsc"
-      },
-      "exportedName": "deleteStudent",
-      "filename": "src/actions/students.ts"
-    },
-    "4080dbbce5cf88d79e77915db95d4b01205521453f": {
-      "workers": {
-        "app/admin/(painel)/students/new/page": {
-          "moduleId": 73052,
-          "async": false,
-          "exportedName": "createFeaturedStudent",
-          "filename": "src/actions/students.ts"
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/students/new/page": "rsc"
-      },
-      "exportedName": "createFeaturedStudent",
-      "filename": "src/actions/students.ts"
-    },
-    "409f0600998d6094cd9800687d6c5e44670925a1cb": {
+    "4040c59e2b25db66fbb643ee057b860af5e8041be0": {
       "workers": {
         "app/admin/(painel)/students/new/page": {
           "moduleId": 73052,
@@ -90,7 +45,37 @@
       "exportedName": "updateStudent",
       "filename": "src/actions/students.ts"
     },
-    "40b1d78adc93dff07e5f3498dee635a175538fab57": {
+    "40450ad7b243795453865d00d68a73168304fba7bc": {
+      "workers": {
+        "app/admin/(painel)/students/new/page": {
+          "moduleId": 73052,
+          "async": false,
+          "exportedName": "deleteStudent",
+          "filename": "src/actions/students.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/students/new/page": "rsc"
+      },
+      "exportedName": "deleteStudent",
+      "filename": "src/actions/students.ts"
+    },
+    "40603186f55387b1e1478f39b4233753bacf66df38": {
+      "workers": {
+        "app/admin/(painel)/students/new/page": {
+          "moduleId": 73052,
+          "async": false,
+          "exportedName": "createFeaturedStudent",
+          "filename": "src/actions/students.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/students/new/page": "rsc"
+      },
+      "exportedName": "createFeaturedStudent",
+      "filename": "src/actions/students.ts"
+    },
+    "4067761b8210cf4bda7c684c8ec267a4ff961444e1": {
       "workers": {
         "app/admin/(painel)/students/new/page": {
           "moduleId": 73052,
@@ -103,6 +88,21 @@
         "app/admin/(painel)/students/new/page": "rsc"
       },
       "exportedName": "createStudent",
+      "filename": "src/actions/students.ts"
+    },
+    "40dfeea14c0d46ebe59cf5c61e46dd5aebf40c5acb": {
+      "workers": {
+        "app/admin/(painel)/students/new/page": {
+          "moduleId": 73052,
+          "async": false,
+          "exportedName": "deleteFeaturedStudent",
+          "filename": "src/actions/students.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/students/new/page": "rsc"
+      },
+      "exportedName": "deleteFeaturedStudent",
       "filename": "src/actions/students.ts"
     }
   },

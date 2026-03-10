@@ -1,6 +1,6 @@
 {
   "node": {
-    "4086e9aed89d97117497e68e336d74cd6dde372ef5": {
+    "40ec6c61a956e09181a1cf1e7e88a8b9fb183c59d8": {
       "workers": {
         "app/admin/(painel)/banners/[id]/edit/page": {
           "moduleId": 98070,
@@ -15,7 +15,7 @@
       "exportedName": "updateBanner",
       "filename": "src/actions/banners.ts"
     },
-    "40d2ff9ea4a508c4430db6a0a571964b7062268728": {
+    "407a7b93ae30f349079970f4ea289fd324301e3240": {
       "workers": {
         "app/admin/(painel)/banners/[id]/edit/page": {
           "moduleId": 98070,

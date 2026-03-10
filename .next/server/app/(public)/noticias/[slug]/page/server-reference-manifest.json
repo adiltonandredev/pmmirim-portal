@@ -1,6 +1,6 @@
 {
   "node": {
-    "40f7945e721b3b9eb7b843e8fe3e13f427c53e2fb3": {
+    "40769cffb26e1cbe9c054398af826122af71e5a852": {
       "workers": {
         "app/(public)/noticias/[slug]/page": {
           "moduleId": 3683,

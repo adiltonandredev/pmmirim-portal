@@ -22,20 +22,20 @@ export async function createCourse(formData: FormData) {
     }
 
     if (!data.title) {
-        return { success: false, message: "O título do curso é obrigatório." }
+      return { success: false, message: "O título do curso é obrigatório." }
     }
 
     // SALVA NA PASTA "courses"
     const coverFile = formData.get("coverImage") as File
     let coverImage = null;
     if (coverFile && coverFile.size > 0) {
-        coverImage = await saveFile(coverFile, "courses")
+      coverImage = await saveFile(coverFile, "courses")
     }
 
     const sponsorFile = formData.get("sponsorLogo") as File
     let sponsorLogo = null;
     if (sponsorFile && sponsorFile.size > 0) {
-        sponsorLogo = await saveFile(sponsorFile, "courses")
+      sponsorLogo = await saveFile(sponsorFile, "courses")
     }
 
     // Gera o slug automaticamente
@@ -60,7 +60,7 @@ export async function createCourse(formData: FormData) {
 
     revalidatePath("/admin/courses")
     revalidatePath("/cursos")
-    
+
     return { success: true, message: "Curso criado com sucesso!" }
 
   } catch (error) {
@@ -74,23 +74,23 @@ export async function updateCourse(formData: FormData) {
   try {
     const id = formData.get("id") as string
     if (!id) {
-        return { success: false, message: "ID do curso não encontrado." }
+      return { success: false, message: "ID do curso não encontrado." }
     }
-    
+
     // Atualiza Capa
     const coverFile = formData.get("coverImage") as File
     let coverImage = formData.get("existingCoverImage") as string
     if (coverFile && coverFile.size > 0) {
-        const uploadedPath = await saveFile(coverFile, "courses")
-        if (uploadedPath) coverImage = uploadedPath
+      const uploadedPath = await saveFile(coverFile, "courses")
+      if (uploadedPath) coverImage = uploadedPath
     }
 
     // Atualiza Logo Patrocinador
     const sponsorFile = formData.get("sponsorLogo") as File
     let sponsorLogo = formData.get("existingSponsorLogo") as string
     if (sponsorFile && sponsorFile.size > 0) {
-        const uploadedPath = await saveFile(sponsorFile, "courses")
-        if (uploadedPath) sponsorLogo = uploadedPath
+      const uploadedPath = await saveFile(sponsorFile, "courses")
+      if (uploadedPath) sponsorLogo = uploadedPath
     }
 
     const data = {
@@ -112,7 +112,7 @@ export async function updateCourse(formData: FormData) {
 
     revalidatePath("/admin/courses")
     revalidatePath("/cursos")
-    
+
     return { success: true, message: "Curso atualizado com sucesso!" }
 
   } catch (error) {
@@ -122,11 +122,13 @@ export async function updateCourse(formData: FormData) {
 }
 
 // 3. EXCLUIR CURSO
-export async function deleteCourse(formData: FormData) {
+export async function deleteCourse(data: string | FormData) {
   try {
-    const id = formData.get("id") as string
+    // Captura o ID de forma inteligente: se for string usa direto, se for FormData extrai o campo "id"
+    const id = typeof data === "string" ? data : (data.get("id") as string)
+
     if (!id) {
-        return { success: false, message: "ID inválido para exclusão." }
+      return { success: false, message: "ID inválido para exclusão." }
     }
 
     // 1. Busca os dados para limpar os arquivos físicos
@@ -134,22 +136,22 @@ export async function deleteCourse(formData: FormData) {
 
     // 2. Deleta a imagem de capa se existir
     if (course?.coverImage) {
-        try {
-            const filePath = join(process.cwd(), "public", course.coverImage)
-            if (existsSync(filePath)) await unlink(filePath)
-        } catch (e) {
-            console.error("Erro ao excluir foto de capa do curso:", e)
-        }
+      try {
+        const filePath = join(process.cwd(), "public", course.coverImage)
+        if (existsSync(filePath)) await unlink(filePath)
+      } catch (e) {
+        console.error("Erro ao excluir foto de capa do curso:", e)
+      }
     }
 
     // 3. Deleta a logo do patrocinador se existir
     if (course?.sponsorLogo) {
-        try {
-            const filePath = join(process.cwd(), "public", course.sponsorLogo)
-            if (existsSync(filePath)) await unlink(filePath)
-        } catch (e) {
-            console.error("Erro ao excluir logo do patrocinador do curso:", e)
-        }
+      try {
+        const filePath = join(process.cwd(), "public", course.sponsorLogo)
+        if (existsSync(filePath)) await unlink(filePath)
+      } catch (e) {
+        console.error("Erro ao excluir logo do patrocinador do curso:", e)
+      }
     }
 
     // 4. Deleta do banco
