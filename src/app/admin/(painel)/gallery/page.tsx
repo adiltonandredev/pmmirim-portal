@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
-import Image from "next/image" // <--- Importamos o componente otimizado
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Plus, Folder, Image as ImageIcon, Calendar, Pencil } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"

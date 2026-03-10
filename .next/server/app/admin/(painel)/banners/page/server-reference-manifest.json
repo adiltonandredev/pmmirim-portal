@@ -1,0 +1,65 @@
+{
+  "node": {
+    "400c2358274d7f99763e009e07aa0568261b5456af": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "deleteBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "deleteBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "4086e9aed89d97117497e68e336d74cd6dde372ef5": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "updateBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "updateBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "40d2ff9ea4a508c4430db6a0a571964b7062268728": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "createBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "createBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "6032569eccdcd5272eed95bb9b5e1421a905328732": {
+      "workers": {
+        "app/admin/(painel)/banners/page": {
+          "moduleId": 68260,
+          "async": false,
+          "exportedName": "toggleBannerActive",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/page": "rsc"
+      },
+      "exportedName": "toggleBannerActive",
+      "filename": "src/actions/banners.ts"
+    }
+  },
+  "edge": {}
+}

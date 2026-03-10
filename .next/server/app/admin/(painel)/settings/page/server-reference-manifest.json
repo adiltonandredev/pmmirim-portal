@@ -1,0 +1,35 @@
+{
+  "node": {
+    "4033fc2746c54df6ca3a87aafd641d583dff60bcd4": {
+      "workers": {
+        "app/admin/(painel)/settings/page": {
+          "moduleId": 61100,
+          "async": false,
+          "exportedName": "updateSettings",
+          "filename": "src/actions/settings.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/settings/page": "action-browser"
+      },
+      "exportedName": "updateSettings",
+      "filename": "src/actions/settings.ts"
+    },
+    "40ee847505e4efb338ed8ca9af75bf7ddbddf61ec8": {
+      "workers": {
+        "app/admin/(painel)/settings/page": {
+          "moduleId": 61100,
+          "async": false,
+          "exportedName": "updateInstagramSettings",
+          "filename": "src/actions/settings.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/settings/page": "action-browser"
+      },
+      "exportedName": "updateInstagramSettings",
+      "filename": "src/actions/settings.ts"
+    }
+  },
+  "edge": {}
+}

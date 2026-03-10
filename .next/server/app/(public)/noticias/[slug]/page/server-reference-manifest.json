@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40f7945e721b3b9eb7b843e8fe3e13f427c53e2fb3": {
+      "workers": {
+        "app/(public)/noticias/[slug]/page": {
+          "moduleId": 3683,
+          "async": false,
+          "exportedName": "createComment",
+          "filename": "src/actions/comments.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/noticias/[slug]/page": "action-browser"
+      },
+      "exportedName": "createComment",
+      "filename": "src/actions/comments.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,35 @@
+{
+  "node": {
+    "40bb62aa218387e73a26c34bb9401da767f4eb5dcd": {
+      "workers": {
+        "app/admin/(painel)/institution/team/new/page": {
+          "moduleId": 20897,
+          "async": false,
+          "exportedName": "updateTeamMember",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/new/page": "action-browser"
+      },
+      "exportedName": "updateTeamMember",
+      "filename": "src/actions/team.ts"
+    },
+    "4007887be9275f190774123806827ebe030bcd7819": {
+      "workers": {
+        "app/admin/(painel)/institution/team/new/page": {
+          "moduleId": 20897,
+          "async": false,
+          "exportedName": "createTeamMember",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/new/page": "action-browser"
+      },
+      "exportedName": "createTeamMember",
+      "filename": "src/actions/team.ts"
+    }
+  },
+  "edge": {}
+}

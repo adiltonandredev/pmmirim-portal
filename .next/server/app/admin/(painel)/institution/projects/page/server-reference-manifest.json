@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4049e28a9ef48e4c27a3e348b4894a5f68a8a88719": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/page": {
+          "moduleId": 30478,
+          "async": false,
+          "exportedName": "deleteProject",
+          "filename": "src/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/page": "rsc"
+      },
+      "exportedName": "deleteProject",
+      "filename": "src/actions/projects.ts"
+    },
+    "4061640b361eb2c826c6aa91b2c7fb02f8cc32eede": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/page": {
+          "moduleId": 30478,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/page": "rsc"
+      },
+      "exportedName": "createProject",
+      "filename": "src/actions/projects.ts"
+    },
+    "408ca41bd57575887d77fa1ccd385ab3170dbcebd7": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/page": {
+          "moduleId": 30478,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/page": "rsc"
+      },
+      "exportedName": "updateProject",
+      "filename": "src/actions/projects.ts"
+    }
+  },
+  "edge": {}
+}

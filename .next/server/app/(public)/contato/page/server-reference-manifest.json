@@ -1,0 +1,20 @@
+{
+  "node": {
+    "4031290c68e1db1f50c91658e6338100061497c59b": {
+      "workers": {
+        "app/(public)/contato/page": {
+          "moduleId": 56289,
+          "async": false,
+          "exportedName": "sendContactMessage",
+          "filename": "src/actions/contact.ts"
+        }
+      },
+      "layer": {
+        "app/(public)/contato/page": "action-browser"
+      },
+      "exportedName": "sendContactMessage",
+      "filename": "src/actions/contact.ts"
+    }
+  },
+  "edge": {}
+}

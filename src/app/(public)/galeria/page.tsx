@@ -1,4 +1,3 @@
-// src/app/galeria/page.tsx
 import { getAlbums } from "@/actions/gallery"
 import Link from "next/link"
 import Image from "next/image"

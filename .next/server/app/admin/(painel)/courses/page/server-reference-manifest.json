@@ -1,0 +1,50 @@
+{
+  "node": {
+    "402994e92efa6efc35c6a5a23e5fc2a2ff054f870e": {
+      "workers": {
+        "app/admin/(painel)/courses/page": {
+          "moduleId": 67506,
+          "async": false,
+          "exportedName": "updateCourse",
+          "filename": "src/actions/courses.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/courses/page": "rsc"
+      },
+      "exportedName": "updateCourse",
+      "filename": "src/actions/courses.ts"
+    },
+    "405acaf357842406779669744709fce5aaa8cea373": {
+      "workers": {
+        "app/admin/(painel)/courses/page": {
+          "moduleId": 67506,
+          "async": false,
+          "exportedName": "createCourse",
+          "filename": "src/actions/courses.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/courses/page": "rsc"
+      },
+      "exportedName": "createCourse",
+      "filename": "src/actions/courses.ts"
+    },
+    "4076b5e4c948c150e0096dd113b956ecd628a56e60": {
+      "workers": {
+        "app/admin/(painel)/courses/page": {
+          "moduleId": 67506,
+          "async": false,
+          "exportedName": "deleteCourse",
+          "filename": "src/actions/courses.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/courses/page": "rsc"
+      },
+      "exportedName": "deleteCourse",
+      "filename": "src/actions/courses.ts"
+    }
+  },
+  "edge": {}
+}

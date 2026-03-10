@@ -1,0 +1,20 @@
+{
+  "node": {
+    "404af4436b1c07dcc85ab92c4d146e6e5cdb9c62b3": {
+      "workers": {
+        "app/admin/(painel)/users/[id]/edit/page": {
+          "moduleId": 24288,
+          "async": false,
+          "exportedName": "updateUser",
+          "filename": "src/actions/users.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/users/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateUser",
+      "filename": "src/actions/users.ts"
+    }
+  },
+  "edge": {}
+}

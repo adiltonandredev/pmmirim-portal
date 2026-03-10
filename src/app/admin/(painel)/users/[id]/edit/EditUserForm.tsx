@@ -20,10 +20,11 @@ export function EditUserForm({ user }: { user: any }) {
     setError(null)
     
     const formData = new FormData(e.currentTarget)
-    const result = await updateUser(formData)
+    const result = await updateUser(formData) // Aqui result é { success, message }
     
-    if (result?.error) {
-        setError(result.error)
+    // CORREÇÃO AQUI: A Action retorna "success" e "message"
+    if (!result.success) {
+        setError(result.message || "Erro desconhecido")
         setLoading(false)
     } else {
         router.push("/admin/users")

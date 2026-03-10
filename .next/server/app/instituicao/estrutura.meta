@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(public)/layout,_N_T_/(public)/instituicao/layout,_N_T_/(public)/instituicao/estrutura/layout,_N_T_/(public)/instituicao/estrutura/page,_N_T_/instituicao/estrutura"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KHB1YmxpYyk/instituicao/estrutura/__PAGE__",
+    "/!KHB1YmxpYyk/instituicao/estrutura",
+    "/!KHB1YmxpYyk/instituicao",
+    "/!KHB1YmxpYyk",
+    "/_index",
+    "/_head"
+  ]
+}

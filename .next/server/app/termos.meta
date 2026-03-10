@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(public)/layout,_N_T_/(public)/termos/layout,_N_T_/(public)/termos/page,_N_T_/termos"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KHB1YmxpYyk/termos/__PAGE__",
+    "/!KHB1YmxpYyk/termos",
+    "/!KHB1YmxpYyk",
+    "/_index",
+    "/_head"
+  ]
+}

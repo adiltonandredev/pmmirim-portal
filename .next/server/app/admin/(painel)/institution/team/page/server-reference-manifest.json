@@ -1,0 +1,65 @@
+{
+  "node": {
+    "4007887be9275f190774123806827ebe030bcd7819": {
+      "workers": {
+        "app/admin/(painel)/institution/team/page": {
+          "moduleId": 68894,
+          "async": false,
+          "exportedName": "createTeamMember",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/page": "rsc"
+      },
+      "exportedName": "createTeamMember",
+      "filename": "src/actions/team.ts"
+    },
+    "40bb62aa218387e73a26c34bb9401da767f4eb5dcd": {
+      "workers": {
+        "app/admin/(painel)/institution/team/page": {
+          "moduleId": 68894,
+          "async": false,
+          "exportedName": "updateTeamMember",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/page": "rsc"
+      },
+      "exportedName": "updateTeamMember",
+      "filename": "src/actions/team.ts"
+    },
+    "40d1f078951b46864157cf394a83e8b21cf93fee8a": {
+      "workers": {
+        "app/admin/(painel)/institution/team/page": {
+          "moduleId": 68894,
+          "async": false,
+          "exportedName": "deleteTeamMember",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/page": "rsc"
+      },
+      "exportedName": "deleteTeamMember",
+      "filename": "src/actions/team.ts"
+    },
+    "40f21e2b36812539881ff4ff30e1a676ff2d72c8ff": {
+      "workers": {
+        "app/admin/(painel)/institution/team/page": {
+          "moduleId": 68894,
+          "async": false,
+          "exportedName": "getTeamMembers",
+          "filename": "src/actions/team.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/team/page": "rsc"
+      },
+      "exportedName": "getTeamMembers",
+      "filename": "src/actions/team.ts"
+    }
+  },
+  "edge": {}
+}

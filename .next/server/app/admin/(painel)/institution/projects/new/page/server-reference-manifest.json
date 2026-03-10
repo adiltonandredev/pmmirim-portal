@@ -1,0 +1,50 @@
+{
+  "node": {
+    "408ca41bd57575887d77fa1ccd385ab3170dbcebd7": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/new/page": {
+          "moduleId": 53019,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/new/page": "action-browser"
+      },
+      "exportedName": "updateProject",
+      "filename": "src/actions/projects.ts"
+    },
+    "4061640b361eb2c826c6aa91b2c7fb02f8cc32eede": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/new/page": {
+          "moduleId": 53019,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/actions/projects.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/new/page": "action-browser"
+      },
+      "exportedName": "createProject",
+      "filename": "src/actions/projects.ts"
+    },
+    "402beff299b4d19f5782675f1da85eb03202771407": {
+      "workers": {
+        "app/admin/(painel)/institution/projects/new/page": {
+          "moduleId": 53019,
+          "async": false,
+          "exportedName": "uploadImage",
+          "filename": "src/actions/upload.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/institution/projects/new/page": "action-browser"
+      },
+      "exportedName": "uploadImage",
+      "filename": "src/actions/upload.ts"
+    }
+  },
+  "edge": {}
+}

@@ -21,9 +21,10 @@ export function CommentSection({ postId, comments }: CommentProps) {
 
     async function handleSubmit(formData: FormData) {
         const res = await createComment(formData)
-        
-        if (res?.error) {
-            toast.error(res.error)
+
+        // ALTERAÇÃO: Trocamos .error por .success para validar o retorno
+        if (!res?.success) {
+            toast.error(res?.message || "Erro ao enviar comentário")
         } else {
             toast.success("Comentário enviado!")
             formRef.current?.reset()
@@ -65,7 +66,7 @@ export function CommentSection({ postId, comments }: CommentProps) {
                 <h4 className="font-bold text-slate-700 mb-4">Deixe seu comentário</h4>
                 <form ref={formRef} action={handleSubmit} className="space-y-4">
                     <input type="hidden" name="postId" value={postId} />
-                    
+
                     <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Seu Nome</label>
                         <input required name="author" placeholder="Ex: João da Silva" className="w-full p-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500" />

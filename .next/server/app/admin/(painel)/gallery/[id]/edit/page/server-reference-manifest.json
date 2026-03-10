@@ -1,0 +1,200 @@
+{
+  "node": {
+    "005d60dc6f4b6eb08b46327111753f4696b79a8770": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "getAlbums",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "getAlbums",
+      "filename": "src/actions/gallery.ts"
+    },
+    "400974bd87b10feab13bb6edf8d1bb24dcd9cd9300": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "uploadAlbumPhotos",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "uploadAlbumPhotos",
+      "filename": "src/actions/gallery.ts"
+    },
+    "400e709754dd40154212f163e1f248a76d5784c753": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "createGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "createGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "4018d9388539750f5205a4aba739ee8b4e5dc286a2": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "saveAlbum",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "saveAlbum",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40263b45920a51a12be607b3abcf05006745c0e19d": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "getGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "getGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "405dd1d0352e6dace7d0faf8bec31f9e93e61d94f0": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "deleteGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "deleteGallery",
+      "filename": "src/actions/gallery.ts"
+    },
+    "4081ed53357421c34386d2895e4db54f14fbb1fe6b": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "getAlbum",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "getAlbum",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40e1411a9d57468eddb0e6c534c464946660867f34": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "createGalleryItem",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "createGalleryItem",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40eacb8572f5c182359a609bfd245155cbcf95a75e": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "deleteAlbum",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "deleteAlbum",
+      "filename": "src/actions/gallery.ts"
+    },
+    "40f67c1d0c830ab22ea39ddcbeacb8bdf08285a05d": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "deletePhoto",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "deletePhoto",
+      "filename": "src/actions/gallery.ts"
+    },
+    "603ce980c36ee6e83a8b10e9f5bc507afa54302d20": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "uploadGalleryImages",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "uploadGalleryImages",
+      "filename": "src/actions/gallery.ts"
+    },
+    "6080935527901ae424217585665f8022b71c27efff": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "updateGalleryItem",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "updateGalleryItem",
+      "filename": "src/actions/gallery.ts"
+    },
+    "609e3235e0d79a9d4f010f9d583f2a6eb5e9da40f2": {
+      "workers": {
+        "app/admin/(painel)/gallery/[id]/edit/page": {
+          "moduleId": 65186,
+          "async": false,
+          "exportedName": "deleteSingleImage",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/[id]/edit/page": "rsc"
+      },
+      "exportedName": "deleteSingleImage",
+      "filename": "src/actions/gallery.ts"
+    }
+  },
+  "edge": {}
+}

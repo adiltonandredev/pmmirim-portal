@@ -1,0 +1,35 @@
+{
+  "node": {
+    "4086e9aed89d97117497e68e336d74cd6dde372ef5": {
+      "workers": {
+        "app/admin/(painel)/banners/[id]/edit/page": {
+          "moduleId": 98070,
+          "async": false,
+          "exportedName": "updateBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateBanner",
+      "filename": "src/actions/banners.ts"
+    },
+    "40d2ff9ea4a508c4430db6a0a571964b7062268728": {
+      "workers": {
+        "app/admin/(painel)/banners/[id]/edit/page": {
+          "moduleId": 98070,
+          "async": false,
+          "exportedName": "createBanner",
+          "filename": "src/actions/banners.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/banners/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "createBanner",
+      "filename": "src/actions/banners.ts"
+    }
+  },
+  "edge": {}
+}

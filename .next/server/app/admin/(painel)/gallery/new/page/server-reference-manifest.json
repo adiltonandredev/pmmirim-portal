@@ -1,0 +1,20 @@
+{
+  "node": {
+    "400e709754dd40154212f163e1f248a76d5784c753": {
+      "workers": {
+        "app/admin/(painel)/gallery/new/page": {
+          "moduleId": 4647,
+          "async": false,
+          "exportedName": "createGallery",
+          "filename": "src/actions/gallery.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/gallery/new/page": "action-browser"
+      },
+      "exportedName": "createGallery",
+      "filename": "src/actions/gallery.ts"
+    }
+  },
+  "edge": {}
+}

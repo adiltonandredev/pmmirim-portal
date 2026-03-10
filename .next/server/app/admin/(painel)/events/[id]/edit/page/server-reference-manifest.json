@@ -1,0 +1,35 @@
+{
+  "node": {
+    "404d998360b253e89bcc1541c776d3cecbc5628457": {
+      "workers": {
+        "app/admin/(painel)/events/[id]/edit/page": {
+          "moduleId": 2851,
+          "async": false,
+          "exportedName": "updateEvent",
+          "filename": "src/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/events/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "updateEvent",
+      "filename": "src/actions/events.ts"
+    },
+    "40cf6fe5b61b7effa7a9f218cc2c54f4e39a8603da": {
+      "workers": {
+        "app/admin/(painel)/events/[id]/edit/page": {
+          "moduleId": 2851,
+          "async": false,
+          "exportedName": "createEvent",
+          "filename": "src/actions/events.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/events/[id]/edit/page": "action-browser"
+      },
+      "exportedName": "createEvent",
+      "filename": "src/actions/events.ts"
+    }
+  },
+  "edge": {}
+}

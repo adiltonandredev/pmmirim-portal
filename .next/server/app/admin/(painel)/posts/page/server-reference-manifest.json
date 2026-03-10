@@ -1,0 +1,50 @@
+{
+  "node": {
+    "4058571b653cd00c1f90264883a50f2a9305c6dbcd": {
+      "workers": {
+        "app/admin/(painel)/posts/page": {
+          "moduleId": 95709,
+          "async": false,
+          "exportedName": "createPost",
+          "filename": "src/actions/posts.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/posts/page": "rsc"
+      },
+      "exportedName": "createPost",
+      "filename": "src/actions/posts.ts"
+    },
+    "40b62a383cb0b3167d77f098d39ebf13eaf7bcbb47": {
+      "workers": {
+        "app/admin/(painel)/posts/page": {
+          "moduleId": 95709,
+          "async": false,
+          "exportedName": "deletePost",
+          "filename": "src/actions/posts.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/posts/page": "rsc"
+      },
+      "exportedName": "deletePost",
+      "filename": "src/actions/posts.ts"
+    },
+    "40bbbde952b4f980de617a5423a1ce6469c4b15efc": {
+      "workers": {
+        "app/admin/(painel)/posts/page": {
+          "moduleId": 95709,
+          "async": false,
+          "exportedName": "updatePost",
+          "filename": "src/actions/posts.ts"
+        }
+      },
+      "layer": {
+        "app/admin/(painel)/posts/page": "rsc"
+      },
+      "exportedName": "updatePost",
+      "filename": "src/actions/posts.ts"
+    }
+  },
+  "edge": {}
+}

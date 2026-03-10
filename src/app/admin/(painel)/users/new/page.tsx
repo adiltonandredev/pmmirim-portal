@@ -23,8 +23,9 @@ export default function NewUserPage() {
     const formData = new FormData(e.currentTarget)
     const result = await createUser(formData)
     
-    if (result?.error) {
-        setError(result.error)
+    // CORREÇÃO: Alinhando com o retorno da Action { success, message }
+    if (!result.success) {
+        setError(result.message || "Erro ao criar usuário")
         setLoading(false)
     } else {
         router.push("/admin/users")
@@ -56,7 +57,6 @@ export default function NewUserPage() {
                 <Input name="email" type="email" placeholder="email@pmm.com.br" required className="h-12" />
             </div>
 
-            {/* SEÇÃO DE SENHA COM DUPLO CAMPO */}
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                     <Label className="flex items-center gap-2"><Lock size={16} /> Senha Inicial</Label>
@@ -81,7 +81,6 @@ export default function NewUserPage() {
                 </Select>
             </div>
 
-            {/* ALERTA DE ERRO */}
             {error && (
                 <div className="bg-red-50 text-red-600 p-4 rounded-lg flex items-center gap-2 border border-red-200 animate-in slide-in-from-top-2">
                     <AlertCircle size={20} />

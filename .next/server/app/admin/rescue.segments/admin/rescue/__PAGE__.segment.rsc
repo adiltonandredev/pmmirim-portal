@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/b31c2a86e94c75de.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+2:{"id":"000d8701a065305d6ec5bf9a0df59d40ca2e439409","bound":null}
+0:{"buildId":"ynCUQrlNUpEH-TNig9szx","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex min-h-screen flex-col items-center justify-center bg-blue-900 p-4 text-white","children":["$","div",null,{"className":"bg-white text-slate-900 p-8 rounded-lg shadow-xl text-center max-w-md","children":[["$","h1",null,{"className":"text-2xl font-bold text-blue-600 mb-4","children":"🔐 RESGATE FINAL"}],["$","p",null,{"className":"mb-6 text-gray-600","children":["Este script vai calcular uma nova criptografia válida para a senha ",["$","strong",null,{"children":"123456"}]," e salvar no usuário ",["$","strong",null,{"children":"adiltonandre.dev@gmail.com"}],"."]}],["$","form",null,{"action":"$h2","children":["$","button",null,{"type":"submit","className":"w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded transition-all","children":"GERAR NOVA SENHA E SALVAR"}]}]]}]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null
