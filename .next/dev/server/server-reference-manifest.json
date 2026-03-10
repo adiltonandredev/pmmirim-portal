@@ -1,0 +1,45 @@
+{
+  "node": {
+    "00b823a5f25d31fc7f2649281c59c2e8d33033c833": {
+      "workers": {
+        "app/(public)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%2200b823a5f25d31fc7f2649281c59c2e8d33033c833%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%2240bacdc76dfc69fb3f5bb9a3263b7480099763494f%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(public)/page": "rsc"
+      },
+      "filename": "../C:\\pmmirim-portal\\src\\actions\\instagram.ts",
+      "exportedName": "getInstagramFeed"
+    },
+    "40bacdc76dfc69fb3f5bb9a3263b7480099763494f": {
+      "workers": {
+        "app/(public)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%2200b823a5f25d31fc7f2649281c59c2e8d33033c833%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%2240bacdc76dfc69fb3f5bb9a3263b7480099763494f%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(public)/page": "rsc"
+      },
+      "filename": "../C:\\pmmirim-portal\\src\\actions\\instagram.ts",
+      "exportedName": "saveInstagramSettings"
+    },
+    "409daa34481de38e04048658e9a7816e5362f59122": {
+      "workers": {
+        "app/(public)/noticias/[slug]/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Ccomments.ts%22%2C%5B%7B%22id%22%3A%22409daa34481de38e04048658e9a7816e5362f59122%22%2C%22exportedName%22%3A%22createComment%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cactions%5C%5Ccomments.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(public)/noticias/[slug]/page": "action-browser"
+      },
+      "filename": "../C:\\pmmirim-portal\\src\\actions\\comments.ts",
+      "exportedName": "createComment"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "7n2SLk6IWWCnDXHofZoaASp6S/WupvJv8s81FdYzTTg="
+}
