@@ -67,7 +67,7 @@ export default async function AdminUsersPage() {
 
                             {/* BOTÃO EXCLUIR MOBILE */}
                             <DeleteButton 
-                              action={deleteUser} 
+                              action={deleteUser as any} 
                               itemId={user.id} 
                               itemName={user.name || "Usuário sem nome"}
                               className="h-10 w-10 p-0 bg-white border border-slate-200 rounded-md text-red-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center shadow-sm"

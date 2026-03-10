@@ -117,7 +117,7 @@ export default async function AdminNewsPage({ searchParams }: Props) {
                         </Link>
 
                         <DeleteButton 
-                            action={deletePost} 
+                            action={deletePost as any} 
                             itemId={post.id} 
                             itemName={post.title}
                             className="h-8 w-8 p-0 bg-white border border-slate-200 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center shadow-sm"

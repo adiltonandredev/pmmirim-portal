@@ -98,7 +98,7 @@ export default async function AdminEventsPage() {
                         </Link>
                         
                         <DeleteButton 
-                            action={deleteEvent} 
+                            action={deleteEvent as any}
                             itemId={event.id} 
                             itemName={`o evento "${event.title}"`}
                             className="h-9 w-9 p-0 bg-white border border-slate-200 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors shadow-sm"

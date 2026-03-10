@@ -102,7 +102,7 @@ export default async function StudentsPage() {
 
                     {/* Botão Excluir */}
                     <DeleteButton 
-                        action={deleteStudent} 
+                        action={deleteStudent as any} 
                         itemId={student.id} 
                         itemName={student.name} // IMPORTANTE: Passar o nome para não dar erro no TypeScript
                         className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all"
