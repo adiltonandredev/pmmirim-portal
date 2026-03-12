@@ -13,7 +13,7 @@ import {
   WrapText, Type, MoveVertical
 } from 'lucide-react'
 import { Toggle } from "@/components/ui/toggle"
-import { uploadImage } from '@/server/actions/upload'
+import { uploadImage } from '@/lib/uploadthing'
 import { useRef, useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 

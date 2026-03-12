@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { saveAlbum, deleteAlbum, deletePhoto, uploadAlbumPhotos } from "@/server/actions/gallery"
-import { uploadImage } from "@/server/actions/upload"
+import { uploadImage } from "@/lib/uploadthing"
 import { Button } from "@/components/ui/button"
 import { Trash2, Edit, Plus, Save, X, Upload, Image as ImageIcon, Calendar, ArrowLeft, Loader2, FolderOpen } from "lucide-react"
 import { toast } from "sonner"
