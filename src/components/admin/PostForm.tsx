@@ -1,6 +1,6 @@
 "use client"
 
-import { updatePost, createPost } from "@/actions/posts"
+import { updatePost, createPost } from "@/server/actions/posts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

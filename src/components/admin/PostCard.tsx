@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Trash2, Calendar, Star, Image as ImageIcon } from "lucide-react"
-import { deletePost } from "@/actions/posts" 
+import { deletePost } from "@/server/actions/posts" 
 
 interface PostProps {
   post: {

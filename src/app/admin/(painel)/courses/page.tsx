@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { Plus, Pencil, BookOpen, Clock, Users, Image as ImageIcon, Calendar } from "lucide-react"
-import { deleteCourse } from "@/actions/courses"
+import { deleteCourse } from "@/server/actions/courses"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 import { DeleteButton } from "@/components/admin/DeleteButton" // <--- Importamos o botão seguro
 

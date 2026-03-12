@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, Cake, Pencil, User, CalendarDays } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 import { DeleteButton } from "@/components/admin/DeleteButton"
-import { deleteBirthday } from "@/actions/birthdays"
+import { deleteBirthday } from "@/server/actions/birthdays"
 
 export const dynamic = "force-dynamic"
 

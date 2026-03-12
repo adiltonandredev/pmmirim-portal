@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Instagram } from "lucide-react"
-import { getInstagramFeed } from "@/actions/instagram"
+import { getInstagramFeed } from "@/server/actions/instagram"
 import { prisma } from "@/lib/prisma"
 
 export async function InstagramFeed() {

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { toast } from "sonner"; 
 import { Button } from "@/components/ui/button";
-import { updateBirthday } from "@/actions/birthdays";
+import { updateBirthday } from "@/server/actions/birthdays";
 import { Save, AlertCircle, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";

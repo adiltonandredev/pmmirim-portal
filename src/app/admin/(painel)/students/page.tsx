@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { prisma } from "@/lib/prisma"
 import { Plus, Search, User, GraduationCap, Edit, Trash2 } from "lucide-react"
-import { deleteStudent } from "@/actions/students"
+import { deleteStudent } from "@/server/actions/students"
 import { DeleteButton } from "@/components/admin/DeleteButton" // Reaproveitando seu botão
 
 export const dynamic = 'force-dynamic'

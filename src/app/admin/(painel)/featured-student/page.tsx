@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { deleteFeaturedStudent } from "@/actions/students"
+import { deleteFeaturedStudent } from "@/server/actions/students"
 import { DeleteButton } from "@/components/admin/DeleteButton"
 import { Button } from "@/components/ui/button"
 import { Trash2, Plus, Star, Pencil, Trophy } from "lucide-react"

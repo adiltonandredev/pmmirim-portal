@@ -1,6 +1,6 @@
 "use client"
 
-import { updateTeamMember, createTeamMember } from "@/actions/team"
+import { updateTeamMember, createTeamMember } from "@/server/actions/team"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

@@ -1,6 +1,6 @@
 "use client"
 
-import { updateProject, createProject } from "@/actions/projects"
+import { updateProject, createProject } from "@/server/actions/projects"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

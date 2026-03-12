@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Calendar, Image as ImageIcon } from "lucide-react"
-import { deleteGallery } from "@/actions/gallery"
+import { deleteGallery } from "@/server/actions/gallery"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 

@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Plus, CalendarDays, MapPin, Clock, Pencil, Image as ImageIcon } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
-import { deleteEvent } from "@/actions/events"
+import { deleteEvent } from "@/server/actions/events"
 import { DeleteButton } from "@/components/admin/DeleteButton"
 
 export const dynamic = "force-dynamic"

@@ -1,6 +1,6 @@
 "use client"
 
-import { createUser } from "@/actions/users"
+import { createUser } from "@/server/actions/users"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

@@ -1,4 +1,4 @@
-import { getAlbums } from "@/actions/gallery"
+import { getAlbums } from "@/server/actions/gallery"
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar, ImageIcon, ArrowRight, Camera, Images } from "lucide-react"

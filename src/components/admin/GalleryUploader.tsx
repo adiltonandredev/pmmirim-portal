@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { uploadGalleryImages } from "@/actions/gallery"
+import { uploadGalleryImages } from "@/server/actions/gallery"
 import { Button } from "@/components/ui/button"
 import { UploadCloud, X, Save, Loader2, ImagePlus, FileImage, Maximize2, AlertCircle, Plus } from "lucide-react"
 

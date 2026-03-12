@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { sendContactMessage } from "@/actions/contact" // Se der erro no import, troque para o caminho correto onde está a action
+import { sendContactMessage } from "@/server/actions/contact" // Se der erro no import, troque para o caminho correto onde está a action
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

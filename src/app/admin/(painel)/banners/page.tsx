@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Plus, Image as ImageIcon, Pencil, ExternalLink, Eye, EyeOff } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 import { DeleteButton } from "@/components/admin/DeleteButton"
-import { deleteBanner } from "@/actions/banners"
+import { deleteBanner } from "@/server/actions/banners"
 
 export const dynamic = "force-dynamic"
 

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { deleteSingleImage } from "@/actions/gallery"
+import { deleteSingleImage } from "@/server/actions/gallery"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 import { Image as ImageIcon, LayoutGrid } from "lucide-react"
 import { notFound } from "next/navigation"

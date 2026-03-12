@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { updateUser } from "@/actions/users" // ⚠️ Ajuste o caminho se a sua action não estiver aqui
+import { updateUser } from "@/server/actions/users" // ⚠️ Ajuste o caminho se a sua action não estiver aqui
 import { toast } from "sonner" // 🌟 Nosso balãozinho elegante!
 import { useRouter } from "next/navigation"
 

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { updateInstitutionHistory } from "@/actions/institution"
+import { updateInstitutionHistory } from "@/server/actions/institution"
 import { HistoryForm } from "@/components/admin/HistoryForm"
 import { History as HistoryIcon } from "lucide-react"
 

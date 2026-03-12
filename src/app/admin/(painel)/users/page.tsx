@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Users, Plus, Shield, User, Pencil, Mail } from "lucide-react"
-import { deleteUser } from "@/actions/users"
+import { deleteUser } from "@/server/actions/users"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
 import { DeleteButton } from "@/components/admin/DeleteButton"
 

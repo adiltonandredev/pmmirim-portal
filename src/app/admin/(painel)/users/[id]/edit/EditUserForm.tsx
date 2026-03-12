@@ -1,6 +1,6 @@
 "use client"
 
-import { updateUser } from "@/actions/users"
+import { updateUser } from "@/server/actions/users"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
