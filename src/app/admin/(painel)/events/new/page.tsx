@@ -1,5 +1,5 @@
-import { EventForm } from "@/components/admin/EventForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { EventForm } from "@/components/admin/events/EventForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { CalendarDays } from "lucide-react"
 
 export default function NewEventPage() {

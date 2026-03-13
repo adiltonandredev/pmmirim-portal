@@ -1,4 +1,4 @@
-"use server"
+Ôªø"use server"
 import { revalidatePath } from "next/cache"
 import { createEventService, updateEventService, deleteEventService } from "@/server/services/events.service"
 
@@ -16,7 +16,7 @@ export async function updateEvent(formData: FormData) {
 }
 export async function deleteEvent(data: string | FormData) {
   const id = typeof data === "string" ? data : data.get("id") as string
-  if (!id) return { success: false, message: "ID inv·lido para exclus„o." }
+  if (!id) return { success: false, message: "ID inv√°lido para exclus√£o." }
   const result = await deleteEventService(id)
   if (result.success) revalidateEvents()
   return result

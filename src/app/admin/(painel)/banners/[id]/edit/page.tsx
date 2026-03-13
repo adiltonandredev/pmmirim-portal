@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma"
-import { BannerForm } from "@/components/admin/BannerForm"
+import { BannerForm } from "@/components/admin/banners/BannerForm"
 import { notFound } from "next/navigation"
 import { Pencil } from "lucide-react"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 
 interface Props {
     params: Promise<{ id: string }>

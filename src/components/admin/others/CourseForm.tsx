@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { BookOpen, Clock, Users, FileText, UploadCloud, X, Image as ImageIcon, Handshake, Loader2, Save, AlertTriangle } from "lucide-react"
 import Image from "next/image"
-import { RichTextEditor } from "@/components/admin/RichTextEditor"
+import { RichTextEditor } from "@/components/admin/shared/RichTextEditor"
 import { Course } from "@prisma/client"
 
 export function CourseForm({ course }: { course?: Course | null }) {

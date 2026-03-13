@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+Ôªøimport { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { unlink } from "fs/promises"
 import { join } from "path"
@@ -11,7 +11,7 @@ async function tryDeleteFile(path: string) {
 
 export async function createTeamMemberService(formData: FormData) {
   const name = formData.get("name") as string
-  if (!name) return { success: false, message: "O nome do membro da equipe È obrigatÛrio." }
+  if (!name) return { success: false, message: "O nome do membro da equipe √© obrigat√≥rio." }
   const file = formData.get("image") as File
   let image = null
   if (file && file.size > 0) image = await saveFile(file, "team")
@@ -22,7 +22,7 @@ export async function createTeamMemberService(formData: FormData) {
 
 export async function updateTeamMemberService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do membro n„o encontrado." }
+  if (!id) return { success: false, message: "ID do membro n√£o encontrado." }
   const name = formData.get("name") as string
   const file = formData.get("image") as File
   let image = formData.get("existingImage") as string
@@ -37,7 +37,7 @@ export async function deleteTeamMemberService(id: string) {
   if (member?.image) await tryDeleteFile(member.image)
   await deleteTeamMemberRecord(id)
   await logAdminAction("EXCLUIU", "Membro da Equipe", `Nome: ${member?.name || "ID: " + id}`)
-  return { success: true, message: "Membro excluÌdo com sucesso!" }
+  return { success: true, message: "Membro exclu√≠do com sucesso!" }
 }
 
 export async function getTeamMembersService(category?: string) {

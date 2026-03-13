@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+Ôªøimport { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { unlink } from "fs/promises"
 import { join } from "path"
@@ -21,18 +21,18 @@ export async function saveAlbumService(formData: FormData) {
   const description = formData.get("description") as string
   const dateStr = formData.get("date") as string
   const active = formData.get("active") === "true"
-  if (!title) return { success: false, message: "O tÌtulo do ·lbum È obrigatÛrio." }
+  if (!title) return { success: false, message: "O t√≠tulo do √°lbum √© obrigat√≥rio." }
   const coverFile = formData.get("coverImage") as File
   let coverImageUrl = undefined
   if (coverFile && coverFile.size > 0) coverImageUrl = await saveFile(coverFile, "albums")
   if (id) {
     await updateAlbumRecord(id, { title, description, date: dateStr ? new Date(dateStr) : undefined, active, ...(coverImageUrl && { coverImage: coverImageUrl }) })
-    await logAdminAction("EDITOU", "¡lbum", `TÌtulo: ${title}`)
-    return { success: true, message: "¡lbum atualizado com sucesso!" }
+    await logAdminAction("EDITOU", "√Ålbum", `T√≠tulo: ${title}`)
+    return { success: true, message: "√Ålbum atualizado com sucesso!" }
   } else {
     await createAlbumRecord({ title, description, date: dateStr ? new Date(dateStr) : new Date(), active, coverImage: coverImageUrl || null })
-    await logAdminAction("CRIOU", "¡lbum", `TÌtulo: ${title}`)
-    return { success: true, message: "¡lbum criado com sucesso!" }
+    await logAdminAction("CRIOU", "√Ålbum", `T√≠tulo: ${title}`)
+    return { success: true, message: "√Ålbum criado com sucesso!" }
   }
 }
 
@@ -43,26 +43,26 @@ export async function deleteAlbumService(id: string) {
     for (const photo of album.photos) await tryDeleteFile(photo.url)
   }
   await deleteAlbumRecord(id)
-  await logAdminAction("EXCLUIU", "¡lbum", `TÌtulo: ${album?.title || "ID: " + id}`)
-  return { success: true, message: "¡lbum e fotos excluÌdos com sucesso!" }
+  await logAdminAction("EXCLUIU", "√Ålbum", `T√≠tulo: ${album?.title || "ID: " + id}`)
+  return { success: true, message: "√Ålbum e fotos exclu√≠dos com sucesso!" }
 }
 
 export async function uploadAlbumPhotosService(formData: FormData) {
   const albumId = formData.get("albumId") as string
-  if (!albumId) return { success: false, message: "ID do ·lbum faltando." }
+  if (!albumId) return { success: false, message: "ID do √°lbum faltando." }
   const files = formData.getAll("photos") as File[]
   let count = 0
   for (const file of files) {
     if (file.size > 0) { const url = await saveFile(file, "albums"); if (url) { await createPhotoRecord(albumId, url); count++ } }
   }
-  if (count > 0) await logAdminAction("EDITOU", "¡lbum", `Adicionou ${count} fotos ao ·lbum ID: ${albumId}`)
+  if (count > 0) await logAdminAction("EDITOU", "√Ålbum", `Adicionou ${count} fotos ao √°lbum ID: ${albumId}`)
   return { success: true, message: `${count} fotos enviadas!`, count }
 }
 
 export async function deletePhotoService(id: string) {
   const photo = await findPhotoById(id)
   if (photo) { await tryDeleteFile(photo.url); await deletePhotoRecord(id) }
-  return { success: true, message: "Foto excluÌda!" }
+  return { success: true, message: "Foto exclu√≠da!" }
 }
 
 export async function createGalleryService(formData: FormData) {
@@ -71,7 +71,7 @@ export async function createGalleryService(formData: FormData) {
   const slug = title.toLowerCase().replace(/\s+/g, "_") + "_" + Date.now().toString().slice(-4)
   const coverUrl = await saveFile(coverFile, "gallery")
   await createGalleryRecord({ title, slug, coverUrl: coverUrl || "" })
-  await logAdminAction("CRIOU", "Galeria (Legado)", `TÌtulo: ${title}`)
+  await logAdminAction("CRIOU", "Galeria (Legado)", `T√≠tulo: ${title}`)
   return { success: true, message: "Galeria criada!" }
 }
 

@@ -1,5 +1,5 @@
-import { MemberForm } from "@/components/admin/MemberForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { MemberForm } from "@/components/admin/members/MemberForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { UserPlus } from "lucide-react"
 
 export default function NewTeamMemberPage() {

@@ -1,4 +1,4 @@
-"use server"
+Ôªø"use server"
 import { revalidatePath } from "next/cache"
 import {
   saveAlbumService, deleteAlbumService, uploadAlbumPhotosService, deletePhotoService,
@@ -13,7 +13,7 @@ export async function saveAlbum(formData: FormData) {
 }
 export async function deleteAlbum(data: string | FormData) {
   const id = typeof data === "string" ? data : data.get("id") as string
-  if (!id) return { success: false, message: "ID do ·lbum inv·lido." }
+  if (!id) return { success: false, message: "ID do √°lbum inv√°lido." }
   const result = await deleteAlbumService(id)
   if (result.success) { revalidatePath("/admin/galeria"); revalidatePath("/galeria") }
   return result

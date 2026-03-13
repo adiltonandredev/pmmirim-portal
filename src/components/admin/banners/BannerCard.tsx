@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Pencil, Eye, EyeOff, Image as ImageIcon, Tag, GripVertical } from "lucide-react"
 import { deleteBanner, toggleBannerActive } from "@/server/actions/banners"
-import { DeleteButton } from "@/components/admin/DeleteButton"
+import { DeleteButton } from "@/components/admin/shared/DeleteButton"
 
 interface BannerProps {
   banner: {

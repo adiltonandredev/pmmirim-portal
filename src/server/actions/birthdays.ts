@@ -1,4 +1,4 @@
-"use server"
+Ôªø"use server"
 import { revalidatePath } from "next/cache"
 import { createBirthdayService, updateBirthdayService, deleteBirthdayService } from "@/server/services/birthdays.service"
 
@@ -16,7 +16,7 @@ export async function updateBirthday(formData: FormData) {
 }
 export async function deleteBirthday(data: string | FormData) {
   const id = typeof data === "string" ? data : data.get("id") as string
-  if (!id) return { success: false, message: "ID inv·lido para exclus„o." }
+  if (!id) return { success: false, message: "ID inv√°lido para exclus√£o." }
   const result = await deleteBirthdayService(id)
   if (result.success) revalidateBirthdays()
   return result

@@ -1,4 +1,4 @@
-import { hash } from "bcryptjs"
+Ôªøimport { hash } from "bcryptjs"
 import { logAdminAction } from "@/lib/audit"
 import { saveFile } from "@/lib/file-upload"
 import { unlink } from "fs/promises"
@@ -14,22 +14,22 @@ export async function createStudentService(formData: FormData) {
   const name = formData.get("name") as string
   const matricula = formData.get("matricula") as string
   const password = formData.get("password") as string
-  if (!name || !matricula || !password) return { success: false, message: "Nome, MatrÌcula e Senha s„o obrigatÛrios." }
+  if (!name || !matricula || !password) return { success: false, message: "Nome, Matr√≠cula e Senha s√£o obrigat√≥rios." }
   const existing = await findStudentByMatricula(matricula)
-  if (existing) return { success: false, message: "Esta matrÌcula j· est· em uso por outro aluno." }
+  if (existing) return { success: false, message: "Esta matr√≠cula j√° est√° em uso por outro aluno." }
   const file = formData.get("photo") as File
   let photoUrl = null
   if (file && file.size > 0) photoUrl = await saveFile(file, "students")
   const hashedPassword = await hash(password, 10)
   const birthDateStr = formData.get("birthDate") as string
   await createStudentRecord({ name, matricula, password: hashedPassword, schoolName: formData.get("schoolName"), schoolGrade: formData.get("schoolGrade"), shift: formData.get("shift"), cpf: formData.get("cpf"), phone: formData.get("phone"), birthDate: birthDateStr ? new Date(birthDateStr) : null, photoUrl })
-  await logAdminAction("CRIOU", "Aluno", `Nome: ${name} | MatrÌcula: ${matricula}`)
+  await logAdminAction("CRIOU", "Aluno", `Nome: ${name} | Matr√≠cula: ${matricula}`)
   return { success: true, message: "Aluno cadastrado com sucesso!" }
 }
 
 export async function updateStudentService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do aluno n„o encontrado." }
+  if (!id) return { success: false, message: "ID do aluno n√£o encontrado." }
   const name = formData.get("name") as string
   const file = formData.get("photo") as File
   let photoUrl = formData.get("existingPhotoUrl") as string
@@ -48,13 +48,13 @@ export async function deleteStudentService(id: string) {
   if (student?.photoUrl) await tryDeleteFile(student.photoUrl)
   await deleteStudentRecord(id)
   await logAdminAction("EXCLUIU", "Aluno", `Nome: ${student?.name || id}`)
-  return { success: true, message: "Aluno excluÌdo com sucesso!" }
+  return { success: true, message: "Aluno exclu√≠do com sucesso!" }
 }
 
 export async function createFeaturedStudentService(formData: FormData) {
   const studentName = formData.get("studentName") as string
   const achievement = formData.get("achievement") as string
-  if (!studentName || !achievement) return { success: false, message: "Nome e Conquista s„o obrigatÛrios." }
+  if (!studentName || !achievement) return { success: false, message: "Nome e Conquista s√£o obrigat√≥rios." }
   const file = formData.get("photoUrl") as File
   let photoUrl = null
   if (file && file.size > 0) photoUrl = await saveFile(file, "featured-students")
@@ -65,7 +65,7 @@ export async function createFeaturedStudentService(formData: FormData) {
 
 export async function updateFeaturedStudentService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID n„o encontrado." }
+  if (!id) return { success: false, message: "ID n√£o encontrado." }
   const studentName = formData.get("studentName") as string
   const file = formData.get("photoUrl") as File
   let photoUrl = formData.get("existingPhotoUrl") as string
@@ -80,5 +80,5 @@ export async function deleteFeaturedStudentService(id: string) {
   if (student?.photoUrl) await tryDeleteFile(student.photoUrl)
   await deleteFeaturedStudentRecord(id)
   await logAdminAction("EXCLUIU", "Aluno Destaque", `Nome: ${student?.studentName || id}`)
-  return { success: true, message: "Destaque excluÌdo com sucesso!" }
+  return { success: true, message: "Destaque exclu√≠do com sucesso!" }
 }

@@ -1,4 +1,4 @@
-"use server"
+Ôªø"use server"
 import { revalidatePath } from "next/cache"
 import { createProjectService, updateProjectService, deleteProjectService } from "@/server/services/projects.service"
 
@@ -16,7 +16,7 @@ export async function updateProject(formData: FormData) {
 }
 export async function deleteProject(data: string | FormData) {
   const id = typeof data === "string" ? data : data.get("id") as string
-  if (!id) return { success: false, message: "ID inv·lido para exclus„o." }
+  if (!id) return { success: false, message: "ID inv√°lido para exclus√£o." }
   const result = await deleteProjectService(id)
   if (result.success) revalidateProjects()
   return result

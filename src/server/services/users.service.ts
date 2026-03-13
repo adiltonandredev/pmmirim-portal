@@ -3,27 +3,27 @@ import { logAdminAction } from "@/lib/audit"
 import { findUserById, findUserByEmail, createUserRecord, updateUserRecord, deleteUserRecord } from "@/server/repositories/users.repository"
 
 export async function createUserService(formData: FormData, sessionUserId: string, sessionRole: string) {
-  if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem criar usu·rios." }
+  if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem criar usu√°rios." }
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   const roleRaw = formData.get("role") as string
   const role = (roleRaw === "ADMIN" || roleRaw === "USER") ? roleRaw : "USER"
   const password = formData.get("password") as string
   const confirmPassword = formData.get("confirmPassword") as string
-  if (!name || !email || !password) return { success: false, message: "Nome, e-mail e senha s„o obrigatÛrios." }
-  if (password !== confirmPassword) return { success: false, message: "A confirmaÁ„o de senha n„o confere." }
+  if (!name || !email || !password) return { success: false, message: "Nome, e-mail e senha s√£o obrigat√≥rios." }
+  if (password !== confirmPassword) return { success: false, message: "A confirma√ß√£o de senha n√£o confere." }
   const existing = await findUserByEmail(email)
-  if (existing) return { success: false, message: "Este e-mail j· est· cadastrado." }
+  if (existing) return { success: false, message: "Este e-mail j√° est√° cadastrado." }
   const hashedPassword = await hash(password, 10)
-  await createUserRecord({ name, email, password: hashedPassword, role: role as "ADMIN" | "USER" })
-  await logAdminAction("CRIOU", "Usu·rio do Sistema", `Nome: ${name} | Cargo: ${role}`)
-  return { success: true, message: "Usu·rio criado com sucesso!" }
+  await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role })
+  await logAdminAction("CRIOU", "Usu√°rio do Sistema", `Nome: ${name} | Cargo: ${role}`)
+  return { success: true, message: "Usu√°rio criado com sucesso!" }
 }
 
 export async function updateUserService(formData: FormData, sessionRole: string) {
-  if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem editar usu·rios." }
+  if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem editar usu√°rios." }
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do usu·rio n„o encontrado." }
+  if (!id) return { success: false, message: "ID do usu√°rio n√£o encontrado." }
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   const roleRaw = formData.get("role") as string
@@ -32,21 +32,21 @@ export async function updateUserService(formData: FormData, sessionRole: string)
   const confirmPassword = formData.get("confirmPassword") as string
   const dataToUpdate: Record<string, unknown> = { name, email, role }
   if (password && password.trim() !== "") {
-    if (password !== confirmPassword) return { success: false, message: "As senhas digitadas n„o conferem." }
+    if (password !== confirmPassword) return { success: false, message: "As senhas digitadas n√£o conferem." }
     dataToUpdate.password = await hash(password, 10)
   }
   await updateUserRecord(id, dataToUpdate)
-  await logAdminAction("EDITOU", "Usu·rio do Sistema", `Nome: ${name}`)
-  return { success: true, message: "Usu·rio atualizado com sucesso!" }
+  await logAdminAction("EDITOU", "Usu√°rio do Sistema", `Nome: ${name}`)
+  return { success: true, message: "Usu√°rio atualizado com sucesso!" }
 }
 
 export async function deleteUserService(userId: string, sessionUserId: string, sessionRole: string) {
   if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado." }
-  if (!userId) return { success: false, message: "ID do usu·rio inv·lido." }
-  if (sessionUserId === userId) return { success: false, message: "VocÍ n„o pode excluir sua prÛpria conta." }
+  if (!userId) return { success: false, message: "ID do usu√°rio inv√°lido." }
+  if (sessionUserId === userId) return { success: false, message: "Voc√™ n√£o pode excluir sua pr√≥pria conta." }
   const alvo = await findUserById(userId)
-  if (!alvo) return { success: false, message: "Usu·rio n„o encontrado." }
+  if (!alvo) return { success: false, message: "Usu√°rio n√£o encontrado." }
   await deleteUserRecord(userId)
-  await logAdminAction("EXCLUIU", "Usu·rio do Sistema", `Nome: ${alvo.name || alvo.email || userId}`)
-  return { success: true, message: "Usu·rio excluÌdo com sucesso!" }
+  await logAdminAction("EXCLUIU", "Usu√°rio do Sistema", `Nome: ${alvo.name || alvo.email || userId}`)
+  return { success: true, message: "Usu√°rio exclu√≠do com sucesso!" }
 }

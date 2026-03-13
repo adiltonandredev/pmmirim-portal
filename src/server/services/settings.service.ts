@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+ï»¿import { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { findSiteSettings, createSiteSettingsRecord, updateSiteSettingsRecord, findInstagramSettings, findInstagramSettingsById, createInstagramSettingsRecord, updateInstagramSettingsRecord } from "@/server/repositories/settings.repository"
 
@@ -10,8 +10,8 @@ export async function updateSettingsService(formData: FormData) {
   if (file && file.size > 0) { const up = await saveFile(file, "settings"); if (up) logoUrl = up }
   if (existing) { await updateSiteSettingsRecord(existing.id, { ...data, ...(logoUrl && { logoUrl }) }) }
   else { await createSiteSettingsRecord({ ...data, logoUrl }) }
-  await logAdminAction("EDITOU", "Configurações Globais", "Atualizou dados institucionais do site")
-  return { success: true, message: "Configurações salvas com sucesso!" }
+  await logAdminAction("EDITOU", "ConfiguraÃ§Ãµes Globais", "Atualizou dados institucionais do site")
+  return { success: true, message: "ConfiguraÃ§Ãµes salvas com sucesso!" }
 }
 
 export async function updateInstagramSettingsService(formData: FormData) {
@@ -20,6 +20,6 @@ export async function updateInstagramSettingsService(formData: FormData) {
   const existing = id ? await findInstagramSettingsById(id) : await findInstagramSettings()
   if (existing) { await updateInstagramSettingsRecord(existing.id, data) }
   else { await createInstagramSettingsRecord(data) }
-  await logAdminAction("EDITOU", "Configurações do Instagram", `Usuário: ${data.username || "Desconhecido"}`)
-  return { success: true, message: "Configurações do Instagram salvas com sucesso!" }
+  await logAdminAction("EDITOU", "ConfiguraÃ§Ãµes do Instagram", `UsuÃ¡rio: ${data.username || "Desconhecido"}`)
+  return { success: true, message: "ConfiguraÃ§Ãµes do Instagram salvas com sucesso!" }
 }

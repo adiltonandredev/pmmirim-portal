@@ -6,7 +6,7 @@ export async function findUserById(id: string) {
 export async function findUserByEmail(email: string) {
   return prisma.user.findUnique({ where: { email } })
 }
-export async function createUserRecord(data: { name: string; email: string; password: string; role: "ADMIN" | "USER" }) {
+export async function createUserRecord(data: { name: string; email: string; password: string; role: import("@prisma/client").Role }) {
   return prisma.user.create({ data })
 }
 export async function updateUserRecord(id: string, data: object) {

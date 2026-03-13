@@ -3,7 +3,7 @@ import Image from "next/image"
 import { prisma } from "@/lib/prisma"
 import { Plus, Search, User, GraduationCap, Edit, Trash2 } from "lucide-react"
 import { deleteStudent } from "@/server/actions/students"
-import { DeleteButton } from "@/components/admin/DeleteButton" // Reaproveitando seu botão
+import { DeleteButton } from "@/components/admin/shared/DeleteButton" // Reaproveitando seu botão
 
 export const dynamic = 'force-dynamic'
 

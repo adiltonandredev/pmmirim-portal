@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Save, History, FileText, Type, Target, Eye, Heart, BookOpen, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 // MANTIDO: O editor correto
-import { RichTextEditor } from "@/components/admin/RichTextEditor"; 
+import { RichTextEditor } from "@/components/admin/shared/RichTextEditor"; 
 
 interface HistoryData {
   id?: string

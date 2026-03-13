@@ -6,7 +6,7 @@ export async function findProjectById(id: string) {
 export async function findProjectBySlug(slug: string) {
   return prisma.post.findUnique({ where: { slug } })
 }
-export async function createProjectRecord(data: { title: string; slug: string; summary: string; content: string; coverImage: string | null; published: boolean; type: string; featured: boolean }) {
+export async function createProjectRecord(data: { title: string; slug: string; summary: string; content: string; coverImage: string | null; published: boolean; type: import("@prisma/client").PostType; featured: boolean }) {
   return prisma.post.create({ data })
 }
 export async function updateProjectRecord(id: string, data: object) {

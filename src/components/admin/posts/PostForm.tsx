@@ -11,7 +11,7 @@ import { Save, Loader2, UploadCloud, Star, Plus, AlertTriangle, X, Image as Imag
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { RichTextEditor } from "./RichTextEditor"
+import { RichTextEditor } from "../shared/RichTextEditor"
 
 // 1. Definição da Interface para evitar o "any"
 interface PostData {

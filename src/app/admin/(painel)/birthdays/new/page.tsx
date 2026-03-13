@@ -1,5 +1,5 @@
-import { BirthdayForm } from "@/components/admin/BirthdayForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { BirthdayForm } from "@/components/admin/others/BirthdayForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Plus } from "lucide-react"
 
 export default function NewBirthdayPage() {

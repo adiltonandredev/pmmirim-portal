@@ -1,4 +1,4 @@
-"use server"
+Ôªø"use server"
 import { revalidatePath } from "next/cache"
 import { createTeamMemberService, updateTeamMemberService, deleteTeamMemberService, getTeamMembersService } from "@/server/services/team.service"
 
@@ -16,7 +16,7 @@ export async function updateTeamMember(formData: FormData) {
 }
 export async function deleteTeamMember(data: string | FormData) {
   const id = typeof data === "string" ? data : data.get("id") as string
-  if (!id) return { success: false, message: "ID inv·lido para exclus„o." }
+  if (!id) return { success: false, message: "ID inv√°lido para exclus√£o." }
   const result = await deleteTeamMemberService(id)
   if (result.success) revalidateTeam()
   return result

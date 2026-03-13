@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { createUser } from "@/server/actions/createUser"
+import { createUser } from "@/server/actions/users"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { Loader2, X, UserPlus } from "lucide-react"

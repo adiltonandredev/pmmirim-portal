@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import { updateInstitutionHistory } from "@/server/actions/institution"
-import { HistoryForm } from "@/components/admin/HistoryForm"
+import { HistoryForm } from "@/components/admin/others/HistoryForm"
 import { History as HistoryIcon } from "lucide-react"
 
 export const dynamic = "force-dynamic"

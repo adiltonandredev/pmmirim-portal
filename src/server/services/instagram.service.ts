@@ -1,4 +1,4 @@
-import { logAdminAction } from "@/lib/audit"
+ï»¿import { logAdminAction } from "@/lib/audit"
 import { findInstagramSettings, createInstagramRecord, updateInstagramRecord } from "@/server/repositories/instagram.repository"
 
 export async function saveInstagramSettingsService(formData: FormData) {
@@ -10,7 +10,7 @@ export async function saveInstagramSettingsService(formData: FormData) {
   else { await createInstagramRecord({ accessToken, username, enabled }) }
   const status = enabled ? "Ativado" : "Desativado"
   await logAdminAction("EDITOU", "Instagram", `Status: ${status}, Conta: ${username || "Sem nome"}`)
-  return { success: true, message: "Integração com o Instagram salva com sucesso!" }
+  return { success: true, message: "IntegraÃ§Ã£o com o Instagram salva com sucesso!" }
 }
 
 export async function getInstagramFeedService() {

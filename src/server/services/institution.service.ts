@@ -1,18 +1,18 @@
-import { logAdminAction } from "@/lib/audit"
+Ôªøimport { logAdminAction } from "@/lib/audit"
 import { findInstitutionHistory, createInstitutionHistoryRecord, updateInstitutionHistoryRecord } from "@/server/repositories/institution.repository"
 
 export async function updateInstitutionHistoryService(formData: FormData) {
   const title = formData.get("title") as string
   const content = formData.get("content") as string
-  if (!title || !content) return { success: false, message: "O tÌtulo e o conte˙do principal s„o obrigatÛrios." }
+  if (!title || !content) return { success: false, message: "O t√≠tulo e o conte√∫do principal s√£o obrigat√≥rios." }
   const data = { title, content, mission: formData.get("mission"), vision: formData.get("vision"), values: formData.get("values"), principles: formData.get("principles") }
   const existing = await findInstitutionHistory()
   if (existing) {
     await updateInstitutionHistoryRecord(existing.id, data)
-    await logAdminAction("EDITOU", "P·gina Institucional", "Atualizou a histÛria, miss„o, vis„o ou valores")
+    await logAdminAction("EDITOU", "P√°gina Institucional", "Atualizou a hist√≥ria, miss√£o, vis√£o ou valores")
   } else {
     await createInstitutionHistoryRecord(data)
-    await logAdminAction("CRIOU", "P·gina Institucional", "Criou o registro inicial da instituiÁ„o")
+    await logAdminAction("CRIOU", "P√°gina Institucional", "Criou o registro inicial da institui√ß√£o")
   }
-  return { success: true, message: "Dados da instituiÁ„o salvos com sucesso!" }
+  return { success: true, message: "Dados da institui√ß√£o salvos com sucesso!" }
 }

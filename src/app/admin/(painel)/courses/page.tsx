@@ -4,8 +4,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { Plus, Pencil, BookOpen, Clock, Users, Image as ImageIcon, Calendar } from "lucide-react"
 import { deleteCourse } from "@/server/actions/courses"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
-import { DeleteButton } from "@/components/admin/DeleteButton" // <--- Importamos o botão seguro
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
+import { DeleteButton } from "@/components/admin/shared/DeleteButton" // <--- Importamos o botão seguro
 
 export const dynamic = "force-dynamic"
 

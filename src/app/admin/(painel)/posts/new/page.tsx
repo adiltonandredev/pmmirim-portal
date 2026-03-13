@@ -1,5 +1,5 @@
-import { PostForm } from "@/components/admin/PostForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PostForm } from "@/components/admin/posts/PostForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { FileText } from "lucide-react"
 
 export default function NewPostPage() {

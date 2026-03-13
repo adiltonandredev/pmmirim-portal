@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma"
-import { PostForm } from "@/components/admin/PostForm"
+import { PostForm } from "@/components/admin/posts/PostForm"
 import { notFound } from "next/navigation"
 import { FileText } from "lucide-react"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 
 export const dynamic = "force-dynamic"
 type Props = { params: Promise<{ id: string }> }

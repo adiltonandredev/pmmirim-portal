@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma"
-import { EventForm } from "@/components/admin/EventForm"
+import { EventForm } from "@/components/admin/events/EventForm"
 import { notFound } from "next/navigation"
 import { CalendarDays } from "lucide-react"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 
 interface Props {
     params: Promise<{ id: string }>

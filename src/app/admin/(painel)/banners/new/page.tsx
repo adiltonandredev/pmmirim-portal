@@ -1,5 +1,5 @@
-import { BannerForm } from "@/components/admin/BannerForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { BannerForm } from "@/components/admin/banners/BannerForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Plus } from "lucide-react"
 
 export default function NewBannerPage() {

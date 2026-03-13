@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import AdminLayoutWrapper from "@/components/admin/AdminLayoutWrapper";
+import AdminLayoutWrapper from "@/components/admin/shared/AdminLayoutWrapper";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma"; 
-import { AutoLogout } from "@/components/admin/AutoLogout"; 
+import { AutoLogout } from "@/components/admin/shared/AutoLogout"; 
 
 export const metadata: Metadata = {
   title: "Painel Administrativo",

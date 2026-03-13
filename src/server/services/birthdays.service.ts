@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+Ôªøimport { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { unlink } from "fs/promises"
 import { join } from "path"
@@ -10,7 +10,7 @@ export async function createBirthdayService(formData: FormData) {
   const role = formData.get("role") as string
   const dateStr = formData.get("date") as string
   const active = formData.get("active") === "on"
-  if (!name || !dateStr) return { success: false, message: "Nome e Data s„o obrigatÛrios." }
+  if (!name || !dateStr) return { success: false, message: "Nome e Data s√£o obrigat√≥rios." }
   const date = new Date(`${dateStr}T12:00:00`)
   const file = formData.get("photoUrl") as File
   let photoUrl = null
@@ -22,7 +22,7 @@ export async function createBirthdayService(formData: FormData) {
 
 export async function updateBirthdayService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do aniversariante n„o encontrado." }
+  if (!id) return { success: false, message: "ID do aniversariante n√£o encontrado." }
   const name = formData.get("name") as string
   const role = formData.get("role") as string
   const dateStr = formData.get("date") as string
@@ -43,5 +43,5 @@ export async function deleteBirthdayService(id: string) {
   }
   await deleteBirthdayRecord(id)
   await logAdminAction("EXCLUIU", "Aniversariante", `Nome: ${birthday?.name || "ID: " + id}`)
-  return { success: true, message: "Aniversariante excluÌdo com sucesso!" }
+  return { success: true, message: "Aniversariante exclu√≠do com sucesso!" }
 }

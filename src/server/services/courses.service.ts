@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+ï»¿import { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { unlink } from "fs/promises"
 import { join } from "path"
@@ -11,7 +11,7 @@ function generateCourseSlug(title: string): string {
 
 export async function createCourseService(formData: FormData) {
   const title = formData.get("title") as string
-  if (!title) return { success: false, message: "O título do curso é obrigatório." }
+  if (!title) return { success: false, message: "O tÃ­tulo do curso Ã© obrigatÃ³rio." }
   const coverFile = formData.get("coverImage") as File
   let coverImage = null
   if (coverFile && coverFile.size > 0) coverImage = await saveFile(coverFile, "courses")
@@ -20,13 +20,13 @@ export async function createCourseService(formData: FormData) {
   if (sponsorFile && sponsorFile.size > 0) sponsorLogo = await saveFile(sponsorFile, "courses")
   const slug = generateCourseSlug(title)
   await createCourseRecord({ title, slug, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", coverImage, sponsorLogo, featured: false })
-  await logAdminAction("CRIOU", "Curso", `Título: ${title}`)
+  await logAdminAction("CRIOU", "Curso", `TÃ­tulo: ${title}`)
   return { success: true, message: "Curso criado com sucesso!" }
 }
 
 export async function updateCourseService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do curso não encontrado." }
+  if (!id) return { success: false, message: "ID do curso nÃ£o encontrado." }
   const coverFile = formData.get("coverImage") as File
   let coverImage = formData.get("existingCoverImage") as string
   if (coverFile && coverFile.size > 0) { const up = await saveFile(coverFile, "courses"); if (up) coverImage = up }
@@ -35,7 +35,7 @@ export async function updateCourseService(formData: FormData) {
   if (sponsorFile && sponsorFile.size > 0) { const up = await saveFile(sponsorFile, "courses"); if (up) sponsorLogo = up }
   const title = formData.get("title") as string
   await updateCourseRecord(id, { title, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", coverImage, sponsorLogo })
-  await logAdminAction("EDITOU", "Curso", `Título: ${title}`)
+  await logAdminAction("EDITOU", "Curso", `TÃ­tulo: ${title}`)
   return { success: true, message: "Curso atualizado com sucesso!" }
 }
 
@@ -44,6 +44,6 @@ export async function deleteCourseService(id: string) {
   if (course?.coverImage) { try { const fp = join(process.cwd(), "public", course.coverImage); if (existsSync(fp)) await unlink(fp) } catch (e) { console.error(e) } }
   if (course?.sponsorLogo) { try { const fp = join(process.cwd(), "public", course.sponsorLogo); if (existsSync(fp)) await unlink(fp) } catch (e) { console.error(e) } }
   await deleteCourseRecord(id)
-  await logAdminAction("EXCLUIU", "Curso", `Título: ${course?.title || "ID: " + id}`)
-  return { success: true, message: "Curso excluído com sucesso!" }
+  await logAdminAction("EXCLUIU", "Curso", `TÃ­tulo: ${course?.title || "ID: " + id}`)
+  return { success: true, message: "Curso excluÃ­do com sucesso!" }
 }

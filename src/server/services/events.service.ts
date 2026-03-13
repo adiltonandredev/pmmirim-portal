@@ -1,4 +1,4 @@
-import { saveFile } from "@/lib/file-upload"
+ï»¿import { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
 import { unlink } from "fs/promises"
 import { join } from "path"
@@ -7,7 +7,7 @@ import { findEventById, createEventRecord, updateEventRecord, deleteEventRecord 
 
 export async function createEventService(formData: FormData) {
   const title = formData.get("title") as string
-  if (!title) return { success: false, message: "O título do evento é obrigatório." }
+  if (!title) return { success: false, message: "O tÃ­tulo do evento Ã© obrigatÃ³rio." }
   const location = formData.get("location") as string
   const description = formData.get("description") as string
   const dateStr = formData.get("date") as string
@@ -16,13 +16,13 @@ export async function createEventService(formData: FormData) {
   let bannerUrl = null
   if (file && file.size > 0) bannerUrl = await saveFile(file, "events")
   await createEventRecord({ title, date, location: location || "", description: description || "", bannerUrl })
-  await logAdminAction("CRIOU", "Evento", `Título: ${title}`)
+  await logAdminAction("CRIOU", "Evento", `TÃ­tulo: ${title}`)
   return { success: true, message: "Evento criado com sucesso!" }
 }
 
 export async function updateEventService(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID do evento não encontrado." }
+  if (!id) return { success: false, message: "ID do evento nÃ£o encontrado." }
   const title = formData.get("title") as string
   const location = formData.get("location") as string
   const description = formData.get("description") as string
@@ -32,7 +32,7 @@ export async function updateEventService(formData: FormData) {
   let bannerUrl = formData.get("existingBannerUrl") as string
   if (file && file.size > 0) { const up = await saveFile(file, "events"); if (up) bannerUrl = up }
   await updateEventRecord(id, { title, date, location, description, bannerUrl })
-  await logAdminAction("EDITOU", "Evento", `Título: ${title}`)
+  await logAdminAction("EDITOU", "Evento", `TÃ­tulo: ${title}`)
   return { success: true, message: "Evento atualizado com sucesso!" }
 }
 
@@ -42,6 +42,6 @@ export async function deleteEventService(id: string) {
     try { const fp = join(process.cwd(), "public", event.bannerUrl); if (existsSync(fp)) await unlink(fp) } catch (e) { console.error(e) }
   }
   await deleteEventRecord(id)
-  await logAdminAction("EXCLUIU", "Evento", `Título: ${event?.title || id}`)
-  return { success: true, message: "Evento excluído com sucesso!" }
+  await logAdminAction("EXCLUIU", "Evento", `TÃ­tulo: ${event?.title || id}`)
+  return { success: true, message: "Evento excluÃ­do com sucesso!" }
 }
