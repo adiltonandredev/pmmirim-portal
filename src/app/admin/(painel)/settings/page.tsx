@@ -1,7 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma" // Usamos prisma direto para pegar tudo
-import { SettingsForm } from "@/components/admin/SettingsForm"
+import { SettingsForm } from "@/components/admin/others/SettingsForm"
 import { Settings } from "lucide-react"
 
 export const dynamic = "force-dynamic"

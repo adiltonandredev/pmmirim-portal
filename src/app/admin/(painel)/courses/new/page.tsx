@@ -1,5 +1,5 @@
-import { CourseForm } from "@/components/admin/CourseForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { CourseForm } from "@/components/admin/others/CourseForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { BookOpen } from "lucide-react"
 
 export default function NewCoursePage() {

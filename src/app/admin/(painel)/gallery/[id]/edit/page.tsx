@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma"
-import { deleteSingleImage } from "@/actions/gallery"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { deleteSingleImage } from "@/server/actions/gallery"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Image as ImageIcon, LayoutGrid } from "lucide-react"
 import { notFound } from "next/navigation"
-import { GalleryUploader } from "@/components/admin/GalleryUploader"
-import { DeleteButton } from "@/components/admin/DeleteButton" // <--- Importamos aqui também
+import { GalleryUploader } from "@/components/admin/gallery/GalleryUploader"
+import { DeleteButton } from "@/components/admin/shared/DeleteButton" // <--- Importamos aqui também
 
 export default async function ManageGalleryPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;

@@ -3,9 +3,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Plus, Briefcase, Pencil, Calendar } from "lucide-react"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
-import { DeleteButton } from "@/components/admin/DeleteButton"
-import { deleteProject } from "@/actions/projects"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
+import { DeleteButton } from "@/components/admin/shared/DeleteButton"
+import { deleteProject } from "@/server/actions/projects"
 
 export const dynamic = "force-dynamic"
 

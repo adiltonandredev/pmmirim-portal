@@ -1,13 +1,13 @@
 "use client"
 
-import { createUser } from "@/actions/users"
+import { createUser } from "@/server/actions/users"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Loader2, Save, UserPlus, Lock, Mail, User, AlertCircle } from "lucide-react"
 
 export default function NewUserPage() {

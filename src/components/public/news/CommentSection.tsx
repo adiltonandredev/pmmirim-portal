@@ -1,6 +1,6 @@
 "use client"
 
-import { createComment } from "@/actions/comments"
+import { createComment } from "@/server/actions/comments"
 import { Button } from "@/components/ui/button"
 import { User, MessageSquare } from "lucide-react"
 import { useRef } from "react"

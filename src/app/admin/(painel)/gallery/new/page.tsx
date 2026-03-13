@@ -1,12 +1,12 @@
 "use client"
 
-import { createGallery } from "@/actions/gallery"
+import { createGallery } from "@/server/actions/gallery"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Loader2, Save, UploadCloud, FolderPlus, X, RefreshCcw, AlertCircle, FileImage, Maximize2, ImagePlus } from "lucide-react"
 
 export default function NewGalleryPage() {

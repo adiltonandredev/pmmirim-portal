@@ -1,5 +1,5 @@
-import { createStudent } from "@/actions/students"
-import { SubmitButton } from "@/components/admin/SubmitButton" 
+import { createStudent } from "@/server/actions/students"
+import { SubmitButton } from "@/components/admin/shared/SubmitButton" 
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 

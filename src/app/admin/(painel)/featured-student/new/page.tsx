@@ -1,4 +1,4 @@
-import { FeaturedStudentForm } from "@/components/admin/FeaturedStudentForm"; 
+import { FeaturedStudentForm } from "@/components/admin/others/FeaturedStudentForm"; 
 
 export default function NewStudentPage() {
   return (

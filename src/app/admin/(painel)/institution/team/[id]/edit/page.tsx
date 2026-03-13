@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
-import { MemberForm } from "@/components/admin/MemberForm"
+import { MemberForm } from "@/components/admin/members/MemberForm"
 import { notFound } from "next/navigation"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Pencil } from "lucide-react"
 
 export const dynamic = "force-dynamic"

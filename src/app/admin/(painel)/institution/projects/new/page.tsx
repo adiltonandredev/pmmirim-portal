@@ -1,5 +1,5 @@
-import { ProjectForm } from "@/components/admin/ProjectForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { ProjectForm } from "@/components/admin/others/ProjectForm"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Plus } from "lucide-react"
 
 export default function NewProjectPage() {

@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { EditUserForm } from "./EditUserForm"
-import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/PageLayout"
+import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { UserCog } from "lucide-react"
 
 export default async function EditUserPage({ params }: { params: Promise<{ id: string }> }) {

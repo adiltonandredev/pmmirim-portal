@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { FeaturedStudentForm, StudentData } from "@/components/admin/FeaturedStudentForm" 
+import { FeaturedStudentForm, StudentData } from "@/components/admin/others/FeaturedStudentForm" 
 import { notFound } from "next/navigation"
 
 export const dynamic = "force-dynamic"

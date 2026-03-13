@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { createComment } from "@/actions/comments" // <-- Verifique se o caminho da sua action está correto
+import { createComment } from "@/server/actions/comments" // <-- Verifique se o caminho da sua action está correto
 import { MessageCircle } from "lucide-react"
 
 export function CommentForm({ postId }: { postId: string }) {

@@ -7,6 +7,8 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
+out/
+.next/
 *.log
 
 # Environment files
@@ -29,6 +31,10 @@ Thumbs.db
 *.temp
 .cache/
 
-# Sensitive files (auto-detected)
-node_modules
+# Scripts locais (não versionados)
+*.ps1
+*.sh
 
+# Coverage / Tests
+coverage/
+.nyc_output/

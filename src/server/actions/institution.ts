@@ -1,0 +1,9 @@
+"use server"
+import { revalidatePath } from "next/cache"
+import { updateInstitutionHistoryService } from "@/server/services/institution.service"
+
+export async function updateInstitutionHistory(formData: FormData) {
+  const result = await updateInstitutionHistoryService(formData)
+  if (result.success) { revalidatePath("/instituicao/historia"); revalidatePath("/admin/institution/history"); revalidatePath("/") }
+  return result
+}
