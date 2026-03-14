@@ -7,6 +7,8 @@ import Image from "next/image";
  * Página pública que exibe a estrutura organizacional da instituição
  * Mostra organogramas e descrição da estrutura hierárquica
  */
+export const dynamic = 'force-dynamic';
+
 export default async function EstruturaPage() {
   const settings = await getSiteSettings();
   
