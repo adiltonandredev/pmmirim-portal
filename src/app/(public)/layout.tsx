@@ -2,11 +2,14 @@ import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { getSiteSettings } from "@/lib/settings";
 import { Footer } from "@/components/layout/Footer"; 
 import { prisma } from "@/lib/prisma"; 
+import React from "react";
+
+export const dynamic = "force-dynamic";
 
 export default async function PublicLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   // Busca configurações gerais
   const settings = await getSiteSettings();
