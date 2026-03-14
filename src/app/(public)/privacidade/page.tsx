@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   description: "Entenda como tratamos seus dados pessoais.",
 };
 
-export default function PrivacyPolicyPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function PrivacidadePage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       
