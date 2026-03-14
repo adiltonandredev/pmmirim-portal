@@ -26,7 +26,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${post.title} - PMMirim`,
+    title: `${post.title} - Policia Mirim`,
     description: post.summary,
   }
 }
@@ -113,10 +113,9 @@ export default async function NoticiaPage(props: Props) {
             </div>
           </article>
 
-          {/* 👇 SÓ FALTAVA COLOCAR ESSA LINHA AQUI 👇 */}
+          {/* Formulário de comentário */}
           <CommentForm postId={post.id} />
-
-          {/* SEÇÃO VEJA TAMBÉM (Agora abaixo do artigo, em grid) */}
+          
           {relatedPosts.length > 0 && (
             <aside className="w-full border-t border-slate-200 pt-12">
               <h3 className="font-bold text-2xl text-slate-800 mb-8 flex items-center justify-center gap-2">

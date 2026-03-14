@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import { prisma } from "@/lib/prisma" // <--- 1. Melhor usar o import global
+import Google from "next-auth/providers/google"
+import { prisma } from "@/lib/prisma"
 import { compare } from "bcryptjs"
 import { authConfig } from "./auth.config"
 import { checkRateLimit, resetRateLimit } from "./lib/rate-limit"
@@ -8,7 +9,7 @@ import { checkRateLimit, resetRateLimit } from "./lib/rate-limit"
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   session: { strategy: "jwt" },
-  
+
   providers: [
     Credentials({
       credentials: {
@@ -39,32 +40,48 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         resetRateLimit(credentials.email as string)
 
-        // Aqui você devolve o role, mas precisa dos callbacks abaixo para salvar
         return {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role, 
+          role: user.role,
         }
       },
     }),
+
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // ← ADICIONE ISSO:
+      authorization: {
+        params: {
+          scope: "openid email profile"
+        }
+      },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          // ← IMPORTANTE: NÃO tem role admin!
+          role: "COMMENTER" // role público só pra comentários
+        }
+      }
+    })
+    ,
   ],
 
-  // 👇 2. ADICIONE ESTE BLOCO CALLBACKS (ESSENCIAL) 👇
   callbacks: {
-    // Passo A: O Login acontece e o "user" (com o role) chega aqui.
-    // Nós passamos o role para o TOKEN.
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
       }
       return token;
     },
-    // Passo B: O navegador pede a sessão.
-    // Nós pegamos o role do TOKEN e colocamos na SESSÃO.
     async session({ session, token }) {
       if (token && session.user) {
-        // @ts-ignore (Ignora erro de tipo se não tiver configurado types)
+        // @ts-ignore
         session.user.role = token.role as string;
         // @ts-ignore
         session.user.id = token.sub as string;

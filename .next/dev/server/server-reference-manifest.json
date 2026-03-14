@@ -1,43 +1,30 @@
 {
   "node": {
-    "40459508975c84951155b22689cea1d60d6483ba46": {
+    "006a8d0acc47c8d64f5211491acfeac74da1e063d3": {
       "workers": {
-        "app/admin/(painel)/institution/history/page": {
-          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstitution.ts%22%2C%5B%7B%22id%22%3A%2240459508975c84951155b22689cea1d60d6483ba46%22%2C%22exportedName%22%3A%22updateInstitutionHistory%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstitution.ts%22%7D%5D%5D%5D&__client_imported__=!",
+        "app/(public)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%22006a8d0acc47c8d64f5211491acfeac74da1e063d3%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%22401a21e14df1431b97836d021d884cd8635ebfe4af%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
         }
       },
       "layer": {
-        "app/admin/(painel)/institution/history/page": "rsc"
+        "app/(public)/page": "rsc"
       },
-      "filename": "../C:\\pmmirim-portal\\src\\server\\actions\\institution.ts",
-      "exportedName": "updateInstitutionHistory"
+      "filename": "../C:\\pmmirim-portal\\src\\server\\actions\\instagram.ts",
+      "exportedName": "getInstagramFeed"
     },
-    "403cddeb8cb7a2173e530c3b3b6b9df57c84e7455f": {
+    "401a21e14df1431b97836d021d884cd8635ebfe4af": {
       "workers": {
-        "app/admin/(painel)/institution/history/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%2C%5B%7B%22id%22%3A%22403cddeb8cb7a2173e530c3b3b6b9df57c84e7455f%22%2C%22exportedName%22%3A%22uploadImage%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%7D%2C%7B%22id%22%3A%22409ecc4be1d47eaf0c5cfcc33fb7406f567e6645a2%22%2C%22exportedName%22%3A%22deleteImageFromCloud%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+        "app/(public)/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%2C%5B%7B%22id%22%3A%22006a8d0acc47c8d64f5211491acfeac74da1e063d3%22%2C%22exportedName%22%3A%22getInstagramFeed%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%7D%2C%7B%22id%22%3A%22401a21e14df1431b97836d021d884cd8635ebfe4af%22%2C%22exportedName%22%3A%22saveInstagramSettings%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Cserver%5C%5Cactions%5C%5Cinstagram.ts%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
         }
       },
       "layer": {
-        "app/admin/(painel)/institution/history/page": "action-browser"
+        "app/(public)/page": "rsc"
       },
-      "filename": "../C:\\pmmirim-portal\\src\\lib\\uploadthing.ts",
-      "exportedName": "uploadImage"
-    },
-    "409ecc4be1d47eaf0c5cfcc33fb7406f567e6645a2": {
-      "workers": {
-        "app/admin/(painel)/institution/history/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%2C%5B%7B%22id%22%3A%22403cddeb8cb7a2173e530c3b3b6b9df57c84e7455f%22%2C%22exportedName%22%3A%22uploadImage%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%7D%2C%7B%22id%22%3A%22409ecc4be1d47eaf0c5cfcc33fb7406f567e6645a2%22%2C%22exportedName%22%3A%22deleteImageFromCloud%22%2C%22filename%22%3A%22..%2FC%3A%5C%5Cpmmirim-portal%5C%5Csrc%5C%5Clib%5C%5Cuploadthing.ts%22%7D%5D%5D%5D&__client_imported__=true!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/admin/(painel)/institution/history/page": "action-browser"
-      },
-      "filename": "../C:\\pmmirim-portal\\src\\lib\\uploadthing.ts",
-      "exportedName": "deleteImageFromCloud"
+      "filename": "../C:\\pmmirim-portal\\src\\server\\actions\\instagram.ts",
+      "exportedName": "saveInstagramSettings"
     }
   },
   "edge": {},

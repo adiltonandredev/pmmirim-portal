@@ -1,5 +1,3 @@
 {
-  "/(public)/instituicao/historia/page": "app/(public)/instituicao/historia/page.js",
-  "/admin/(painel)/institution/history/page": "app/admin/(painel)/institution/history/page.js",
-  "/admin/(painel)/page": "app/admin/(painel)/page.js"
+  "/(public)/page": "app/(public)/page.js"
 }
