@@ -5,21 +5,28 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { LogoutButton } from "./LogoutButton"
-import { 
+import {
   LayoutDashboard, FileText, Settings, ChevronDown, ChevronRight,
   Cake, Medal, Users, Home, CalendarDays, Image as ImageIcon,
-  GraduationCap, Briefcase, ScrollText, Network, ClipboardList // <--- Ícone já importado aqui
+  GraduationCap, Briefcase, ScrollText, Network, ClipboardList, Shield, Pencil, Eye
 } from "lucide-react"
+
+interface CurrentUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string | null;
+}
 
 interface SidebarProps {
   onNavigate?: () => void;
   logo?: string | null;
-  // 👇 ADICIONEI ESTA LINHA: Aceita o cargo do usuário
-  role?: string; 
+  role?: string;
+  currentUser?: CurrentUser;
 }
 
-// 👇 ADICIONEI 'role' NOS PARÂMETROS
-export function Sidebar({ onNavigate, logo, role }: SidebarProps) {
+export function Sidebar({ onNavigate, logo, role, currentUser }: SidebarProps) {
   const pathname = usePathname()
   
   // (Mantém o useState igual...)
@@ -145,10 +152,9 @@ export function Sidebar({ onNavigate, logo, role }: SidebarProps) {
           )}
         </div>
 
-        {/* (Mantém o rodapé igual...) */}
-        <div className="pt-6 mt-2 border-t border-slate-900 space-y-2">
-           <Link 
-            href="/" 
+        <div className="pt-4 mt-2 border-t border-slate-800 space-y-2">
+          <Link
+            href="/"
             target="_blank"
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors text-slate-400 hover:bg-emerald-500/10 hover:text-emerald-400 text-sm font-medium"
           >
@@ -157,6 +163,29 @@ export function Sidebar({ onNavigate, logo, role }: SidebarProps) {
           </Link>
           <LogoutButton />
         </div>
+
+        {/* Card do usuário logado */}
+        {currentUser && (
+          <div className="mt-3 mx-1 p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-blue-900 border-2 border-slate-700 overflow-hidden relative flex items-center justify-center shrink-0">
+              {currentUser.image
+                ? <Image src={currentUser.image} alt={currentUser.name || "Avatar"} fill className="object-cover" sizes="36px" />
+                : <span className="text-blue-300 font-black text-sm">{(currentUser.name || "U")[0].toUpperCase()}</span>
+              }
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-white text-sm font-bold leading-tight truncate">{currentUser.name || "Usuário"}</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                {currentUser.role === "ADMIN" && <Shield size={10} className="text-purple-400" />}
+                {currentUser.role === "EDITOR" && <Pencil size={10} className="text-blue-400" />}
+                {currentUser.role === "VIEWER" && <Eye size={10} className="text-slate-400" />}
+                <span className="text-[11px] text-slate-400 truncate">
+                  {currentUser.role === "ADMIN" ? "Administrador" : currentUser.role === "EDITOR" ? "Editor" : "Visualizador"}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
 
       </nav>
     </div>
