@@ -1,10 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Toaster } from "sonner"; 
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
+      <body className={`${font.className} flex flex-col min-h-screen`}>
         
         {/* Aqui entra o site público OU o painel admin */}
         {children}

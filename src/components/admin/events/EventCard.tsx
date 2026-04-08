@@ -49,7 +49,7 @@ export function EventCard({ event }: EventProps) {
 
         <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-center shadow-sm border border-slate-100">
             <span className="block text-[10px] uppercase text-slate-500 font-bold">{eventDate.toLocaleString('pt-BR', { month: 'short' })}</span>
-            <span className="block text-lg font-black text-slate-800 leading-none">{eventDate.getDate()}</span>
+            <span className="block text-lg font-bold text-slate-800 leading-none">{eventDate.getDate()}</span>
         </div>
       </div>
 

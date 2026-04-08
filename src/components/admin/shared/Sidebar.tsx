@@ -60,7 +60,7 @@ export function Sidebar({ onNavigate, logo, role, currentUser }: SidebarProps) {
                     <Image src={logo} alt="Logo PMM" fill className="object-cover" sizes="80px" priority />
                 </div>
                 <div className="text-center space-y-0.5">
-                    <h1 className="text-white font-black text-base leading-none tracking-tight uppercase">Polícia Mirim</h1>
+                    <h1 className="text-white font-bold text-base leading-none tracking-tight uppercase">Polícia Mirim</h1>
                     <p className="text-yellow-500 font-bold text-[10px] tracking-widest uppercase">Presidente Médici - RO</p>
                 </div>
             </div>
@@ -170,7 +170,7 @@ export function Sidebar({ onNavigate, logo, role, currentUser }: SidebarProps) {
             <div className="w-9 h-9 rounded-full bg-blue-900 border-2 border-slate-700 overflow-hidden relative flex items-center justify-center shrink-0">
               {currentUser.image
                 ? <Image src={currentUser.image} alt={currentUser.name || "Avatar"} fill className="object-cover" sizes="36px" />
-                : <span className="text-blue-300 font-black text-sm">{(currentUser.name || "U")[0].toUpperCase()}</span>
+                : <span className="text-blue-300 font-bold text-sm">{(currentUser.name || "U")[0].toUpperCase()}</span>
               }
             </div>
             <div className="min-w-0 flex-1">

@@ -48,7 +48,7 @@ function StatCard({ label, value, sub, icon: Icon, color, href }: StatCardProps)
     <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-start justify-between group hover:shadow-md transition-all duration-200 ${href ? "cursor-pointer" : ""}`}>
       <div>
         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-        <p className="text-3xl font-black text-slate-800">{value}</p>
+        <p className="text-3xl font-bold text-slate-800">{value}</p>
         {sub && <p className="text-xs text-slate-400 mt-1">{sub}</p>}
       </div>
       <div className={`p-3 rounded-xl ${color}`}>
@@ -109,13 +109,13 @@ export default async function AdminDashboard() {
               <Image src={currentUser.image} alt={currentUser.name || "Avatar"} fill className="object-cover" sizes="56px" />
             </div>
           ) : (
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-black text-2xl shadow-md shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white font-bold text-2xl shadow-md shrink-0">
               {(currentUser?.name || "U")[0].toUpperCase()}
             </div>
           )}
           <div>
             <p className="text-slate-500 text-sm font-medium">{greeting()},</p>
-            <h1 className="text-2xl font-black text-slate-900 leading-tight">
+            <h1 className="text-2xl font-bold text-slate-900 leading-tight">
               {currentUser?.name?.split(" ")[0] ?? "Bem-vindo"}!
             </h1>
             <div className="flex items-center gap-2 mt-1">
@@ -148,7 +148,7 @@ export default async function AdminDashboard() {
 
       {/* Grid de métricas principais */}
       <div>
-        <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Resumo Geral</h2>
+        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Resumo Geral</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <StatCard
             label="Notícias"
@@ -225,7 +225,7 @@ export default async function AdminDashboard() {
           <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <Activity size={18} className="text-slate-500" />
-              <h3 className="font-black text-slate-800 text-sm uppercase tracking-wide">Atividade Recente</h3>
+              <h3 className="font-bold text-slate-800 text-sm uppercase tracking-wide">Atividade Recente</h3>
             </div>
             <Link href="/admin/audit" className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">
               Ver tudo <ArrowUpRight size={12} />
@@ -242,13 +242,13 @@ export default async function AdminDashboard() {
                   <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 overflow-hidden relative flex items-center justify-center shrink-0 mt-0.5">
                     {log.user.image
                       ? <Image src={log.user.image} alt={log.user.name || "U"} fill className="object-cover" sizes="32px" />
-                      : <span className="text-slate-500 font-black text-xs">{(log.user.name || "U")[0].toUpperCase()}</span>
+                      : <span className="text-slate-500 font-bold text-xs">{(log.user.name || "U")[0].toUpperCase()}</span>
                     }
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-bold text-slate-700 text-sm">{log.user.name || "Sistema"}</span>
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${style.bg} ${style.text}`}>
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${style.bg} ${style.text}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${style.dot}`} />
                         {log.action}
                       </span>
@@ -271,7 +271,7 @@ export default async function AdminDashboard() {
         {/* Acesso Rápido */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-100">
-            <h3 className="font-black text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
+            <h3 className="font-bold text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
               <TrendingUp size={18} className="text-slate-500" /> Acesso Rápido
             </h3>
           </div>

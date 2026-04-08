@@ -16,7 +16,7 @@ const ACTION_STYLE: Record<string, { label: string; bg: string; text: string; ic
 function ActionBadge({ action }: { action: string }) {
   const style = ACTION_STYLE[action] ?? { label: action, bg: "bg-slate-100", text: "text-slate-700", icon: <Activity size={11} /> }
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide ${style.bg} ${style.text}`}>
+    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ${style.bg} ${style.text}`}>
       {style.icon} {style.label}
     </span>
   )
@@ -29,7 +29,7 @@ function StatCard({ label, value, icon: Icon, color }: { label: string; value: n
         <Icon size={22} className="text-white" />
       </div>
       <div>
-        <p className="text-2xl font-black text-slate-900">{value}</p>
+        <p className="text-2xl font-bold text-slate-900">{value}</p>
         <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">{label}</p>
       </div>
     </div>
@@ -87,7 +87,7 @@ export default async function AuditPage() {
                 {/* Cabeçalho do dia */}
                 <div className="flex items-center gap-3 mb-3">
                   <Clock size={14} className="text-slate-400" />
-                  <span className="text-xs font-black text-slate-500 uppercase tracking-widest">{day}</span>
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{day}</span>
                   <div className="flex-1 h-px bg-slate-200" />
                   <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-bold">{dayLogs.length}</span>
                 </div>

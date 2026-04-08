@@ -37,7 +37,7 @@ function UserBadge({ user }: { user: CurrentUser }) {
       <div className="w-9 h-9 rounded-full bg-blue-100 border-2 border-blue-200 overflow-hidden relative flex items-center justify-center shrink-0">
         {user.image
           ? <Image src={user.image} alt={user.name || "Avatar"} fill className="object-cover" sizes="36px" />
-          : <span className="text-blue-700 font-black text-sm">{(user.name || "U")[0].toUpperCase()}</span>
+          : <span className="text-blue-700 font-bold text-sm">{(user.name || "U")[0].toUpperCase()}</span>
         }
       </div>
     </div>
@@ -103,7 +103,7 @@ export default function AdminLayoutWrapper({ children, logo, role, currentUser }
               </div>
             ) : null}
             <div>
-              <h1 className="text-slate-900 font-black text-sm uppercase leading-none">Polícia Mirim</h1>
+              <h1 className="text-slate-900 font-bold text-sm uppercase leading-none">Polícia Mirim</h1>
               <p className="text-yellow-600 font-bold text-[10px] tracking-wide uppercase mt-0.5">Pres. Médici - RO</p>
             </div>
           </div>
