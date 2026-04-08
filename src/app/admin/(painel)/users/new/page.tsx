@@ -20,16 +20,19 @@ export default function NewUserPage() {
     setLoading(true)
     setError(null)
     
-    const formData = new FormData(e.currentTarget)
-    const result = await createUser(formData)
-    
-    // CORREÇÃO: Alinhando com o retorno da Action { success, message }
-    if (!result.success) {
+    try {
+      const formData = new FormData(e.currentTarget)
+      const result = await createUser(formData)
+      if (!result.success) {
         setError(result.message || "Erro ao criar usuário")
-        setLoading(false)
-    } else {
+      } else {
         router.push("/admin/users")
         router.refresh()
+      }
+    } catch (err: any) {
+      setError(err?.message || "Erro inesperado ao criar usuário.")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -70,12 +73,12 @@ export default function NewUserPage() {
 
             <div className="space-y-2">
                 <Label>Nível de Acesso</Label>
-                <Select name="role" defaultValue="USER">
+                <Select name="role" defaultValue="EDITOR">
                     <SelectTrigger className="h-12">
                         <SelectValue placeholder="Selecione o cargo" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="USER">Usuário (Padrão)</SelectItem>
+                        <SelectItem value="EDITOR">Editor (Padrão)</SelectItem>
                         <SelectItem value="ADMIN">Administrador (Total)</SelectItem>
                     </SelectContent>
                 </Select>
