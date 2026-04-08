@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 
 export async function findInstitutionHistory() {
-  return prisma.institutionHistory.findFirst()
+  return prisma.institutionHistory.findFirst({ orderBy: { updatedAt: "desc" } })
 }
 export async function createInstitutionHistoryRecord(data: object) {
   return prisma.institutionHistory.create({ data: data as never })

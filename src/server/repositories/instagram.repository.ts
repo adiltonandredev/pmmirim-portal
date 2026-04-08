@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 
 export async function findInstagramSettings() {
-  return prisma.instagramSettings.findFirst()
+  return prisma.instagramSettings.findFirst({ orderBy: { updatedAt: "desc" } })
 }
 export async function createInstagramRecord(data: object) {
   return prisma.instagramSettings.create({ data: data as never })
