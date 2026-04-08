@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -73,7 +73,7 @@ model Banner {
   id          String      @id @default(cuid())
   title       String?
   description String?
-  imageUrl    String      @db.LongText
+  imageUrl    String      @db.Text
   link        String?
   order       Int         @default(0)
   active      Boolean     @default(true)
@@ -90,7 +90,7 @@ model Post {
   slug        String    @unique
   content     String    @db.Text
   summary     String?   @db.Text
-  coverImage  String?   @db.LongText
+  coverImage  String?   @db.Text
   published   Boolean   @default(false)
   type        PostType  @default(NEWS)
   featured    Boolean   @default(false)
@@ -142,7 +142,7 @@ model ContactMessage {
 model InstitutionHistory {
   id          String   @id @default(cuid())
   title       String
-  content     String   @db.LongText
+  content     String   @db.Text
   mission     String?  @db.Text
   vision      String?  @db.Text
   values      String?  @db.Text
@@ -171,7 +171,7 @@ model Course {
   description String?  @db.Text 
   content     String?  @db.Text 
   
-  coverImage  String?  @db.LongText 
+  coverImage  String?  @db.Text 
 
   duration    String?
   targetAge   String?
@@ -188,7 +188,7 @@ model Course {
 model FeaturedStudent {
   id          String   @id @default(cuid())
   studentName String
-  photoUrl    String?  @db.LongText
+  photoUrl    String?  @db.Text
   achievement String   @db.Text
   description String?  @db.Text
   class       String?
@@ -212,7 +212,7 @@ model Event {
   description String?  @db.Text
   date        DateTime
   location    String?
-  bannerUrl   String?  @db.LongText
+  bannerUrl   String?  @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -224,7 +224,7 @@ model Birthday {
   name      String
   role      String?
   date      DateTime
-  photoUrl  String?  @db.LongText  
+  photoUrl  String?  @db.Text  
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -235,7 +235,7 @@ model TeamMember {
   name      String
   role      String
   category  String   @default("Geral")
-  image     String?  @db.LongText
+  image     String?  @db.Text
   bio       String?
   
   instagram String?  
@@ -297,8 +297,8 @@ model OrganizationalStructure {
   title       String
   description String?  @db.Text
   
-  content     String?  @db.LongText
-  chartImage  String?  @db.LongText
+  content     String?  @db.Text
+  chartImage  String?  @db.Text
 
   order       Int      @default(0)
   createdAt   DateTime @default(now())

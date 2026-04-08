@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { Clock, Calendar, Users, GraduationCap } from "lucide-react"
 import { BackButton } from "@/components/ui/back-button"
 import { PageHero } from "@/components/ui/page-hero"
+import { ShareButtons } from "@/components/public/news/ShareButtons"
 
 export const dynamic = "force-dynamic"
 
@@ -14,7 +15,20 @@ export async function generateMetadata(props: Props) {
   const params = await props.params;
   const course = await prisma.course.findFirst({ where: { slug: params.slug } })
   if (!course) return { title: 'Curso não encontrado' }
-  return { title: `${course.title} - PMMirim`, description: course.description }
+  return {
+    title: `${course.title} - Polícia Militar Mirim`,
+    description: course.description ?? undefined,
+    openGraph: {
+      title: course.title,
+      description: course.description ?? undefined,
+      images: course.coverImage ? [{ url: course.coverImage }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: course.title,
+      description: course.description ?? undefined,
+    },
+  }
 }
 
 export default async function CourseDetailsPage(props: Props) {
@@ -53,6 +67,7 @@ export default async function CourseDetailsPage(props: Props) {
               <h2 className="text-2xl font-bold text-slate-900 mb-6 border-b pb-4 flex items-center gap-2">
                  <GraduationCap className="text-green-600" /> Sobre o Curso
               </h2>
+              <ShareButtons title={course.title} label="este curso" />
               <div className="prose prose-lg max-w-none text-slate-600 whitespace-pre-wrap leading-relaxed text-justify">
                 {course.description || "Conteúdo programático em breve."}
               </div>

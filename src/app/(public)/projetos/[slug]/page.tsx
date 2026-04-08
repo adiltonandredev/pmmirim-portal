@@ -8,6 +8,7 @@ import { Lightbulb, Target, Users, Award, ArrowRight, CheckCircle2 } from "lucid
 import Link from "next/link"
 import { PageHero } from "@/components/ui/page-hero"
 import { BackButton } from "@/components/ui/back-button"
+import { ShareButtons } from "@/components/public/news/ShareButtons"
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -24,8 +25,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${project.title} - PMMIRIM`,
-    description: project.summary,
+    title: `${project.title} - Polícia Militar Mirim`,
+    description: project.summary ?? undefined,
+    openGraph: {
+      title: project.title,
+      description: project.summary ?? undefined,
+      images: project.coverImage ? [{ url: project.coverImage }] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.summary ?? undefined,
+      images: project.coverImage ? [project.coverImage] : [],
+    },
   }
 }
 
@@ -100,6 +113,9 @@ export default async function ProjetoPage(props: Props) {
                         <p className="text-xs text-slate-500 leading-relaxed">Transformação social e desenvolvimento pessoal.</p>
                     </div>
                 </div>
+
+                {/* Botões de compartilhamento */}
+                <ShareButtons title={project.title} label="este projeto" />
 
                 {/* Texto do Projeto */}
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 md:p-12">

@@ -7,8 +7,19 @@ import { CookieConsent } from "@/components/layout/CookieConsent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Polícia Militar Mirim - Presidente Médici",
+  title: {
+    default: "Polícia Militar Mirim - Presidente Médici",
+    template: "%s | Polícia Militar Mirim",
+  },
   description: "Portal Oficial da Polícia Militar Mirim de Presidente Médici - RO",
+  openGraph: {
+    siteName: "Polícia Militar Mirim - Presidente Médici",
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

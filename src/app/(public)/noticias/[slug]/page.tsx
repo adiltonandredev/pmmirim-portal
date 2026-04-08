@@ -7,6 +7,7 @@ import { Calendar, Newspaper, ArrowRight, Tag } from "lucide-react"
 import { PageHero } from "@/components/ui/page-hero"
 import { BackButton } from "@/components/ui/back-button"
 import { CommentForm } from "@/components/public/news/CommentForm"
+import { ShareButtons } from "@/components/public/news/ShareButtons"
 
 
 export const dynamic = "force-dynamic"
@@ -26,8 +27,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${post.title} - Policia Mirim`,
-    description: post.summary,
+    title: `${post.title} - Polícia Militar Mirim`,
+    description: post.summary ?? undefined,
+    openGraph: {
+      title: post.title,
+      description: post.summary ?? undefined,
+      images: post.coverImage ? [{ url: post.coverImage }] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary ?? undefined,
+      images: post.coverImage ? [post.coverImage] : [],
+    },
   }
 }
 
@@ -99,6 +112,9 @@ export default async function NoticiaPage(props: Props) {
                   })}
                 </span>
               </div>
+
+              {/* Botões de compartilhamento */}
+              <ShareButtons title={post.title} label="esta notícia" />
 
               {/* Texto Rico */}
               <div
