@@ -20,6 +20,30 @@ interface AdminLayoutWrapperProps {
   currentUser?: CurrentUser;
 }
 
+function roleLabel(role?: string | null) {
+  if (role === "ADMIN") return "Administrador";
+  if (role === "EDITOR") return "Editor";
+  if (role === "VIEWER") return "Visualizador";
+  return role ?? "";
+}
+
+function UserChip({ user }: { user: CurrentUser }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="text-right hidden sm:block">
+        <p className="text-sm font-semibold text-slate-700 leading-tight">{user.name || "Usuário"}</p>
+        <p className="text-xs text-slate-400 leading-tight">{roleLabel(user.role)}</p>
+      </div>
+      <div className="w-9 h-9 rounded-full bg-slate-200 border-2 border-slate-300 overflow-hidden relative flex items-center justify-center shrink-0">
+        {user.image
+          ? <Image src={user.image} alt={user.name || "Avatar"} fill className="object-cover" sizes="36px" />
+          : <span className="text-slate-600 font-bold text-sm select-none">{(user.name || "U")[0].toUpperCase()}</span>
+        }
+      </div>
+    </div>
+  );
+}
+
 export default function AdminLayoutWrapper({ children, logo, role, currentUser }: AdminLayoutWrapperProps) {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const closeSidebar = () => setSidebarOpen(false);
@@ -41,7 +65,7 @@ export default function AdminLayoutWrapper({ children, logo, role, currentUser }
           </button>
         </div>
         <div className="h-full">
-          <Sidebar onNavigate={closeSidebar} logo={logo} role={role} currentUser={currentUser} />
+          <Sidebar onNavigate={closeSidebar} logo={logo} role={role} />
         </div>
       </aside>
 
@@ -55,22 +79,31 @@ export default function AdminLayoutWrapper({ children, logo, role, currentUser }
 
       <div className="flex-1 flex flex-col min-w-0">
 
-        {/* Topbar mobile — só menu + logo */}
+        {/* Topbar — desktop */}
+        <header className="hidden md:flex bg-white border-b border-slate-200 px-6 py-3 items-center justify-between shadow-sm z-30 shrink-0">
+          <p className="text-sm text-slate-400 font-medium">Painel Administrativo</p>
+          {currentUser && <UserChip user={currentUser} />}
+        </header>
+
+        {/* Topbar — mobile */}
         <header className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm z-30 shrink-0">
           <div className="flex items-center gap-3">
-            {logo ? (
+            {logo && (
               <div className="relative w-9 h-9 rounded-full overflow-hidden border border-slate-200 shadow-sm">
                 <Image src={logo} alt="Logo" fill className="object-cover" sizes="36px" />
               </div>
-            ) : null}
+            )}
             <div>
               <h1 className="text-slate-900 font-bold text-sm uppercase leading-none">Polícia Mirim</h1>
               <p className="text-yellow-600 font-semibold text-[10px] tracking-wide uppercase mt-0.5">Pres. Médici - RO</p>
             </div>
           </div>
-          <button onClick={() => setSidebarOpen(true)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-md active:bg-slate-200">
-            <Menu size={24} />
-          </button>
+          <div className="flex items-center gap-3">
+            {currentUser && <UserChip user={currentUser} />}
+            <button onClick={() => setSidebarOpen(true)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-md">
+              <Menu size={24} />
+            </button>
+          </div>
         </header>
 
         <main className="flex-1 overflow-y-auto scroll-smooth">

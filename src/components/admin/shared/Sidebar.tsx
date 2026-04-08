@@ -8,7 +8,7 @@ import { LogoutButton } from "./LogoutButton"
 import {
   LayoutDashboard, FileText, Settings, ChevronDown, ChevronRight,
   Cake, Medal, Users, Home, CalendarDays, Image as ImageIcon,
-  GraduationCap, Briefcase, ScrollText, Network, ClipboardList, Shield, Pencil, Eye
+  GraduationCap, Briefcase, ScrollText, Network, ClipboardList
 } from "lucide-react"
 
 interface CurrentUser {
@@ -164,28 +164,6 @@ export function Sidebar({ onNavigate, logo, role, currentUser }: SidebarProps) {
           <LogoutButton />
         </div>
 
-        {/* Card do usuário logado */}
-        {currentUser && (
-          <div className="mt-3 mx-1 p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-blue-900 border-2 border-slate-700 overflow-hidden relative flex items-center justify-center shrink-0">
-              {currentUser.image
-                ? <Image src={currentUser.image} alt={currentUser.name || "Avatar"} fill className="object-cover" sizes="36px" />
-                : <span className="text-blue-300 font-bold text-sm">{(currentUser.name || "U")[0].toUpperCase()}</span>
-              }
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-white text-sm font-bold leading-tight truncate">{currentUser.name || "Usuário"}</p>
-              <div className="flex items-center gap-1 mt-0.5">
-                {currentUser.role === "ADMIN" && <Shield size={10} className="text-purple-400" />}
-                {currentUser.role === "EDITOR" && <Pencil size={10} className="text-blue-400" />}
-                {currentUser.role === "VIEWER" && <Eye size={10} className="text-slate-400" />}
-                <span className="text-[11px] text-slate-400 truncate">
-                  {currentUser.role === "ADMIN" ? "Administrador" : currentUser.role === "EDITOR" ? "Editor" : "Visualizador"}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
 
       </nav>
     </div>
