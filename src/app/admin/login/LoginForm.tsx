@@ -47,7 +47,7 @@ export function LoginForm({ logo, siteName }: LoginFormProps) {
         {/* Imagem de fundo */}
         <div className="absolute inset-0">
           <Image
-            src="/bg/bg-login.jpg"
+            src="/bg/bg-login.png"
             alt="Fundo"
             fill
             className="object-cover"
