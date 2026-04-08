@@ -2,7 +2,7 @@ import type { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
   pages: {
-    signIn: "/login",
+    signIn: "/admin/login",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
@@ -19,7 +19,7 @@ export const authConfig = {
       
       // Lógica de Redirecionamento Inverso
       // (Se já está logado e tenta ver a tela de login, joga pro painel)
-      if (isLoggedIn && nextUrl.pathname === "/login") {
+      if (isLoggedIn && nextUrl.pathname === "/admin/login") {
          return Response.redirect(new URL("/admin", nextUrl));
       }
       
