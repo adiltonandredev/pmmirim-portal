@@ -126,9 +126,9 @@ export function EditUserModal({ user }: { user: UserProps }) {
                   defaultValue={user.role} 
                   className="w-full border border-slate-200 rounded-lg px-4 py-2.5 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all cursor-pointer"
                 >
-                  <option value="USER">Usuário (Leitor)</option>
-                  <option value="EDITOR">Editor (Apenas Notícias)</option>
-                  <option value="ADMIN">Administrador (Total)</option>
+                  <option value="EDITOR">Editor — Gerencia conteúdo</option>
+                  <option value="ADMIN">Administrador — Acesso total</option>
+                  <option value="VIEWER">Visualizador — Somente leitura</option>
                 </select>
               </div>
 

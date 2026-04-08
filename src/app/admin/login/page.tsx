@@ -94,7 +94,7 @@ export default function LoginPage() {
                 Senha
               </label>
               <Link
-                href="/login/esqueci-senha"
+                href="/admin/login/esqueci-senha"
                 className="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline transition-colors"
               >
                 Esqueceu a senha?

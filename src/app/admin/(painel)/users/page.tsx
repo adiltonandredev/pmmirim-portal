@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma" 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Users, Plus, Shield, User, Pencil, Mail } from "lucide-react"
+import { Users, Plus, Shield, User, Pencil, Mail, Eye } from "lucide-react"
 import { deleteUser } from "@/server/actions/users"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { DeleteButton } from "@/components/admin/shared/DeleteButton"
@@ -49,12 +49,16 @@ export default async function AdminUsersPage() {
                     
                     <div className="flex items-center justify-between pt-1">
                         <div className={`inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-bold border ${
-                          user.role === 'ADMIN' 
-                            ? 'bg-purple-50 text-purple-700 border-purple-100' 
+                          user.role === 'ADMIN'
+                            ? 'bg-purple-50 text-purple-700 border-purple-100'
+                            : user.role === 'VIEWER'
+                            ? 'bg-slate-50 text-slate-600 border-slate-200'
                             : 'bg-blue-50 text-blue-700 border-blue-100'
                         }`}>
                           {user.role === 'ADMIN' && <Shield size={12} />}
-                          {user.role || 'USER'}
+                          {user.role === 'EDITOR' && <Pencil size={12} />}
+                          {user.role === 'VIEWER' && <Eye size={12} />}
+                          {user.role === 'ADMIN' ? 'Administrador' : user.role === 'EDITOR' ? 'Editor' : user.role === 'VIEWER' ? 'Visualizador' : user.role}
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -105,12 +109,16 @@ export default async function AdminUsersPage() {
                   </td>
                   <td className="p-5">
                     <div className={`inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-bold border ${
-                      user.role === 'ADMIN' 
-                        ? 'bg-purple-50 text-purple-700 border-purple-100' 
+                      user.role === 'ADMIN'
+                        ? 'bg-purple-50 text-purple-700 border-purple-100'
+                        : user.role === 'VIEWER'
+                        ? 'bg-slate-50 text-slate-600 border-slate-200'
                         : 'bg-blue-50 text-blue-700 border-blue-100'
                     }`}>
                       {user.role === 'ADMIN' && <Shield size={12} />}
-                      {user.role || 'USER'}
+                      {user.role === 'EDITOR' && <Pencil size={12} />}
+                      {user.role === 'VIEWER' && <Eye size={12} />}
+                      {user.role === 'ADMIN' ? 'Administrador' : user.role === 'EDITOR' ? 'Editor' : user.role === 'VIEWER' ? 'Visualizador' : user.role}
                     </div>
                   </td>
                   <td className="p-5 text-right">

@@ -1,13 +1,14 @@
 import { hash } from "bcryptjs"
 import { logAdminAction } from "@/lib/audit"
 import { findUserById, findUserByEmail, createUserRecord, updateUserRecord, deleteUserRecord } from "@/server/repositories/users.repository"
+import { sendWelcomeEmail } from "@/lib/mail"
 
 export async function createUserService(formData: FormData, sessionUserId: string, sessionRole: string) {
   if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem criar usuários." }
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   const roleRaw = formData.get("role") as string
-  const role = (roleRaw === "ADMIN" || roleRaw === "EDITOR") ? roleRaw : "EDITOR"
+  const role = (roleRaw === "ADMIN" || roleRaw === "EDITOR" || roleRaw === "VIEWER") ? roleRaw : "EDITOR"
   const password = formData.get("password") as string
   const confirmPassword = formData.get("confirmPassword") as string
   if (!name || !email || !password) return { success: false, message: "Nome, e-mail e senha são obrigatórios." }
@@ -18,6 +19,12 @@ export async function createUserService(formData: FormData, sessionUserId: strin
     const hashedPassword = await hash(password, 10)
     await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role })
     await logAdminAction("CRIOU", "Usuário do Sistema", `Nome: ${name} | Cargo: ${role}`)
+    // Envia email de boas-vindas (não bloqueia se falhar)
+    try {
+      await sendWelcomeEmail(email, name, password)
+    } catch (emailErr) {
+      console.warn("Email de boas-vindas não enviado:", emailErr)
+    }
     return { success: true, message: "Usuário criado com sucesso!" }
   } catch (error: any) {
     console.error("Erro ao criar usuário:", error)
@@ -32,7 +39,7 @@ export async function updateUserService(formData: FormData, sessionRole: string)
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   const roleRaw = formData.get("role") as string
-  const role = (roleRaw === "ADMIN" || roleRaw === "USER") ? roleRaw : "USER"
+  const role = (roleRaw === "ADMIN" || roleRaw === "EDITOR" || roleRaw === "VIEWER") ? roleRaw : "EDITOR"
   const password = formData.get("password") as string
   const confirmPassword = formData.get("confirmPassword") as string
   const dataToUpdate: Record<string, unknown> = { name, email, role }

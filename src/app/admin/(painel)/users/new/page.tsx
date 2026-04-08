@@ -78,8 +78,9 @@ export default function NewUserPage() {
                         <SelectValue placeholder="Selecione o cargo" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="EDITOR">Editor (Padrão)</SelectItem>
-                        <SelectItem value="ADMIN">Administrador (Total)</SelectItem>
+                        <SelectItem value="EDITOR">Editor — Gerencia conteúdo</SelectItem>
+                        <SelectItem value="ADMIN">Administrador — Acesso total</SelectItem>
+                        <SelectItem value="VIEWER">Visualizador — Somente leitura</SelectItem>
                     </SelectContent>
                 </Select>
             </div>

@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
             <p className="text-slate-600 mt-2 mb-6">
               Se o e-mail <strong>{email}</strong> estiver cadastrado, você receberá um link em instantes.
             </p>
-            <Link href="/login" className="text-blue-900 font-bold hover:underline bg-blue-50 px-6 py-3 rounded-lg block w-full">
+            <Link href="/admin/login" className="text-blue-900 font-bold hover:underline bg-blue-50 px-6 py-3 rounded-lg block w-full">
               Voltar para Login
             </Link>
           </div>
@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
             </form>
 
             <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-              <Link href="/login" className="text-sm text-slate-500 hover:text-blue-900 font-medium flex items-center justify-center gap-2 transition-colors">
+              <Link href="/admin/login" className="text-sm text-slate-500 hover:text-blue-900 font-medium flex items-center justify-center gap-2 transition-colors">
                 <ArrowLeft size={16} /> Voltar para o Login
               </Link>
             </div>

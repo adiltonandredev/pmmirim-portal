@@ -42,7 +42,7 @@ function ResetPasswordForm() {
 
         if (res.ok) {
         setStatus("success");
-        setTimeout(() => router.push("/login"), 3000); // Redireciona após 3s
+        setTimeout(() => router.push("/admin/login"), 3000); // Redireciona após 3s
         } else {
         setStatus("error");
         setMsg("O link é inválido ou expirou. Solicite novamente.");
