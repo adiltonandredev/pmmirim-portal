@@ -2,10 +2,11 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'utfs.io', // Permite carregar imagens de qualquer lugar (útil para desenvolvimento)
-      },
+      { protocol: "https", hostname: "utfs.io" },
+      { protocol: "https", hostname: "ufs.sh" },
+      { protocol: "https", hostname: "*.ufs.sh" },
+      { protocol: "https", hostname: "uploadthing.com" },
+      { protocol: "https", hostname: "*.uploadthing.com" },
     ],
   },
   experimental: {
