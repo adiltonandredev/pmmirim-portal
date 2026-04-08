@@ -42,16 +42,24 @@ export function LoginForm({ logo, siteName }: LoginFormProps) {
     <div className="min-h-screen flex bg-slate-900">
 
       {/* Painel esquerdo — identidade visual */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center p-12 relative overflow-hidden">
-        {/* Fundo com gradiente */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900" />
-        <div className="absolute inset-0 opacity-5"
-          style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "28px 28px" }}
-        />
+      <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center relative overflow-hidden">
 
-        <div className="relative z-10 flex flex-col items-center text-center gap-8 max-w-sm">
+        {/* Imagem de fundo */}
+        <div className="absolute inset-0">
+          <Image
+            src="/bg/bg-login.jpg"
+            alt="Fundo"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Overlay escuro para legibilidade */}
+          <div className="absolute inset-0 bg-blue-950/75" />
+        </div>
+
+        <div className="relative z-10 flex flex-col items-center text-center gap-8 max-w-sm px-12">
           {/* Logo */}
-          <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative bg-white/10 flex items-center justify-center">
+          <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl relative bg-white/10 flex items-center justify-center">
             {logo ? (
               <Image src={logo} alt={siteName} fill className="object-cover" sizes="144px" priority />
             ) : (
@@ -66,8 +74,8 @@ export function LoginForm({ logo, siteName }: LoginFormProps) {
 
           <div className="w-16 h-px bg-white/20" />
 
-          <p className="text-blue-200/70 text-sm leading-relaxed">
-            Sistema exclusivo para servidores autorizados. Acesso monitorado e registrado.
+          <p className="text-blue-100/60 text-sm leading-relaxed">
+            Sistema exclusivo para servidores autorizados.<br />Acesso monitorado e registrado.
           </p>
         </div>
       </div>
@@ -144,7 +152,7 @@ export function LoginForm({ logo, siteName }: LoginFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-900/40 mt-2"
+              className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-900/40 mt-2"
             >
               {loading ? (
                 <><Loader2 size={18} className="animate-spin" /> Entrando...</>

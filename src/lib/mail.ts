@@ -13,7 +13,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     },
   });
 
-  const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/login/redefinir-senha?token=${token}`;
+  const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/admin/login/redefinir-senha?token=${token}`;
 
   // 2. Envio do E-mail
   await transporter.sendMail({
