@@ -1,10 +1,11 @@
-import { prisma } from "@/lib/prisma" 
+import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Users, Plus, Shield, User, Pencil, Mail, Eye } from "lucide-react"
 import { deleteUser } from "@/server/actions/users"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { DeleteButton } from "@/components/admin/shared/DeleteButton"
+import Image from "next/image"
 
 export const dynamic = "force-dynamic"
 
@@ -36,8 +37,10 @@ export default async function AdminUsersPage() {
             {users.map((user) => (
                 <div key={user.id} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-4">
                     <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
-                        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 shrink-0">
-                            <User size={24} />
+                        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 shrink-0 overflow-hidden relative">
+                            {user.image
+                              ? <Image src={user.image} alt={user.name || "Avatar"} fill className="object-cover" />
+                              : <User size={24} />}
                         </div>
                         <div className="overflow-hidden">
                             <div className="font-bold text-slate-800 text-lg truncate">{user.name}</div>
@@ -98,8 +101,10 @@ export default async function AdminUsersPage() {
                 <tr key={user.id} className="hover:bg-slate-50 transition-colors">
                   <td className="p-5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 shrink-0">
-                            <User size={20} />
+                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 shrink-0 overflow-hidden relative">
+                            {user.image
+                              ? <Image src={user.image} alt={user.name || "Avatar"} fill className="object-cover" />
+                              : <User size={20} />}
                         </div>
                         <div>
                             <div className="font-bold text-slate-800 text-base">{user.name}</div>
