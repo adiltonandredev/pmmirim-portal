@@ -22,10 +22,11 @@ model User {
   email            String     @unique
   password         String
   role             Role       @default(EDITOR)
+  image            String?    @db.Text
   createdAt        DateTime   @default(now())
   resetToken       String?
   resetTokenExpiry DateTime?
-  logs             AuditLog[] 
+  logs             AuditLog[]
 }
 
 model AuditLog {

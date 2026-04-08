@@ -2,6 +2,7 @@ import { hash } from "bcryptjs"
 import { logAdminAction } from "@/lib/audit"
 import { findUserById, findUserByEmail, createUserRecord, updateUserRecord, deleteUserRecord } from "@/server/repositories/users.repository"
 import { sendWelcomeEmail } from "@/lib/mail"
+import { saveFile } from "@/lib/file-upload"
 
 export async function createUserService(formData: FormData, sessionUserId: string, sessionRole: string) {
   if (sessionRole !== "ADMIN") return { success: false, message: "Acesso negado. Apenas administradores podem criar usuários." }
@@ -17,7 +18,10 @@ export async function createUserService(formData: FormData, sessionUserId: strin
     const existing = await findUserByEmail(email)
     if (existing) return { success: false, message: "Este e-mail já está cadastrado." }
     const hashedPassword = await hash(password, 10)
-    await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role })
+    const imageFile = formData.get("image") as File
+    let image: string | null = null
+    if (imageFile && imageFile.size > 0) image = await saveFile(imageFile, "avatars") || null
+    await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role, image })
     await logAdminAction("CRIOU", "Usuário do Sistema", `Nome: ${name} | Cargo: ${role}`)
     // Envia email de boas-vindas (não bloqueia se falhar)
     try {
@@ -46,6 +50,11 @@ export async function updateUserService(formData: FormData, sessionRole: string)
   if (password && password.trim() !== "") {
     if (password !== confirmPassword) return { success: false, message: "As senhas digitadas não conferem." }
     dataToUpdate.password = await hash(password, 10)
+  }
+  const imageFile = formData.get("image") as File
+  if (imageFile && imageFile.size > 0) {
+    const uploaded = await saveFile(imageFile, "avatars")
+    if (uploaded) dataToUpdate.image = uploaded
   }
   await updateUserRecord(id, dataToUpdate)
   await logAdminAction("EDITOU", "Usuário do Sistema", `Nome: ${name}`)
