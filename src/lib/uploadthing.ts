@@ -2,9 +2,6 @@
 
 import { UTApi } from "uploadthing/server";
 
-// Inicializa a API do UploadThing
-const utapi = new UTApi();
-
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -13,6 +10,13 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 // ==========================================
 export async function uploadImage(file: File | null): Promise<string | null> {
   if (!file || file.size === 0) return null;
+
+  if (!process.env.UPLOADTHING_TOKEN && !process.env.UPLOADTHING_SECRET) {
+    console.warn("UPLOADTHING_TOKEN não configurado — upload ignorado.");
+    return null;
+  }
+
+  const utapi = new UTApi();
 
   // Validações que as Actions vão capturar no Try/Catch
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
@@ -48,14 +52,12 @@ export async function uploadImage(file: File | null): Promise<string | null> {
 // ==========================================
 export async function deleteImageFromCloud(fileUrl: string) {
   if (!fileUrl) return;
+  if (!process.env.UPLOADTHING_TOKEN && !process.env.UPLOADTHING_SECRET) return;
 
   try {
-    // O UploadThing deleta usando a "Key" do arquivo, que geralmente é o que vem depois da última barra (/)
-    const fileKey = fileUrl.split("/").pop(); 
-    
-    if (fileKey) {
-      await utapi.deleteFiles([fileKey]);
-    }
+    const utapi = new UTApi();
+    const fileKey = fileUrl.split("/").pop();
+    if (fileKey) await utapi.deleteFiles([fileKey]);
   } catch (error) {
     console.error(`Erro ao tentar apagar imagem da nuvem (${fileUrl}):`, error);
   }
