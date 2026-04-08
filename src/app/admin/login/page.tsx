@@ -172,6 +172,7 @@ export default function LoginPage() {
         <div className="absolute bottom-4 text-slate-500 text-xs text-center w-full opacity-50">
           &copy; {new Date().getFullYear()} Sistema de Gestão Policia Mirim. Acesso monitorado.
         </div>
+      </div>
     </div>
   );
 }
