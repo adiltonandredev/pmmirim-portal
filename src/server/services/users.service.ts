@@ -7,17 +7,22 @@ export async function createUserService(formData: FormData, sessionUserId: strin
   const name = formData.get("name") as string
   const email = formData.get("email") as string
   const roleRaw = formData.get("role") as string
-  const role = (roleRaw === "ADMIN" || roleRaw === "USER") ? roleRaw : "USER"
+  const role = (roleRaw === "ADMIN" || roleRaw === "EDITOR") ? roleRaw : "EDITOR"
   const password = formData.get("password") as string
   const confirmPassword = formData.get("confirmPassword") as string
   if (!name || !email || !password) return { success: false, message: "Nome, e-mail e senha são obrigatórios." }
-  if (password !== confirmPassword) return { success: false, message: "A confirmação de senha não confere." }
-  const existing = await findUserByEmail(email)
-  if (existing) return { success: false, message: "Este e-mail já está cadastrado." }
-  const hashedPassword = await hash(password, 10)
-  await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role })
-  await logAdminAction("CRIOU", "Usuário do Sistema", `Nome: ${name} | Cargo: ${role}`)
-  return { success: true, message: "Usuário criado com sucesso!" }
+  if (confirmPassword && password !== confirmPassword) return { success: false, message: "A confirmação de senha não confere." }
+  try {
+    const existing = await findUserByEmail(email)
+    if (existing) return { success: false, message: "Este e-mail já está cadastrado." }
+    const hashedPassword = await hash(password, 10)
+    await createUserRecord({ name, email, password: hashedPassword, role: role as import("@prisma/client").Role })
+    await logAdminAction("CRIOU", "Usuário do Sistema", `Nome: ${name} | Cargo: ${role}`)
+    return { success: true, message: "Usuário criado com sucesso!" }
+  } catch (error: any) {
+    console.error("Erro ao criar usuário:", error)
+    return { success: false, message: error?.message || "Erro ao criar usuário." }
+  }
 }
 
 export async function updateUserService(formData: FormData, sessionRole: string) {

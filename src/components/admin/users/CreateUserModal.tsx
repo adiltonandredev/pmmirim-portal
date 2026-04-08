@@ -15,19 +15,21 @@ export function CreateUserModal() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
-
-    const formData = new FormData(event.currentTarget)
-    const result = await createUser(formData) as any;
-
-    if (result?.success === false) {
-      toast.error(result.message || "Erro ao criar usuário")
-    } else {
-      toast.success(result.message || "Usuário criado com sucesso!")
-      setIsOpen(false)
-      router.refresh()
+    try {
+      const formData = new FormData(event.currentTarget)
+      const result = await createUser(formData) as any
+      if (result?.success === false) {
+        toast.error(result.message || "Erro ao criar usuário")
+      } else {
+        toast.success(result.message || "Usuário criado com sucesso!")
+        setIsOpen(false)
+        router.refresh()
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "Erro inesperado ao criar usuário.")
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
   return (
