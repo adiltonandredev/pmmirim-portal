@@ -63,11 +63,11 @@ export default function NewUserPage() {
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                     <Label className="flex items-center gap-2"><Lock size={16} /> Senha Inicial</Label>
-                    <Input name="password" type="password" placeholder="******" required className="h-12" />
+                    <Input name="password" type="password" autoComplete="new-password" placeholder="Mínimo 6 caracteres" required className="h-12" />
                 </div>
                 <div className="space-y-2">
                     <Label className="flex items-center gap-2"><Lock size={16} /> Confirmar Senha</Label>
-                    <Input name="confirmPassword" type="password" placeholder="Repita a senha" required className="h-12" />
+                    <Input name="confirmPassword" type="password" autoComplete="new-password" placeholder="Repita a senha" required className="h-12" />
                 </div>
             </div>
 

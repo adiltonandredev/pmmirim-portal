@@ -48,11 +48,12 @@ export function EditUserForm({ user }: { user: any }) {
 
             <div className="space-y-2">
                 <Label>Nível de Acesso</Label>
-                <Select name="role" defaultValue={user.role || "USER"}>
+                <Select name="role" defaultValue={user.role || "EDITOR"}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="USER">Usuário</SelectItem>
-                        <SelectItem value="ADMIN">Administrador</SelectItem>
+                        <SelectItem value="EDITOR">Editor — Gerencia conteúdo</SelectItem>
+                        <SelectItem value="ADMIN">Administrador — Acesso total</SelectItem>
+                        <SelectItem value="VIEWER">Visualizador — Somente leitura</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
@@ -65,11 +66,11 @@ export function EditUserForm({ user }: { user: any }) {
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1">
                     <Label className="text-xs font-bold text-blue-800 uppercase">Nova Senha</Label>
-                    <Input name="password" type="password" className="bg-white" />
+                    <Input name="password" type="password" autoComplete="new-password" placeholder="Deixe em branco para manter" className="bg-white" />
                 </div>
                 <div className="space-y-1">
                     <Label className="text-xs font-bold text-blue-800 uppercase">Confirmar Senha</Label>
-                    <Input name="confirmPassword" type="password" className="bg-white" />
+                    <Input name="confirmPassword" type="password" autoComplete="new-password" placeholder="Repita a nova senha" className="bg-white" />
                 </div>
             </div>
             <p className="text-xs text-blue-600/70 italic">* Deixe em branco para manter a senha atual.</p>
