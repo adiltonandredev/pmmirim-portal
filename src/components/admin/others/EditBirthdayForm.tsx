@@ -1,7 +1,9 @@
-"use client";
+"use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback";
 
 import { useRef } from "react";
-import { toast } from "sonner"; 
+; 
 import { Button } from "@/components/ui/button";
 import { updateBirthday } from "@/server/actions/birthdays";
 import { Save, AlertCircle, ArrowLeft, Image as ImageIcon } from "lucide-react";
@@ -21,6 +23,7 @@ interface EditBirthdayFormProps {
 
 export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const { feedback, showSuccess, showError, close } = useFeedback();
 
   // Formata a data para o input (YYYY-MM-DD)
   const formattedDate = new Date(data.birthDate).toISOString().split('T')[0];
@@ -31,18 +34,18 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
     const file = formData.get("photo") as File;
 
     if (!name || name.length < 3) {
-        toast.warning("Nome inválido", { description: "O nome deve ter no mínimo 3 caracteres." });
+        showError("Atenção", "Nome inválido");
         return;
     }
 
     // Se o usuário enviou uma NOVA foto, validamos
     if (file && file.size > 0) {
         if (file.size > 5 * 1024 * 1024) { // 5MB
-            toast.error("Arquivo muito grande", { description: "Máximo permitido: 5MB" });
+            showError("Erro", "Arquivo muito grande");
             return;
         }
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-            toast.error("Formato inválido", { description: "Use JPG, PNG ou WEBP." });
+            showError("Erro", "Formato inválido");
             return;
         }
     }
@@ -51,16 +54,17 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
     // Precisamos enviar o ID junto para saber quem editar
     formData.append("id", data.id);
 
-    const promise = updateBirthday(formData);
-
-    toast.promise(promise, {
-      loading: 'Atualizando dados...',
-      success: 'Aniversariante atualizado com sucesso!',
-      error: 'Erro ao atualizar. Tente novamente.',
-    });
+    try {
+      await updateBirthday(formData);
+      showSuccess("Atualizado!", "Aniversariante salvo com sucesso.")
+    } catch {
+      showError("Erro ao salvar", "Tente novamente.")
+    }
   }
 
   return (
+    <>
+    <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 max-w-2xl mx-auto">
       
       <div className="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
@@ -154,5 +158,6 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
         </div>
       </form>
     </div>
+    </>
   );
 }

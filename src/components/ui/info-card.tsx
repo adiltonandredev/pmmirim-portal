@@ -27,7 +27,7 @@ export function InfoCard({ icon: Icon, title, text, variant = "blue" }: InfoCard
         {title}
       </h3>
       
-      <p className="text-slate-600 leading-relaxed text-sm flex-grow group-hover:text-slate-700">
+      <p className="text-slate-600 leading-relaxed text-sm flex-grow group-hover:text-slate-700 text-justify">
         {text}
       </p>
     </div>

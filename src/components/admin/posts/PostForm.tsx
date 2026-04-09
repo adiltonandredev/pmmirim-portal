@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { updatePost, createPost } from "@/server/actions/posts"
 import { Button } from "@/components/ui/button"
@@ -10,7 +12,7 @@ import { useState, useRef } from "react"
 import { Save, Loader2, UploadCloud, Star, Plus, AlertTriangle, X, Image as ImageIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+
 import { RichTextEditor } from "../shared/RichTextEditor"
 
 // 1. Definição da Interface para evitar o "any"
@@ -34,6 +36,7 @@ export function PostForm({ post }: PostFormProps) {
     const [loading, setLoading] = useState(false)
     const [preview, setPreview] = useState(post?.coverImage || null)
     const [content, setContent] = useState(post?.content || "")
+  const { feedback, showSuccess, showError, close } = useFeedback()
     const formRef = useRef<HTMLFormElement>(null)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +44,12 @@ export function PostForm({ post }: PostFormProps) {
         if (file) {
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
             if (!allowedTypes.includes(file.type)) {
-                toast.error("Formato inválido!", { description: "Apenas JPG, PNG ou WEBP." });
+                showError("Erro", "Formato inválido!");
                 e.target.value = "";
                 return;
             }
             if (file.size > 20 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", { description: "Recomendado até 20MB." });
+                showError("Atenção", "Arquivo muito pesado!");
                 e.target.value = "";
                 return;
             }
@@ -91,22 +94,24 @@ export function PostForm({ post }: PostFormProps) {
 
             // 🌟 AQUI É O NOSSO MOLDE DE OURO EM AÇÃO (Sem linhas vermelhas!)
             if (!result.success) {
-                toast.error(result.message || "Erro ao salvar a notícia.");
+                showError("Erro", result.message || "Erro ao salvar a notícia.");
             } else {
                 // Se deu certo, mostra a mensagem que veio do servidor!
-                toast.success(result.message || (post?.id ? "Notícia atualizada!" : "Notícia publicada!"));
+                showSuccess("Salvo com sucesso!", result.message || (post?.id ? "Notícia atualizada!" : "Notícia publicada!"));
                 router.push("/admin/posts");
                 router.refresh();
             }
 
         } catch (error) {
             console.error("Erro ao salvar:", error)
-            toast.error("Erro inesperado ao conectar com o servidor.");
+            showError("Erro", "Erro inesperado ao conectar com o servidor.");
         } finally {
             setLoading(false)
         }
     }
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="space-y-6 pb-20">
             <input type="hidden" name="type" value="NEWS" />
 
@@ -177,5 +182,6 @@ export function PostForm({ post }: PostFormProps) {
                 </Button>
             </div>
         </form>
+      </>
     )
 }

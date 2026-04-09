@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { updateBanner, createBanner } from "@/server/actions/banners"
 import { Button } from "@/components/ui/button"
@@ -11,7 +13,7 @@ import { useState, useRef } from "react"
 import { Save, Loader2, Info, UploadCloud, AlertTriangle, X } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner" // Feedback
+ // Feedback
 
 interface BannerFormProps {
     banner?: any
@@ -22,6 +24,7 @@ export function BannerForm({ banner }: BannerFormProps) {
     const [loading, setLoading] = useState(false)
     const [type, setType] = useState(banner?.type || "HOME")
     const [preview, setPreview] = useState(banner?.imageUrl || null)
+  const { feedback, showSuccess, showError, close } = useFeedback()
     const formRef = useRef<HTMLFormElement>(null)
 
     // Validação de Imagem
@@ -31,16 +34,13 @@ export function BannerForm({ banner }: BannerFormProps) {
             // Formato
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
             if (!allowedTypes.includes(file.type)) {
-                toast.error("Formato inválido!", {
-                    description: "Apenas JPG, PNG ou WEBP.",
-                    icon: <AlertTriangle className="text-red-500" />
-                });
+                showError("Formato inválido!", "Apenas JPG, PNG ou WEBP.");
                 e.target.value = "";
                 return;
             }
             // Tamanho (5MB)
             if (file.size > 5 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", { description: "Máximo 5MB." });
+                showError("Atenção", "Arquivo muito pesado!");
                 e.target.value = "";
                 return;
             }
@@ -72,14 +72,14 @@ export function BannerForm({ banner }: BannerFormProps) {
 
             // CORREÇÃO DO SUBLINHADO:
             if (!result.success) {
-                toast.error(result.message || "Erro na operação");
+                showError("Erro", result.message || "Erro na operação");
             } else {
-                toast.success(result.message || (banner?.id ? "Banner atualizado!" : "Banner criado!"));
+                showSuccess("Salvo com sucesso!", result.message || (banner?.id ? "Banner atualizado!" : "Banner criado!"));
                 router.push("/admin/banners");
                 router.refresh();
             }
         } catch (error) {
-            toast.error("Erro inesperado.");
+            showError("Erro", "Erro inesperado.");
         } finally {
             setLoading(false);
         }
@@ -96,6 +96,8 @@ export function BannerForm({ banner }: BannerFormProps) {
     }
 
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="space-y-6 pb-20">
 
             {/* CARD INICIAL: TIPO E REQUISITOS */}
@@ -206,5 +208,6 @@ export function BannerForm({ banner }: BannerFormProps) {
             </div>
 
         </form>
+      </>
     )
 }

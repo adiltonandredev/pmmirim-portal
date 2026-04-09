@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { useState, useRef, ChangeEvent } from "react"
 import { Button } from "@/components/ui/button"
@@ -8,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { createCourse, updateCourse } from "@/server/actions/courses"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+
 import { BookOpen, Clock, Users, FileText, UploadCloud, X, Image as ImageIcon, Handshake, Loader2, Save, AlertTriangle } from "lucide-react"
 import Image from "next/image"
 import { RichTextEditor } from "@/components/admin/shared/RichTextEditor"
@@ -23,6 +25,7 @@ export function CourseForm({ course }: { course?: Course | null }) {
     const [sponsorPreview, setSponsorPreview] = useState<string | null>(course?.sponsorLogo || null)
     const [contentHtml, setContentHtml] = useState<string>(course?.content || "")
     const [isPending, setIsPending] = useState(false)
+  const { feedback, showSuccess, showError, close } = useFeedback()
 
     // === FUNÇÃO DE VALIDAÇÃO DE IMAGEM MELHORADA ===
     function handleImageChange(e: ChangeEvent<HTMLInputElement>, setPreview: (url: string | null) => void) {
@@ -32,19 +35,14 @@ export function CourseForm({ course }: { course?: Course | null }) {
             // 1. Validação de Formato (MIME Type)
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
             if (!allowedTypes.includes(file.type)) {
-                toast.error("Formato inválido!", {
-                    description: "Apenas imagens JPG, PNG ou WEBP são permitidas.",
-                    icon: <AlertTriangle className="text-red-500" />
-                });
+                showError("Formato inválido!", "Apenas imagens JPG, PNG ou WEBP são permitidas.");
                 e.target.value = ""; // Limpa o input para o usuário tentar de novo
                 return;
             }
 
             // 2. Validação de Tamanho (Máx 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", {
-                    description: "O tamanho máximo permitido é 5MB."
-                });
+                showError("Arquivo muito pesado!", "O tamanho máximo permitido é 5MB.");
                 e.target.value = ""; // Limpa o input
                 return;
             }
@@ -81,16 +79,18 @@ export function CourseForm({ course }: { course?: Course | null }) {
 
         // CORREÇÃO DO SUBLINHADO:
         if (res?.success === false) {
-            toast.error(res.message || "Erro ao processar");
+            showError("Erro", res.message || "Erro ao processar");
             setIsPending(false);
         } else {
-            toast.success(res.message || (course ? "Curso atualizado!" : "Curso criado!"));
+            showSuccess("Salvo com sucesso!", res.message || (course ? "Curso atualizado!" : "Curso criado!"));
             router.refresh();
             router.push("/admin/courses");
         }
     }
 
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 pb-20">
 
             {/* === COLUNA ESQUERDA: DADOS === */}
@@ -226,5 +226,6 @@ export function CourseForm({ course }: { course?: Course | null }) {
                 </div>
             </div>
         </form>
+      </>
     )
 }

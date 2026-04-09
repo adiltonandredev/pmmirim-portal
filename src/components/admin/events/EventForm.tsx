@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { updateEvent, createEvent } from "@/server/actions/events"
 import { Button } from "@/components/ui/button"
@@ -9,7 +11,7 @@ import { useState, useRef } from "react"
 import { Save, Loader2, UploadCloud, Calendar as CalendarIcon, MapPin, AlertTriangle, X, Image as ImageIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner" // Importante para feedback
+ // Importante para feedback
 
 interface EventFormProps {
     event?: any
@@ -20,6 +22,7 @@ export function EventForm({ event }: EventFormProps) {
     const formRef = useRef<HTMLFormElement>(null)
     const [loading, setLoading] = useState(false)
     const [preview, setPreview] = useState(event?.bannerUrl || null)
+  const { feedback, showSuccess, showError, close } = useFeedback()
 
     // Tratamento da Data para o input (YYYY-MM-DDTHH:MM)
     const defaultDate = event?.date
@@ -34,16 +37,13 @@ export function EventForm({ event }: EventFormProps) {
             // 1. Formato
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
             if (!allowedTypes.includes(file.type)) {
-                toast.error("Formato inválido!", {
-                    description: "Apenas JPG, PNG ou WEBP.",
-                    icon: <AlertTriangle className="text-red-500" />
-                });
+                showError("Formato inválido!", "Apenas JPG, PNG ou WEBP.");
                 e.target.value = "";
                 return;
             }
             // 2. Tamanho (5MB)
             if (file.size > 5 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", { description: "Máximo 5MB." });
+                showError("Atenção", "Arquivo muito pesado!");
                 e.target.value = "";
                 return;
             }
@@ -85,23 +85,25 @@ export function EventForm({ event }: EventFormProps) {
 
             // 🌟 AQUI É O NOSSO MOLDE DE OURO EM AÇÃO (Sem linhas vermelhas!)
             if (!result.success) {
-                toast.error(result.message || "Erro ao salvar o evento.")
+                showError("Erro", result.message || "Erro ao salvar o evento.")
             } else {
                 // Sucesso! Mostramos a mensagem que vem da action
-                toast.success(result.message || (event?.id ? "Evento atualizado!" : "Evento agendado com sucesso!"))
+                showSuccess("Salvo com sucesso!", result.message || (event?.id ? "Evento atualizado!" : "Evento agendado com sucesso!"))
                 router.push("/admin/events")
                 router.refresh()
             }
 
         } catch (error) {
             console.error("Erro ao salvar:", error)
-            toast.error("Erro inesperado ao conectar com o servidor.")
+            showError("Erro", "Erro inesperado ao conectar com o servidor.")
         } finally {
             setLoading(false)
         }
     }
 
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="space-y-6 pb-20">
 
             {/* CARD PRINCIPAL */}
@@ -206,5 +208,6 @@ export function EventForm({ event }: EventFormProps) {
                 </Button>
             </div>
         </form>
+      </>
     )
 }

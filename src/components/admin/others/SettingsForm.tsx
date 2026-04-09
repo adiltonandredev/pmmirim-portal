@@ -1,11 +1,12 @@
 "use client";
 
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { updateSettings, updateInstagramSettings } from "@/server/actions/settings";
 import { Save, Globe, Phone, Building2, Image as ImageIcon, MapPin, Mail, Facebook, Instagram, Youtube, Clock, Info, Loader2, Upload, Award, Users } from "lucide-react";
 import Image from "next/image";
 import { useState, ChangeEvent } from "react";
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal";
+import { useFeedback } from "@/hooks/useFeedback";
 
 interface SettingsProps {
     siteSettings: any;
@@ -36,12 +37,13 @@ export function SettingsForm({ siteSettings, instagramSettings }: SettingsProps)
     const [cnpj, setCnpj] = useState(siteSettings?.cnpj || "");
     const [phone, setPhone] = useState(siteSettings?.contactPhone || "");
     const [loadingInsta, setLoadingInsta] = useState(false);
+    const { feedback, showSuccess, showError, close } = useFeedback();
 
     const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 5 * 1024 * 1024) {
-                toast.error("Imagem muito grande (Máx 5MB)");
+                showError("Imagem muito grande", "O tamanho máximo permitido é 5MB.");
                 return;
             }
             setLogoPreview(URL.createObjectURL(file));
@@ -53,29 +55,22 @@ export function SettingsForm({ siteSettings, instagramSettings }: SettingsProps)
 
     async function handleSubmitGeneral(formData: FormData) {
         const cleanCNPJ = cnpj.replace(/\D/g, '');
-
-        // Validar CNPJ se preenchido
         if (cleanCNPJ.length > 0 && cleanCNPJ.length !== 14) {
-            toast.warning("CNPJ incompleto");
+            showError("CNPJ incompleto", "Verifique o número digitado e tente novamente.");
             return;
         }
-
         formData.set("cnpj", cnpj);
         formData.set("contactPhone", phone);
-
         setLoadingGeneral(true);
         try {
             const result = await updateSettings(formData);
-
-            // 🌟 NOSSO MOLDE DE OURO PARA DADOS GERAIS
             if (!result.success) {
-                toast.error(result.message || "Erro ao salvar dados gerais.");
+                showError("Erro ao salvar", result.message || "Tente novamente.");
             } else {
-                toast.success(result.message || "Dados institucionais salvos!");
+                showSuccess("Dados salvos!", result.message || "Configurações institucionais atualizadas.");
             }
         } catch (err) {
-            console.error("Erro ao salvar config:", err);
-            toast.error("Erro inesperado de conexão.");
+            showError("Erro inesperado", "Verifique a conexão e tente novamente.");
         } finally {
             setLoadingGeneral(false);
         }
@@ -83,29 +78,25 @@ export function SettingsForm({ siteSettings, instagramSettings }: SettingsProps)
 
     async function handleSubmitInstagram(formData: FormData) {
         setLoadingInsta(true);
-
-        // Tratamento para o checkbox do Instagram (que envia 'on' em vez de boolean)
         const showFeedChecked = document.getElementById('showFeed') as HTMLInputElement;
         formData.set('showFeed', showFeedChecked?.checked ? 'true' : 'false');
-
         try {
             const result = await updateInstagramSettings(formData);
-
-            // 🌟 NOSSO MOLDE DE OURO PARA INSTAGRAM
             if (!result.success) {
-                toast.error(result.message || "Erro ao salvar integração do Instagram.");
+                showError("Erro ao salvar", result.message || "Tente novamente.");
             } else {
-                toast.success(result.message || "Integração do Instagram salva!");
+                showSuccess("Instagram salvo!", result.message || "Integração atualizada com sucesso.");
             }
         } catch (err) {
-            console.error("Erro ao salvar Instagram:", err);
-            toast.error("Erro inesperado de conexão.");
+            showError("Erro inesperado", "Verifique a conexão e tente novamente.");
         } finally {
             setLoadingInsta(false);
         }
     }
 
     return (
+        <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <div className="space-y-12 pb-10">
 
             {/* === FORMULÁRIO 1: DADOS GERAIS === */}
@@ -266,5 +257,6 @@ export function SettingsForm({ siteSettings, instagramSettings }: SettingsProps)
             </form>
 
         </div>
+        </>
     );
 }

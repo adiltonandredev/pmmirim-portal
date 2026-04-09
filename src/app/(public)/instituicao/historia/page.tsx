@@ -1,6 +1,6 @@
 // src/app/instituicao/historia/page.tsx
 import { prisma } from "@/lib/prisma"
-import { Target, Eye, Heart, BookOpen, ScrollText } from "lucide-react"
+import { Target, Eye, Heart, ScrollText, BookOpen } from "lucide-react"
 import { PageHero } from "@/components/ui/page-hero"
 import { BackButton } from "@/components/ui/back-button"
 import { InfoCard } from "@/components/ui/info-card"
@@ -44,7 +44,7 @@ export default async function HistoriaPage() {
             />
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {history.mission && (
               <InfoCard icon={Target} title="Missão" text={history.mission} variant="blue" />
             )}
@@ -53,9 +53,6 @@ export default async function HistoriaPage() {
             )}
             {history.values && (
               <InfoCard icon={Heart} title="Valores" text={history.values} variant="red" />
-            )}
-            {history.principles && (
-              <InfoCard icon={BookOpen} title="Princípios" text={history.principles} variant="yellow" />
             )}
          </div>
               

@@ -5,11 +5,10 @@ import { updateInstitutionHistoryService } from "@/server/services/institution.s
 
 export async function updateInstitutionHistory(formData: FormData) {
   const result = await updateInstitutionHistoryService(formData)
-  if (result.success) { 
-    revalidatePath("/instituicao/historia"); 
-    revalidatePath("/admin/institution/history"); 
-    revalidatePath("/") 
-    redirect("/admin")  // ← ADICIONE ESTA LINHA
+  if (result.success) {
+    revalidatePath("/instituicao/historia")
+    revalidatePath("/admin/institution/history")
+    revalidatePath("/")
   }
   return result
 }

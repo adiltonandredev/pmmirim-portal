@@ -33,8 +33,7 @@ export default async function HistoryPage() {
             mission: historyData.mission,
             vision: historyData.vision,
             values: historyData.values,
-            principles: historyData.principles,
-        } : null} 
+        } : null}
         action={updateInstitutionHistory} 
       />
       

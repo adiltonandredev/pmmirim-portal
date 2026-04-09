@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { updateBirthday, createBirthday } from "@/server/actions/birthdays"
 import { Button } from "@/components/ui/button"
@@ -9,7 +11,7 @@ import { useState, useRef } from "react"
 import { Save, Loader2, UploadCloud, User, X, Cake, CalendarIcon, Briefcase } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+
 
 interface BirthdayFormProps {
     birthday?: any
@@ -19,6 +21,7 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [preview, setPreview] = useState(birthday?.photoUrl || null)
+  const { feedback, showSuccess, showError, close } = useFeedback()
     const formRef = useRef<HTMLFormElement>(null)
 
     // Ajusta a data para o input date (YYYY-MM-DD)
@@ -32,13 +35,13 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
         if (file) {
             const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
             if (!allowedTypes.includes(file.type)) {
-                toast.error("Formato inválido!", { description: "Use JPG, PNG ou WEBP." });
+                showError("Erro", "Formato inválido!");
                 e.target.value = "";
                 return;
             }
             // Validação visual de 10MB (o servidor aguenta 50MB, mas bom avisar)
             if (file.size > 10 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", { description: "Recomendado até 10MB." });
+                showError("Atenção", "Arquivo muito pesado!");
                 e.target.value = "";
                 return;
             }
@@ -70,20 +73,22 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
 
             // CORREÇÃO DO SUBLINHADO:
             if (result?.success === false) {
-                toast.error(result.message || "Erro ao salvar");
+                showError("Erro", result.message || "Erro ao salvar");
             } else {
-                toast.success(result.message || "Salvo com sucesso!");
+                showSuccess("Salvo com sucesso!", result.message || "Salvo com sucesso!");
                 router.push("/admin/birthdays");
                 router.refresh();
             }
         } catch (error) {
-            toast.error("Erro inesperado.");
+            showError("Erro", "Erro inesperado.");
         } finally {
             setLoading(false);
         }
     }
 
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="space-y-6 pb-20">
 
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
@@ -157,5 +162,6 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
                 </div>
             </div>
         </form>
+      </>
     )
 }

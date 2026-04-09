@@ -1,4 +1,6 @@
 "use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback"
 
 import { updateProject, createProject } from "@/server/actions/projects"
 import { Button } from "@/components/ui/button"
@@ -10,7 +12,7 @@ import { useState, useRef } from "react"
 import { Save, Loader2, UploadCloud, Image as ImageIcon, X } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+
 import { RichTextEditor } from "@/components/admin/shared/RichTextEditor"
 
 interface ProjectFormProps {
@@ -22,13 +24,14 @@ export function ProjectForm({ project }: ProjectFormProps) {
     const [loading, setLoading] = useState(false)
     const [preview, setPreview] = useState(project?.coverImage || null)
     const [content, setContent] = useState(project?.content || "")
+  const { feedback, showSuccess, showError, close } = useFeedback()
     const formRef = useRef<HTMLFormElement>(null)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
             if (file.size > 20 * 1024 * 1024) {
-                toast.warning("Arquivo muito pesado!", { description: "Recomendado até 20MB." });
+                showError("Atenção", "Arquivo muito pesado!");
                 e.target.value = "";
                 return;
             }
@@ -68,9 +71,9 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
             // 🌟 NOSSO MOLDE DE OURO EM AÇÃO
             if (!result.success) {
-                toast.error(result.message || "Erro ao salvar o projeto.")
+                showError("Erro", result.message || "Erro ao salvar o projeto.")
             } else {
-                toast.success(result.message || (project?.id ? "Projeto atualizado!" : "Projeto criado com sucesso!"))
+                showSuccess("Salvo com sucesso!", result.message || (project?.id ? "Projeto atualizado!" : "Projeto criado com sucesso!"))
 
                 // REDIRECIONA PARA A ROTA CORRETA
                 router.push("/admin/institution/projects")
@@ -78,13 +81,15 @@ export function ProjectForm({ project }: ProjectFormProps) {
             }
         } catch (error) {
             console.error("Erro ao salvar projeto:", error)
-            toast.error("Erro inesperado ao conectar com o servidor.")
+            showError("Erro", "Erro inesperado ao conectar com o servidor.")
         } finally {
             setLoading(false)
         }
     }
 
     return (
+      <>
+        <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
         <form ref={formRef} action={handleSubmit} className="space-y-6 pb-20">
 
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
@@ -156,5 +161,6 @@ export function ProjectForm({ project }: ProjectFormProps) {
                 </div>
             </div>
         </form>
+      </>
     )
 }

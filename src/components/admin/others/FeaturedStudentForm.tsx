@@ -1,7 +1,9 @@
-"use client";
+"use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback";
 
 import { useRef, useState, ChangeEvent } from "react";
-import { toast } from "sonner";
+;
 import { Button } from "@/components/ui/button";
 import { createFeaturedStudent, updateFeaturedStudent } from "@/server/actions/students"; 
 import { ArrowLeft, X, UploadCloud, User, Star, GraduationCap, Calendar, BookOpen } from "lucide-react";
@@ -27,6 +29,7 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
   const router = useRouter();
   const [previewUrl, setPreviewUrl] = useState<string | null>(student?.photoUrl || null);
   const [isPending, setIsPending] = useState(false);
+  const { feedback, showSuccess, showError, close } = useFeedback()
 
   // Dados atuais para padrão
   const currentYear = new Date().getFullYear();
@@ -36,7 +39,7 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.warning("Arquivo muito grande!", { description: "Máximo 5MB." });
+        showError("Atenção", "Arquivo muito grande!");
         return;
       }
       setPreviewUrl(URL.createObjectURL(file));
@@ -64,12 +67,12 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
         }
         
         await action(formData);
-        toast.success(student ? "Atualizado com sucesso!" : "Aluno Destaque criado!");
+        showSuccess("Salvo com sucesso!", student ? "Atualizado com sucesso!" : "Aluno Destaque criado!");
         router.refresh();
         setTimeout(() => router.push("/admin/featured-student"), 500); 
     } catch (error) {
         console.error(error);
-        toast.error("Erro ao salvar.");
+        showError("Erro", "Erro ao salvar.");
         setIsPending(false);
     }
   }
@@ -80,6 +83,8 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
   ];
 
   return (
+    <>
+      <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
     <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
       
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
@@ -195,5 +200,6 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
         </div>
       </form>
     </div>
+    </>
   );
 }

@@ -1,7 +1,9 @@
-"use client";
+"use client"
+import { FeedbackModal } from "@/components/admin/shared/FeedbackModal"
+import { useFeedback } from "@/hooks/useFeedback";
 
 import { useRef } from "react";
-import { toast } from "sonner";
+;
 import { Button } from "@/components/ui/button";
 import { updateEvent } from "@/server/actions/events";
 import { Save, AlertCircle, MapPin, Clock, ArrowLeft, Image as ImageIcon } from "lucide-react";
@@ -23,6 +25,7 @@ interface EditEventFormProps {
 export function EditEventForm({ data }: EditEventFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
+  const { feedback, showSuccess, showError, close } = useFeedback()
 
   // === SEPARAR DATA E HORA PARA OS INPUTS ===
   // O input type="date" precisa de YYYY-MM-DD
@@ -39,18 +42,18 @@ export function EditEventForm({ data }: EditEventFormProps) {
     const file = formData.get("banner") as File;
 
     if (!title || title.length < 3) {
-        toast.warning("Título obrigatório");
+        showError("Atenção", "Título obrigatório");
         return;
     }
 
     // Valida banner APENAS se o usuário selecionou um novo
     if (file && file.size > 0) {
         if (file.size > 5 * 1024 * 1024) {
-            toast.error("Banner muito grande (Máx 5MB)");
+            showError("Erro", "Banner muito grande (Máx 5MB)");
             return;
         }
         if (!file.type.startsWith("image/")) {
-            toast.error("Formato inválido (Use JPG/PNG)");
+            showError("Erro", "Formato inválido (Use JPG/PNG)");
             return;
         }
     }
@@ -61,19 +64,18 @@ export function EditEventForm({ data }: EditEventFormProps) {
         formData.append("existingBannerUrl", data.bannerUrl);
     }
 
-    const promise = updateEvent(formData);
-
-    toast.promise(promise, {
-      loading: 'Atualizando evento...',
-      success: () => {
-        setTimeout(() => router.push("/admin/events"), 1000); // Redireciona após 1s
-        return `Evento atualizado com sucesso!`;
-      },
-      error: 'Erro ao atualizar. Tente novamente.',
-    });
+    try {
+      await updateEvent(formData);
+      showSuccess("Evento atualizado!", "As alterações foram salvas com sucesso.")
+      setTimeout(() => router.push("/admin/events"), 1200);
+    } catch {
+      showError("Erro ao salvar", "Tente novamente.")
+    }
   }
 
   return (
+    <>
+      <FeedbackModal open={feedback.open} type={feedback.type} title={feedback.title} message={feedback.message} onClose={close} />
     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 max-w-3xl mx-auto">
       
       <div className="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
@@ -185,5 +187,6 @@ export function EditEventForm({ data }: EditEventFormProps) {
         </div>
       </form>
     </div>
+    </>
   );
 }
