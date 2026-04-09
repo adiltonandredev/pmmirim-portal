@@ -8,22 +8,18 @@ export async function saveFile(file: File | null, folder: string = "general"): P
     return "";
   }
 
-  try {
-    const utapi = new UTApi();
-    console.log(`Enviando para UploadThing: ${file.name}`);
-    const response = await utapi.uploadFiles([file]);
-    const uploadedFile = response[0];
+  const utapi = new UTApi();
+  const response = await utapi.uploadFiles([file]);
+  const uploadedFile = response[0];
 
-    if (uploadedFile.error) {
-      console.error("Erro no UploadThing:", uploadedFile.error);
-      return "";
-    }
-
-    console.log("Upload concluído:", uploadedFile.data.url);
-    return uploadedFile.data.url;
-
-  } catch (error) {
-    console.error("Erro fatal no upload:", error);
-    return "";
+  if (uploadedFile.error) {
+    const errMsg = uploadedFile.error.message || ""
+    if (/size|large|limit/i.test(errMsg))
+      throw new Error(`O arquivo é muito grande para upload. Reduza o tamanho e tente novamente. (${errMsg})`)
+    if (/type|format|mime/i.test(errMsg))
+      throw new Error(`Formato de arquivo não suportado. Use JPG, PNG ou WEBP. (${errMsg})`)
+    throw new Error(`Erro ao enviar arquivo para o servidor: ${errMsg}`)
   }
+
+  return uploadedFile.data.url;
 }

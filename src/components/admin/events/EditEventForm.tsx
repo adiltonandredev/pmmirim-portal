@@ -69,7 +69,7 @@ export function EditEventForm({ data }: EditEventFormProps) {
       showSuccess("Evento atualizado!", "As alterações foram salvas com sucesso.")
       setTimeout(() => router.push("/admin/events"), 1200);
     } catch {
-      showError("Erro ao salvar", "Tente novamente.")
+      showError("Falha na Conexão", "Não foi possível completar a operação. Verifique sua conexão e tente novamente.")
     }
   }
 

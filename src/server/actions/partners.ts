@@ -1,4 +1,6 @@
 "use server"
+import { parseError } from "@/lib/errors"
+
 import { revalidatePath } from "next/cache"
 import { createPartnerService, updatePartnerService, deletePartnerService } from "@/server/services/partners.service"
 
@@ -16,7 +18,7 @@ export async function updatePartner(formData: FormData) {
 }
 export async function deletePartner(formData: FormData) {
   const id = formData.get("id") as string
-  if (!id) return { success: false, message: "ID inválido para exclusão." }
+  if (!id) return { success: false, message: "ID invï¿½lido para exclusï¿½o." }
   const result = await deletePartnerService(id)
   if (result.success) revalidatePartners()
   return result

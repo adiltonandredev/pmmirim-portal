@@ -58,7 +58,7 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
       await updateBirthday(formData);
       showSuccess("Atualizado!", "Aniversariante salvo com sucesso.")
     } catch {
-      showError("Erro ao salvar", "Tente novamente.")
+      showError("Falha na Conexão", "Não foi possível completar a operação. Verifique sua conexão e tente novamente.")
     }
   }
 

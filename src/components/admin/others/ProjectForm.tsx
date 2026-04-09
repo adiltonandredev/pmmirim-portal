@@ -81,7 +81,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
             }
         } catch (error) {
             console.error("Erro ao salvar projeto:", error)
-            showError("Erro", "Erro inesperado ao conectar com o servidor.")
+            showError("Falha na Conexão", "Não foi possível completar a operação. Verifique sua conexão e tente novamente.")
         } finally {
             setLoading(false)
         }
