@@ -40,9 +40,10 @@ export default async function Home() {
     birthdays,         // 7
     featuredStudent,   // 8
     instagramSettings, // 9
-    nextEvent,         // 10 <--- NOVO (Evento Mais Próximo)
-    latestNewsCard,    // 11 <--- NOVO (Última Notícia Única)
-    institutionData    // 12 <--- NOVO (Dados da Instituição)
+    nextEvent,         // 10
+    latestNewsCard,    // 11
+    institutionData,   // 12
+    teamBirthdays,     // 13
   ] = await Promise.all([
     // 1. Posts Gerais (Lista de baixo)
     prisma.post.findMany({
@@ -77,8 +78,9 @@ export default async function Home() {
       orderBy: { order: 'asc' },
     }),
 
-    // 7. Aniversariantes
+    // 7. Aniversariantes (tabela Birthday)
     prisma.birthday.findMany({
+      where: { active: true },
       orderBy: { date: 'asc' }
     }),
 
@@ -106,7 +108,13 @@ export default async function Home() {
     }),
 
     // 12. Dados da Instituição
-    prisma.institutionHistory.findFirst()
+    prisma.institutionHistory.findFirst(),
+
+    // 13. Membros da equipe com aniversário cadastrado
+    prisma.teamMember.findMany({
+      where: { active: true, birthDate: { not: null } },
+      select: { id: true, name: true, role: true, image: true, birthDate: true },
+    }),
   ]);
 
   // --- Slides Hero ---
@@ -132,24 +140,50 @@ export default async function Home() {
 
   const allHeroSlides = [...dbSlides, ...newsSlides].sort((a, b) => a.order - b.order);
 
-  // === LÓGICA DE ANIVERSARIANTES ===
-  const activeBirthdays = birthdays.filter(b => {
-    const bDate = new Date(b.date);
-    const bMonth = bDate.getUTCMonth() + 1;
-    const bDay = bDate.getUTCDate();
-    if (bMonth !== currentMonth) return false;
-    if (bDay < currentDay) return false;
-    return true;
-  });
+  // === LÓGICA DE ANIVERSARIANTES — próximos 7 dias (inclui hoje) ===
+  // Gera os 7 próximos dias como pares {month, day}
+  const next7Days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(currentDate)
+    d.setDate(d.getDate() + i)
+    return { month: d.getMonth() + 1, day: d.getDate() }
+  })
+  const isInNext7Days = (month: number, day: number) =>
+    next7Days.some(d => d.month === month && d.day === day)
 
-  const sortedBirthdays = activeBirthdays.sort((a, b) => {
-    const dayA = new Date(a.date).getUTCDate();
-    const dayB = new Date(b.date).getUTCDate();
-    return dayA - dayB;
-  });
+  // Tipo unificado
+  type BirthdayPerson = {
+    id: string; name: string; role: string;
+    photoUrl: string | null; day: number; month: number;
+    isToday: boolean; source: "birthday" | "team"
+  }
 
-  const displayBirthdays = sortedBirthdays.slice(0, 4);
-  const hasMore = sortedBirthdays.length > 4;
+  const allBirthdayPeople: BirthdayPerson[] = [
+    // Da tabela Birthday (alunos / cadastros manuais)
+    ...birthdays
+      .filter(b => { const d = new Date(b.date); return isInNext7Days(d.getUTCMonth() + 1, d.getUTCDate()) })
+      .map(b => {
+        const d = new Date(b.date)
+        const day = d.getUTCDate(); const month = d.getUTCMonth() + 1
+        return { id: b.id, name: b.name, role: (b as any).role || "Aluno", photoUrl: b.photoUrl, day, month, isToday: day === currentDay && month === currentMonth, source: "birthday" as const }
+      }),
+    // Da tabela TeamMember (equipe com birthDate)
+    ...teamBirthdays
+      .filter(m => { const d = new Date(m.birthDate!); return isInNext7Days(d.getUTCMonth() + 1, d.getUTCDate()) })
+      .map(m => {
+        const d = new Date(m.birthDate!)
+        const day = d.getUTCDate(); const month = d.getUTCMonth() + 1
+        return { id: m.id, name: m.name, role: m.role, photoUrl: m.image, day, month, isToday: day === currentDay && month === currentMonth, source: "team" as const }
+      }),
+  ]
+  // Ordena: hoje primeiro, depois por dia
+  allBirthdayPeople.sort((a, b) => {
+    if (a.isToday && !b.isToday) return -1
+    if (!a.isToday && b.isToday) return 1
+    return a.day - b.day
+  })
+
+  const displayBirthdays = allBirthdayPeople.slice(0, 6)
+  const hasMore = allBirthdayPeople.length > 6
 
   // --- Parceiros ---
   const adaptedPartners = partnerBanners.map(banner => ({
@@ -226,40 +260,41 @@ export default async function Home() {
             <div className="flex flex-col h-full">
               <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
                 <div className="p-2 bg-pink-100 rounded-lg text-pink-600"><Cake size={24} /></div>
-                <h2 className="text-2xl font-black text-slate-900 uppercase">Aniversariantes de {currentDate.toLocaleString('pt-BR', { month: 'long' })}</h2>
+                <h2 className="text-2xl font-black text-slate-900 uppercase">Aniversariantes da Semana</h2>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {displayBirthdays.map((b) => {
-                    const bDate = new Date(b.date);
-                    const dayNumber = bDate.getUTCDate();
-                    const isToday = dayNumber === currentDay;
-                    return (
-                      <div key={b.id} className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 ${isToday ? 'bg-pink-50 border-pink-300 shadow-md ring-2 ring-pink-100' : 'bg-white border-slate-100 shadow-sm'}`}>
-                        <div className={`w-16 h-16 shrink-0 rounded-full overflow-hidden border-2 ${isToday ? 'border-pink-500' : 'border-slate-200'} relative bg-slate-100`}>
-                          {b.photoUrl ? (
-                            <Image src={b.photoUrl} alt={b.name} fill className="object-cover" />
+                  {displayBirthdays.map((b) => (
+                    <div key={`${b.source}-${b.id}`} className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 ${b.isToday ? 'bg-gradient-to-br from-pink-50 to-yellow-50 border-pink-300 shadow-lg ring-2 ring-yellow-300' : 'bg-white border-slate-100 shadow-sm hover:shadow-md'}`}>
+                      <div className={`relative w-16 h-16 shrink-0 rounded-full overflow-hidden border-2 ${b.isToday ? 'border-pink-400' : 'border-slate-200'} bg-slate-100`}>
+                        {b.photoUrl ? (
+                          <Image src={b.photoUrl} alt={b.name} fill className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-400"><User size={24} /></div>
+                        )}
+                        {b.isToday && (
+                          <div className="absolute inset-0 rounded-full ring-4 ring-yellow-400 ring-offset-1 pointer-events-none" />
+                        )}
+                      </div>
+                      <div className="flex-1 flex flex-col justify-center min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          {b.isToday ? (
+                            <span className="text-[11px] bg-gradient-to-r from-pink-500 to-yellow-500 text-white px-2 py-0.5 rounded-full font-black uppercase animate-pulse flex items-center gap-1">🎂 Hoje!</span>
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-400"><User size={24} /></div>
+                            <span className="text-xs font-bold text-slate-400">Dia {b.day}</span>
                           )}
                         </div>
-                        <div className="flex-1 flex flex-col justify-center min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-sm font-bold uppercase tracking-wider ${isToday ? 'text-pink-600' : 'text-blue-600'}`}>Dia {dayNumber}</span>
-                            {isToday && <span className="text-[10px] bg-pink-500 text-white px-2 py-0.5 rounded-full font-bold uppercase animate-pulse">Hoje!</span>}
-                          </div>
-                          <h4 className={`font-black text-lg leading-tight break-words ${isToday ? 'text-pink-800' : 'text-slate-900'}`}>{b.name}</h4>
-                          <span className="text-xs text-slate-500 uppercase font-bold mt-1">{(b as any).role || "Polícia Mirim"}</span>
-                        </div>
+                        <h4 className={`font-black text-base leading-tight break-words ${b.isToday ? 'text-pink-800' : 'text-slate-900'}`}>{b.name}</h4>
+                        <span className={`text-[11px] font-bold uppercase tracking-wide mt-0.5 ${b.isToday ? 'text-pink-500' : 'text-slate-400'}`}>{b.role}</span>
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                 </div>
                 {hasMore && (
                   <Link href="/instituicao/aniversariantes" className="mt-2">
                     <Button variant="outline" className="w-full border-pink-200 text-pink-600 hover:bg-pink-50 hover:text-pink-700 font-bold">
-                      <List className="mr-2" size={16} /> Ver lista completa ({sortedBirthdays.length - 4} mais)
+                      <List className="mr-2" size={16} /> Ver todos os aniversariantes
                     </Button>
                   </Link>
                 )}
