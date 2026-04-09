@@ -8,21 +8,24 @@ export const dynamic = "force-dynamic"
 
 export default async function EditTeamMemberPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const member = await prisma.teamMember.findUnique({ where: { id } })
+  const [member, categories] = await Promise.all([
+    prisma.teamMember.findUnique({ where: { id } }),
+    prisma.memberCategory.findMany({ orderBy: { order: "asc" } }),
+  ])
   if (!member) return notFound()
 
   return (
     <PageContainer>
       <PageHeader>
-        <PageTitle 
-            title={`Editar Membro`} 
-            subtitle="Atualize os dados do integrante." 
-            icon={Pencil} 
-            backLink="/admin/institution/team" 
+        <PageTitle
+          title="Editar Membro"
+          subtitle="Atualize os dados do integrante."
+          icon={Pencil}
+          backLink="/admin/institution/team"
         />
       </PageHeader>
       <PageContent>
-         <MemberForm member={member} />
+        <MemberForm member={member} categories={categories} />
       </PageContent>
     </PageContainer>
   )

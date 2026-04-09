@@ -8,7 +8,7 @@ import { LogoutButton } from "./LogoutButton"
 import {
   LayoutDashboard, FileText, Settings, ChevronDown, ChevronRight,
   Cake, Medal, Users, Home, CalendarDays, Image as ImageIcon,
-  GraduationCap, Briefcase, ScrollText, Network, ClipboardList
+  GraduationCap, Briefcase, ScrollText, Network, ClipboardList, Tag
 } from "lucide-react"
 
 interface CurrentUser {
@@ -107,6 +107,7 @@ export function Sidebar({ onNavigate, logo, role, currentUser }: SidebarProps) {
             <div className="space-y-1 pl-2">
               <SidebarLink href="/admin/institution/history" icon={ScrollText} label="História e Valores" onClick={onNavigate} />
               <SidebarLink href="/admin/institution/team" icon={Users} label="Equipe / Diretoria" onClick={onNavigate} />
+              <SidebarLink href="/admin/institution/team/categories" icon={Tag} label="Categorias de Membros" onClick={onNavigate} />
               <SidebarLink href="/admin/institution/structure" icon={Network} label="Estrutura Org." onClick={onNavigate} />
             </div>
           )}

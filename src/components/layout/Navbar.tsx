@@ -13,27 +13,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-interface NavbarProps {
-  logoUrl?: string | null;
+interface NavCategory {
+  name: string
+  slug: string
 }
 
-export function Navbar({ logoUrl }: NavbarProps) {
+interface NavbarProps {
+  logoUrl?: string | null
+  categories?: NavCategory[]
+}
+
+export function Navbar({ logoUrl, categories = [] }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [isScrolled, setIsScrolled] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   const pathname = usePathname()
 
+  const instituicaoSubmenu = [
+    { label: "História", href: "/instituicao/historia" },
+    ...categories.map((c) => ({ label: c.name, href: `/instituicao/membros/${c.slug}` })),
+  ]
+
   const menuItems = [
     { label: "Home", href: "/", isHighlight: false },
-    { 
-      label: "A Instituição", 
-      href: "#", 
-      submenu: [
-        { label: "História", href: "/instituicao/historia" },
-        { label: "Diretoria", href: "/instituicao/diretoria" },    
-        { label: "Equipe", href: "/instituicao/equipe" },
-      ]
+    {
+      label: "A Instituição",
+      href: "#",
+      submenu: instituicaoSubmenu,
     },
     { label: "Cursos", href: "/cursos"},
     { label: "Notícias", href: "/noticias" },    

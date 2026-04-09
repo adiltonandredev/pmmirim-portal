@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Plus, Users, Pencil, User } from "lucide-react"
+import { Plus, Users, Pencil, User, Tag } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { DeleteButton } from "@/components/admin/shared/DeleteButton"
 import { deleteTeamMember } from "@/server/actions/team"
@@ -22,11 +22,18 @@ export default async function AdminTeamPage() {
             subtitle="Gerencie os membros da instituição e seus cargos."
             icon={Users} 
         />
-        <Link href="/admin/institution/team/new" className="w-full md:w-auto">
-          <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold gap-2 shadow-md">
-            <Plus size={18} /> Novo Membro
-          </Button>
-        </Link>
+        <div className="flex gap-2 w-full md:w-auto">
+          <Link href="/admin/institution/team/categories">
+            <Button variant="outline" className="font-bold gap-2 border-slate-300">
+              <Tag size={16} /> Categorias
+            </Button>
+          </Link>
+          <Link href="/admin/institution/team/new" className="flex-1 md:flex-none">
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold gap-2 shadow-md">
+              <Plus size={18} /> Novo Membro
+            </Button>
+          </Link>
+        </div>
       </PageHeader>
 
       <PageContent>

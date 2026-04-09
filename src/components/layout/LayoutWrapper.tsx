@@ -10,28 +10,32 @@ interface SiteInfo {
   address: string;
 }
 
+interface NavCategory {
+  name: string
+  slug: string
+}
+
 export default function LayoutWrapper({
   children,
   siteInfo,
+  categories = [],
   footer,
 }: {
   children: React.ReactNode;
   siteInfo: SiteInfo;
+  categories?: NavCategory[];
   footer: React.ReactNode;
 }) {
   const pathname = usePathname();
-  
+
   const isAdminPage = pathname?.startsWith("/admin");
   const isLoginPage = pathname?.startsWith("/login");
   const shouldHideInterface = isAdminPage || isLoginPage;
 
   return (
     <>
-      {/* CORREÇÃO FINAL: Usamos 'logoUrl' porque é assim que seu Navbar.tsx está escrito */}
-      {!shouldHideInterface && <Navbar logoUrl={siteInfo.logo} />}
-      
+      {!shouldHideInterface && <Navbar logoUrl={siteInfo.logo} categories={categories} />}
       {children}
-      
       {!shouldHideInterface && footer}
     </>
   );

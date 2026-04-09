@@ -233,20 +233,31 @@ model Birthday {
   updatedAt DateTime @updatedAt
 }
 
-model TeamMember {
+model MemberCategory {
   id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMember {
+  id        String    @id @default(cuid())
   name      String
   role      String
-  category  String   @default("Geral")
-  image     String?  @db.Text
+  category  String    @default("Geral")
+  image     String?   @db.Text
   bio       String?
-  
-  instagram String?  
-  email     String?  
+  birthDate DateTime?
+
+  instagram String?
+  email     String?
 
   order     Int      @default(0)
   active    Boolean  @default(true)
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

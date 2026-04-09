@@ -2,7 +2,12 @@
 import { revalidatePath } from "next/cache"
 import { createTeamMemberService, updateTeamMemberService, deleteTeamMemberService, getTeamMembersService } from "@/server/services/team.service"
 
-const revalidateTeam = () => { revalidatePath("/admin/institution/team"); revalidatePath("/instituicao/equipe"); revalidatePath("/instituicao/diretoria") }
+const revalidateTeam = () => {
+  revalidatePath("/admin/institution/team")
+  revalidatePath("/instituicao/equipe")
+  revalidatePath("/instituicao/diretoria")
+  revalidatePath("/instituicao/membros", "layout")
+}
 
 export async function createTeamMember(formData: FormData) {
   const result = await createTeamMemberService(formData)
