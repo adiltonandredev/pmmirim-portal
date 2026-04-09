@@ -44,18 +44,12 @@ export function LoginForm({ logo, siteName }: LoginFormProps) {
       {/* Painel esquerdo — identidade visual */}
       <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center relative overflow-hidden">
 
-        {/* Imagem de fundo */}
-        <div className="absolute inset-0">
-          <Image
-            src="/bg/bg-login.png"
-            alt="Fundo"
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* Overlay escuro para legibilidade */}
-          <div className="absolute inset-0 bg-blue-950/75" />
-        </div>
+        {/* Imagem de fundo com overlay */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/bg/bg-login.png')" }}
+        />
+        <div className="absolute inset-0 bg-blue-950/60" />
 
         <div className="relative z-10 flex flex-col items-center text-center gap-8 max-w-sm px-12">
           {/* Logo */}
