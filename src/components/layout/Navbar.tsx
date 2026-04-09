@@ -30,18 +30,25 @@ export function Navbar({ logoUrl, categories = [] }: NavbarProps) {
   const [lastScrollY, setLastScrollY] = useState(0)
   const pathname = usePathname()
 
-  const instituicaoSubmenu = [
-    { label: "História", href: "/instituicao/historia" },
-    ...categories.map((c) => ({ label: c.name, href: `/instituicao/membros/${c.slug}` })),
-  ]
+  const nossaEquipeSubmenu = categories.map((c) => ({
+    label: c.name,
+    href: `/instituicao/membros/${c.slug}`,
+  }))
 
   const menuItems = [
     { label: "Home", href: "/", isHighlight: false },
     {
       label: "A Instituição",
       href: "#",
-      submenu: instituicaoSubmenu,
+      submenu: [
+        { label: "História", href: "/instituicao/historia" },
+        { label: "Estrutura Organizacional", href: "/instituicao/estrutura" },
+      ],
     },
+    ...(nossaEquipeSubmenu.length > 0
+      ? [{ label: "Nossa Equipe", href: "#", submenu: nossaEquipeSubmenu }]
+      : [{ label: "Nossa Equipe", href: "/instituicao/equipe", isHighlight: false }]
+    ),
     { label: "Cursos", href: "/cursos"},
     { label: "Notícias", href: "/noticias" },    
     { label: "Projetos", href: "/projetos" },
