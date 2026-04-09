@@ -17,7 +17,8 @@ export default async function ParceirosPage() {
   
   try {
      partnersRaw = await prisma.banner.findMany({
-       orderBy: { createdAt: 'desc' }, 
+       where: { type: "PARTNER", active: true },
+       orderBy: { order: 'asc' },
      });
   } catch (e) {
      console.log("Erro ao buscar banners:", e);
