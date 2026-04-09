@@ -7,24 +7,22 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      
-      // Verifica se a rota começa com /admin
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
-      
-      // Lógica de Proteção
-      if (isOnAdmin) {
-        if (isLoggedIn) return true; // Logado no admin? Pode entrar.
-        return false; // Não logado no admin? Bloqueia (vai pro login).
+      const path = nextUrl.pathname;
+
+      // Rotas de login são sempre públicas (login, esqueci senha, redefinir senha)
+      const isLoginArea = path.startsWith("/admin/login");
+      if (isLoginArea) {
+        // Se já está logado e tenta acessar o login, redireciona pro painel
+        if (isLoggedIn) return Response.redirect(new URL("/admin", nextUrl));
+        return true;
       }
-      
-      // Lógica de Redirecionamento Inverso
-      // (Se já está logado e tenta ver a tela de login, joga pro painel)
-      if (isLoggedIn && nextUrl.pathname === "/admin/login") {
-         return Response.redirect(new URL("/admin", nextUrl));
+
+      // Demais rotas /admin exigem autenticação
+      if (path.startsWith("/admin")) {
+        return isLoggedIn;
       }
-      
-      // IMPORTANTE: Para qualquer outra página (Home, Sobre, etc),
-      // retorna true para permitir o acesso público.
+
+      // Site público — sempre acessível
       return true;
     },
     jwt({ token, user }) {
