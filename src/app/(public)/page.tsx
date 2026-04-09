@@ -171,42 +171,44 @@ export default async function Home() {
       <InfoCards nextEvent={nextEvent} latestNews={latestNewsCard} missionText={institutionData?.mission} />
 
       {/* NOTÍCIAS RECENTES (GRID) */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 border-l-8 border-blue-600 pl-4 uppercase">
-            Aconteceu na Polícia Militar Mirim
-          </h2>
-          <Link href="/noticias" className="text-blue-600 font-bold hover:text-blue-800 flex items-center gap-2 group uppercase text-sm">
-            Ver todas <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {latestPosts.map((post) => (
-            <Link key={post.id} href={`/noticias/${post.slug}`} className="group h-full">
-              <article className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col h-full group-hover:-translate-y-1">
-                <div className="h-48 w-full relative bg-slate-200 overflow-hidden">
-                  {post.coverImage ? (
-                    <Image src={post.coverImage} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-bold bg-slate-100"><Newspaper size={48} /></div>
-                  )}
-                  <div className="absolute top-3 right-3 bg-blue-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded shadow-lg">
-                    {post.type === "NEWS" ? "Notícia" : post.type === "EVENT" ? "Evento" : "Projeto"}
-                  </div>
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="text-xs text-slate-500 mb-2 flex items-center gap-2 font-bold uppercase">
-                    <CalendarDays size={14} />
-                    {new Date(post.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition line-clamp-2 leading-tight">{post.title}</h3>
-                  <span className="text-blue-600 font-bold text-xs flex items-center gap-1 mt-auto uppercase">Ler matéria <ArrowRight size={12} /></span>
-                </div>
-              </article>
+      {latestPosts.length > 0 && (
+        <section className="container mx-auto px-4 py-12">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 border-l-8 border-blue-600 pl-4 uppercase">
+              Aconteceu na Polícia Militar Mirim
+            </h2>
+            <Link href="/noticias" className="text-blue-600 font-bold hover:text-blue-800 flex items-center gap-2 group uppercase text-sm">
+              Ver todas <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {latestPosts.map((post) => (
+              <Link key={post.id} href={`/noticias/${post.slug}`} className="group h-full">
+                <article className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col h-full group-hover:-translate-y-1">
+                  <div className="h-48 w-full relative bg-slate-200 overflow-hidden">
+                    {post.coverImage ? (
+                      <Image src={post.coverImage} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-bold bg-slate-100"><Newspaper size={48} /></div>
+                    )}
+                    <div className="absolute top-3 right-3 bg-blue-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded shadow-lg">
+                      {post.type === "NEWS" ? "Notícia" : post.type === "EVENT" ? "Evento" : "Projeto"}
+                    </div>
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="text-xs text-slate-500 mb-2 flex items-center gap-2 font-bold uppercase">
+                      <CalendarDays size={14} />
+                      {new Date(post.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition line-clamp-2 leading-tight">{post.title}</h3>
+                    <span className="text-blue-600 font-bold text-xs flex items-center gap-1 mt-auto uppercase">Ler matéria <ArrowRight size={12} /></span>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ALUNO DESTAQUE */}
       {featuredStudent && (
