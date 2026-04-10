@@ -43,9 +43,13 @@ export function SettingsForm({ siteSettings, instagramSettings }: SettingsProps)
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 5 * 1024 * 1024) {
-                showError("Imagem muito grande", "O tamanho máximo permitido é 5MB.");
-                return;
-            }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
             setLogoPreview(URL.createObjectURL(file));
         }
     };

@@ -51,7 +51,14 @@ export function MemberForm({ member, categories }: MemberFormProps) {
     if (file) {
       const allowedTypes = ["image/jpeg", "image/png", "image/webp"]
       if (!allowedTypes.includes(file.type)) { showError("Erro", "Formato inválido!"); e.target.value = ""; return }
-      if (file.size > 10 * 1024 * 1024) { showError("Atenção", "Arquivo muito pesado!"); e.target.value = ""; return }
+      if (file.size > 10 * 1024 * 1024) {
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 10MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
       setPreview(URL.createObjectURL(file))
     }
   }

@@ -49,7 +49,10 @@ export function EditEventForm({ data }: EditEventFormProps) {
     // Valida banner APENAS se o usuário selecionou um novo
     if (file && file.size > 0) {
         if (file.size > 5 * 1024 * 1024) {
-            showError("Erro", "Banner muito grande (Máx 5MB)");
+            showError(
+              "Imagem Muito Grande",
+              `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+            );
             return;
         }
         if (!file.type.startsWith("image/")) {

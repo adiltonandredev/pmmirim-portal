@@ -42,10 +42,13 @@ export function CourseForm({ course }: { course?: Course | null }) {
 
             // 2. Validação de Tamanho (Máx 5MB)
             if (file.size > 5 * 1024 * 1024) {
-                showError("Arquivo muito pesado!", "O tamanho máximo permitido é 5MB.");
-                e.target.value = ""; // Limpa o input
-                return;
-            }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
 
             // Se passou, gera o preview
             setPreview(URL.createObjectURL(file));

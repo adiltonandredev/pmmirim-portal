@@ -31,10 +31,13 @@ export function ProjectForm({ project }: ProjectFormProps) {
         const file = e.target.files?.[0]
         if (file) {
             if (file.size > 20 * 1024 * 1024) {
-                showError("Atenção", "Arquivo muito pesado!");
-                e.target.value = "";
-                return;
-            }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 20MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
             setPreview(URL.createObjectURL(file))
         }
     }

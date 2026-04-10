@@ -34,7 +34,10 @@ export function StructureForm({ structure }: StructureFormProps) {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 10 * 1024 * 1024) { showError("Erro", "Imagem muito grande (máx 10MB)"); e.target.value = ""; return }
+    if (file.size > 10 * 1024 * 1024) {
+      showError("Imagem Muito Grande", `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 10MB. Compacte ou redimensione antes de enviar.`)
+      e.target.value = ""; return
+    }
     if (!file.type.startsWith("image/")) { showError("Erro", "Formato inválido"); e.target.value = ""; return }
     setPreview(URL.createObjectURL(file))
   }
@@ -69,7 +72,7 @@ export function StructureForm({ structure }: StructureFormProps) {
         router.refresh()
       }
     } catch {
-      showError("Erro", "Erro inesperado ao salvar.")
+      showError("Falha na Conexão", "Não foi possível completar a operação. Verifique sua conexão e tente novamente.")
     } finally {
       setLoading(false)
     }

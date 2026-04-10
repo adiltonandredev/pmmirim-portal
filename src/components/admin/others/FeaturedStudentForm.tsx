@@ -39,9 +39,13 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        showError("Atenção", "Arquivo muito grande!");
-        return;
-      }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
       setPreviewUrl(URL.createObjectURL(file));
     }
   }

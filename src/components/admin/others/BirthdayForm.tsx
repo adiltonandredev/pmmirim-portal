@@ -41,10 +41,13 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
             }
             // Validação visual de 10MB (o servidor aguenta 50MB, mas bom avisar)
             if (file.size > 10 * 1024 * 1024) {
-                showError("Atenção", "Arquivo muito pesado!");
-                e.target.value = "";
-                return;
-            }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 10MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
             setPreview(URL.createObjectURL(file))
         }
     }

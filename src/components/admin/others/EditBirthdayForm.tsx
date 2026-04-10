@@ -40,10 +40,14 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
 
     // Se o usuário enviou uma NOVA foto, validamos
     if (file && file.size > 0) {
-        if (file.size > 5 * 1024 * 1024) { // 5MB
-            showError("Erro", "Arquivo muito grande");
-            return;
-        }
+        if (file.size > 5 * 1024 * 1024) {
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
             showError("Erro", "Formato inválido");
             return;

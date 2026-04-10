@@ -40,10 +40,13 @@ export function BannerForm({ banner }: BannerFormProps) {
             }
             // Tamanho (5MB)
             if (file.size > 5 * 1024 * 1024) {
-                showError("Atenção", "Arquivo muito pesado!");
-                e.target.value = "";
-                return;
-            }
+      showError(
+        "Imagem Muito Grande",
+        `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
+      );
+      e.target.value = "";
+      return;
+    }
             setPreview(URL.createObjectURL(file))
         }
     }
