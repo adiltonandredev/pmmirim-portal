@@ -45,7 +45,6 @@ export function EditBirthdayForm({ data }: EditBirthdayFormProps) {
         "Imagem Muito Grande",
         `Sua imagem tem ${(file.size / 1024 / 1024).toFixed(1)}MB, mas o limite é 5MB. Compacte ou redimensione antes de enviar.`
       );
-      e.target.value = "";
       return;
     }
         if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
