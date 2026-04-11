@@ -16,7 +16,7 @@ export default async function AdminBirthdaysPage() {
 
     // Formata data (Ex: 12 de Outubro)
     const formatDate = (date: Date) => {
-        return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
+        return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', timeZone: 'UTC' });
     }
 
     return (

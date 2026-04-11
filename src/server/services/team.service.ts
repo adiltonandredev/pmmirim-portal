@@ -16,7 +16,7 @@ export async function createTeamMemberService(formData: FormData) {
   let image = null
   if (file && file.size > 0) image = await saveFile(file, "team")
   const birthDateRaw = formData.get("birthDate") as string
-  const birthDate = birthDateRaw ? new Date(birthDateRaw) : null
+  const birthDate = birthDateRaw ? new Date(`${birthDateRaw}T12:00:00Z`) : null
   await createTeamMemberRecord({ name, role: formData.get("role") as string, category: formData.get("category") as string, bio: formData.get("bio") as string, image, instagram: formData.get("instagram") as string, email: formData.get("email") as string, order: parseInt(formData.get("order") as string || "0"), birthDate })
   await logAdminAction("CRIOU", "Membro da Equipe", `Nome: ${name}`)
   return { success: true, message: "Membro da equipe cadastrado com sucesso!" }
@@ -30,7 +30,7 @@ export async function updateTeamMemberService(formData: FormData) {
   let image = formData.get("existingImage") as string
   if (file && file.size > 0) { const up = await saveFile(file, "team"); if (up) image = up }
   const birthDateRaw = formData.get("birthDate") as string
-  const birthDate = birthDateRaw ? new Date(birthDateRaw) : null
+  const birthDate = birthDateRaw ? new Date(`${birthDateRaw}T12:00:00Z`) : null
   await updateTeamMemberRecord(id, { name, role: formData.get("role") as string, category: formData.get("category") as string, bio: formData.get("bio") as string, image, instagram: formData.get("instagram") as string, email: formData.get("email") as string, order: parseInt(formData.get("order") as string || "0"), birthDate })
   await logAdminAction("EDITOU", "Membro da Equipe", `Nome: ${name}`)
   return { success: true, message: "Membro da equipe atualizado com sucesso!" }

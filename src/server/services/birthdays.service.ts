@@ -11,7 +11,7 @@ export async function createBirthdayService(formData: FormData) {
   const dateStr = formData.get("date") as string
   const active = formData.get("active") === "on"
   if (!name || !dateStr) return { success: false, message: "Nome e Data são obrigatórios." }
-  const date = new Date(`${dateStr}T12:00:00`)
+  const date = new Date(`${dateStr}T12:00:00Z`)
   const file = formData.get("photoUrl") as File
   let photoUrl = null
   if (file && file.size > 0) photoUrl = await saveFile(file, "birthdays")
@@ -27,7 +27,7 @@ export async function updateBirthdayService(formData: FormData) {
   const role = formData.get("role") as string
   const dateStr = formData.get("date") as string
   const active = formData.get("active") === "on"
-  const date = new Date(`${dateStr}T12:00:00`)
+  const date = new Date(`${dateStr}T12:00:00Z`)
   const file = formData.get("photoUrl") as File
   let photoUrl = formData.get("existingPhotoUrl") as string
   if (file && file.size > 0) { const up = await saveFile(file, "birthdays"); if (up) photoUrl = up }
