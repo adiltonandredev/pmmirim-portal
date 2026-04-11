@@ -1,8 +1,5 @@
 import { saveFile } from "@/lib/file-upload"
 import { logAdminAction } from "@/lib/audit"
-import { unlink } from "fs/promises"
-import { join } from "path"
-import { existsSync } from "fs"
 import {
   findPostBySlug,
   findPostById,
@@ -69,16 +66,6 @@ export async function updatePostService(formData: FormData) {
 
 export async function deletePostService(id: string) {
   const post = await findPostById(id)
-
-  if (post?.coverImage) {
-    try {
-      const filePath = join(process.cwd(), "public", post.coverImage)
-      if (existsSync(filePath)) await unlink(filePath)
-    } catch (e) {
-      console.error("Erro ao excluir imagem do disco:", e)
-    }
-  }
-
   await deletePostRecord(id)
   await logAdminAction("EXCLUIU", "Notícia", `Título: ${post?.title || "ID: " + id}`)
   return { success: true, message: "Notícia excluída com sucesso!" }

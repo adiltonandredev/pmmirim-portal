@@ -1,14 +1,7 @@
 ﻿import { hash } from "bcryptjs"
 import { logAdminAction } from "@/lib/audit"
 import { saveFile } from "@/lib/file-upload"
-import { unlink } from "fs/promises"
-import { join } from "path"
-import { existsSync } from "fs"
 import { findStudentById, findStudentByMatricula, createStudentRecord, updateStudentRecord, deleteStudentRecord, findFeaturedStudentById, createFeaturedStudentRecord, updateFeaturedStudentRecord, deleteFeaturedStudentRecord } from "@/server/repositories/students.repository"
-
-async function tryDeleteFile(path: string) {
-  try { const fp = join(process.cwd(), "public", path); if (existsSync(fp)) await unlink(fp) } catch (e) { console.error(e) }
-}
 
 export async function createStudentService(formData: FormData) {
   const name = formData.get("name") as string
@@ -45,7 +38,6 @@ export async function updateStudentService(formData: FormData) {
 
 export async function deleteStudentService(id: string) {
   const student = await findStudentById(id)
-  if (student?.photoUrl) await tryDeleteFile(student.photoUrl)
   await deleteStudentRecord(id)
   await logAdminAction("EXCLUIU", "Aluno", `Nome: ${student?.name || id}`)
   return { success: true, message: "Aluno excluído com sucesso!" }
@@ -77,7 +69,6 @@ export async function updateFeaturedStudentService(formData: FormData) {
 
 export async function deleteFeaturedStudentService(id: string) {
   const student = await findFeaturedStudentById(id)
-  if (student?.photoUrl) await tryDeleteFile(student.photoUrl)
   await deleteFeaturedStudentRecord(id)
   await logAdminAction("EXCLUIU", "Aluno Destaque", `Nome: ${student?.studentName || id}`)
   return { success: true, message: "Destaque excluído com sucesso!" }

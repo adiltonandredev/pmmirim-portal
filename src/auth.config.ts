@@ -34,9 +34,7 @@ export const authConfig = {
     },
     session({ session, token }) {
       if (token && session.user) {
-        // @ts-ignore
         session.user.id = token.id as string;
-        // @ts-ignore
         session.user.role = token.role as string;
       }
       return session;

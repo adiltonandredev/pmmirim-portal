@@ -10,6 +10,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
     }
 
+    if (typeof newPassword !== "string" || newPassword.length < 8) {
+      return NextResponse.json({ error: "A senha deve ter no mínimo 8 caracteres" }, { status: 400 });
+    }
+
     const user = await prisma.user.findFirst({
       where: {
         resetToken: token,
@@ -33,8 +37,8 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "Senha redefinida com sucesso!" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Erro ao redefinir senha:", error);
-    return NextResponse.json({ error: error.message || "Erro interno" }, { status: 500 });
+    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
   }
 }
