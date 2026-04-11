@@ -27,8 +27,9 @@ type HeroSlide = {
 
 export default async function Home() {
   const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentDay = currentDate.getDate();
+  // Usar UTC em tudo para coincidir com como o Prisma armazena datas (midnight UTC)
+  const currentMonth = currentDate.getUTCMonth() + 1;
+  const currentDay = currentDate.getUTCDate();
 
   const [
     latestPosts,       // 1
@@ -144,8 +145,8 @@ export default async function Home() {
   // Gera os 7 próximos dias como pares {month, day}
   const next7Days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(currentDate)
-    d.setDate(d.getDate() + i)
-    return { month: d.getMonth() + 1, day: d.getDate() }
+    d.setUTCDate(d.getUTCDate() + i)
+    return { month: d.getUTCMonth() + 1, day: d.getUTCDate() }
   })
   const isInNext7Days = (month: number, day: number) =>
     next7Days.some(d => d.month === month && d.day === day)
