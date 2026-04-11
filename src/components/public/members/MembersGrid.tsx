@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { User, ArrowRight, Instagram, Mail, X, Briefcase, Tag, Cake } from "lucide-react"
+import { User, Instagram, Mail, X, Briefcase, Tag, ExternalLink } from "lucide-react"
 import Image from "next/image"
 
 type Member = {
@@ -15,16 +14,15 @@ type Member = {
   instagram: string | null
   email: string | null
   order: number
-  birthDate?: Date | null
+  birthDate?: Date | null   // recebido mas não exibido publicamente
 }
 
 interface MembersGridProps {
   members: Member[]
 }
 
-function formatBirthDate(date: Date | null | undefined) {
-  if (!date) return null
-  return new Date(date).toLocaleDateString("pt-BR", { day: "2-digit", month: "long" })
+function instagramHref(handle: string) {
+  return `https://instagram.com/${handle.replace("@", "")}`
 }
 
 export function MembersGrid({ members }: MembersGridProps) {
@@ -32,128 +30,183 @@ export function MembersGrid({ members }: MembersGridProps) {
 
   return (
     <>
+      {/* ── GRID ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {members.map((member) => (
-          <Card
+          <article
             key={member.id}
-            className="relative p-0 shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 bg-slate-50 flex flex-col overflow-hidden rounded-2xl h-full hover:-translate-y-1 cursor-pointer"
             onClick={() => setSelected(member)}
+            className="group cursor-pointer bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col overflow-hidden"
           >
-            <div className="w-full relative bg-slate-200 shrink-0 h-64 border-b border-slate-100 group">
+            {/* Foto */}
+            <div className="relative h-64 bg-slate-100 shrink-0 overflow-hidden">
               {member.image ? (
                 <Image
                   src={member.image}
                   alt={member.name}
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-100">
-                  <User size={64} opacity={0.3} />
+                <div className="w-full h-full flex items-center justify-center text-slate-200 bg-slate-50">
+                  <User size={56} />
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-            </div>
+              {/* Gradiente hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-            <div className="flex flex-col p-5 flex-grow">
-              <div className="mb-3">
-                <span className="text-[10px] font-black uppercase text-blue-700 bg-white px-2.5 py-1 rounded-md border border-blue-100 inline-block tracking-wider shadow-sm">
-                  {member.role}
-                </span>
-              </div>
-              <h3 className="text-xl font-black text-slate-900 leading-tight mb-1 line-clamp-2 group-hover:text-blue-700 transition-colors">
-                {member.name}
-                <ArrowRight size={18} className="inline-block ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-600" />
-              </h3>
-              {member.birthDate && (
-                <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
-                  <Cake size={11} /> {formatBirthDate(member.birthDate)}
-                </p>
+              {/* Ícone social sobreposto — aparece no hover */}
+              {member.instagram && (
+                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white">
+                    <Instagram size={15} />
+                  </span>
+                </div>
               )}
             </div>
-          </Card>
+
+            {/* Conteúdo */}
+            <div className="flex flex-col flex-1 p-5">
+              <span className="text-[10px] font-black uppercase text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100 inline-block tracking-wider w-fit mb-3">
+                {member.role}
+              </span>
+
+              <h3 className="font-black text-slate-900 leading-snug mb-2 line-clamp-1 group-hover:text-blue-700 transition-colors text-base">
+                {member.name}
+              </h3>
+
+              {member.bio && (
+                <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 flex-1">
+                  {member.bio}
+                </p>
+              )}
+
+              {/* Ícones sociais no rodapé do card */}
+              {(member.instagram || member.email) && (
+                <div className="flex gap-2 mt-4 pt-3 border-t border-slate-100">
+                  {member.instagram && (
+                    <span
+                      onClick={(e) => { e.stopPropagation(); window.open(instagramHref(member.instagram!), "_blank") }}
+                      title="Instagram"
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors cursor-pointer border border-pink-100"
+                    >
+                      <Instagram size={14} />
+                    </span>
+                  )}
+                  {member.email && (
+                    <span
+                      onClick={(e) => { e.stopPropagation(); window.open(`mailto:${member.email}`) }}
+                      title="E-mail"
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors cursor-pointer border border-blue-100"
+                    >
+                      <Mail size={14} />
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          </article>
         ))}
       </div>
 
-      {/* MODAL DETALHE */}
+      {/* ── MODAL ── */}
       {selected && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200">
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 bg-slate-100 hover:bg-slate-200 hover:text-red-500 text-slate-500 rounded-full z-10 transition-colors"
-            >
-              <X size={24} />
-            </button>
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setSelected(null)}
+        >
+          <div
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header do modal */}
+            <div className="relative h-32 bg-gradient-to-br from-blue-900 to-blue-700 rounded-t-3xl overflow-hidden">
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,white,transparent)]" />
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/25 text-white rounded-full z-10 transition-colors backdrop-blur-sm"
+                aria-label="Fechar"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-            <div className="p-6 sm:p-10">
-              <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start text-center md:text-left mb-8">
-                <div className="w-32 h-32 md:w-48 md:h-48 rounded-2xl border-4 border-slate-50 shadow-md bg-slate-100 overflow-hidden shrink-0 relative mt-4 md:mt-0">
+            <div className="px-6 sm:px-10 pb-8">
+              {/* Foto + info principal */}
+              <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-end -mt-16 mb-6">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl bg-slate-100 overflow-hidden shrink-0 relative">
                   {selected.image ? (
-                    <Image src={selected.image} alt={selected.name} fill className="object-cover" />
+                    <Image src={selected.image} alt={selected.name} fill className="object-cover object-top" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-300"><User size={64} /></div>
+                    <div className="w-full h-full flex items-center justify-center text-slate-300"><User size={48} /></div>
                   )}
                 </div>
-
-                <div className="flex-1 space-y-3 md:pt-4">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider border border-blue-100">
-                    <Tag size={12} /> {selected.category}
+                <div className="text-center sm:text-left pb-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-bold uppercase tracking-wider border border-blue-100 mb-2">
+                    <Tag size={11} /> {selected.category}
                   </div>
-                  <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">{selected.name}</h1>
-                  <p className="text-lg text-slate-500 font-medium flex items-center justify-center md:justify-start gap-2">
-                    <Briefcase size={18} className="text-slate-400" /> {selected.role}
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">{selected.name}</h2>
+                  <p className="text-slate-500 font-medium flex items-center justify-center sm:justify-start gap-1.5 mt-1">
+                    <Briefcase size={15} className="text-slate-400 shrink-0" />
+                    {selected.role}
                   </p>
-                  {selected.birthDate && (
-                    <p className="text-sm text-slate-400 flex items-center justify-center md:justify-start gap-1.5">
-                      <Cake size={15} className="text-pink-400" />
-                      Aniversário: {formatBirthDate(selected.birthDate)}
-                    </p>
-                  )}
                 </div>
               </div>
 
-              <hr className="border-slate-100 mb-8" />
+              <hr className="border-slate-100 mb-6" />
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <div className="lg:col-span-2 space-y-4">
-                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <User size={20} className="text-blue-600" /> Sobre
-                  </h2>
-                  <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed whitespace-pre-wrap text-justify bg-slate-50/50 p-6 rounded-2xl border border-slate-50">
-                    {selected.bio || "Nenhuma biografia detalhada foi informada."}
-                  </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Bio */}
+                <div className="lg:col-span-2 space-y-3">
+                  <h3 className="text-sm font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                    <User size={16} className="text-blue-600" /> Sobre
+                  </h3>
+                  <p className="text-slate-600 leading-relaxed text-sm bg-slate-50 rounded-2xl p-5 border border-slate-100 whitespace-pre-wrap">
+                    {selected.bio || "Nenhuma biografia informada."}
+                  </p>
                 </div>
 
-                <div className="space-y-4">
-                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <Mail size={20} className="text-blue-600" /> Contato
-                  </h2>
-                  <div className="space-y-3">
+                {/* Redes sociais / contato */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                    <ExternalLink size={16} className="text-blue-600" /> Redes & Contato
+                  </h3>
+                  <div className="space-y-2.5">
                     {selected.instagram && (
-                      <a href={`https://instagram.com/${selected.instagram.replace("@", "")}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-2xl bg-pink-50 text-pink-700 hover:bg-pink-100 transition-colors group border border-pink-100">
-                        <div className="bg-white p-2 rounded-xl shadow-sm group-hover:scale-110 transition-transform shrink-0"><Instagram size={20} /></div>
-                        <span className="font-medium text-sm truncate">{selected.instagram}</span>
+                      <a
+                        href={instagramHref(selected.instagram)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 text-pink-700 hover:from-pink-100 hover:to-purple-100 transition-all group/link border border-pink-100"
+                      >
+                        <div className="w-9 h-9 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover/link:scale-110 transition-transform">
+                          <Instagram size={18} className="text-pink-600" />
+                        </div>
+                        <span className="font-semibold text-sm truncate">{selected.instagram}</span>
                       </a>
                     )}
                     {selected.email && (
-                      <a href={`mailto:${selected.email}`} className="flex items-center gap-3 p-4 rounded-2xl bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors group border border-blue-100">
-                        <div className="bg-white p-2 rounded-xl shadow-sm group-hover:scale-110 transition-transform shrink-0"><Mail size={20} /></div>
-                        <span className="font-medium text-sm truncate">{selected.email}</span>
+                      <a
+                        href={`mailto:${selected.email}`}
+                        className="flex items-center gap-3 p-3.5 rounded-2xl bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all group/link border border-blue-100"
+                      >
+                        <div className="w-9 h-9 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover/link:scale-110 transition-transform">
+                          <Mail size={18} className="text-blue-600" />
+                        </div>
+                        <span className="font-semibold text-sm truncate">{selected.email}</span>
                       </a>
                     )}
                     {!selected.instagram && !selected.email && (
-                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
-                        <p className="text-slate-400 text-sm italic">Nenhum contato público disponível.</p>
-                      </div>
+                      <p className="text-slate-400 text-sm italic p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        Nenhum contato público disponível.
+                      </p>
                     )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="absolute inset-0 -z-10" onClick={() => setSelected(null)} />
         </div>
       )}
     </>
