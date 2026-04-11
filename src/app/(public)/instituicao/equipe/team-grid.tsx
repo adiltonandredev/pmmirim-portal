@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { User, Instagram, Mail, X, Briefcase, Tag, ExternalLink } from "lucide-react"
+import { User, Instagram, Mail, X, Briefcase, Tag } from "lucide-react"
 import Image from "next/image"
 
 type TeamMember = {
@@ -137,101 +137,78 @@ export function TeamGrid({ teamMembers }: TeamGridProps) {
         })}
       </div>
 
-      {/* ── MODAL ── */}
+      {/* MODAL */}
       {selected && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header colorido */}
-            <div className="relative h-32 bg-gradient-to-br from-green-900 to-green-700 rounded-t-3xl overflow-hidden">
-              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_30%_50%,white,transparent)]" />
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/25 text-white rounded-full z-10 transition-colors backdrop-blur-sm"
-                aria-label="Fechar"
-              >
-                <X size={20} />
-              </button>
-            </div>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 bg-slate-100 hover:bg-slate-200 hover:text-red-500 text-slate-500 rounded-full z-10 transition-colors"
+            >
+              <X size={24} />
+            </button>
 
-            <div className="px-6 sm:px-10 pb-8">
-              {/* Foto + info */}
-              <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-end -mt-16 mb-6">
-                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white shadow-xl bg-slate-100 overflow-hidden shrink-0 relative">
+            <div className="p-6 sm:p-10">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start text-center md:text-left mb-8">
+                <div className="w-32 h-32 md:w-48 md:h-48 rounded-2xl border-4 border-slate-50 shadow-md bg-slate-100 overflow-hidden shrink-0 relative mt-4 md:mt-0">
                   {selected.image ? (
-                    <Image src={selected.image} alt={selected.name} fill className="object-cover object-top" />
+                    <Image src={selected.image} alt={selected.name} fill className="object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-300"><User size={48} /></div>
+                    <div className="w-full h-full flex items-center justify-center text-slate-300"><User size={64} /></div>
                   )}
                 </div>
-                <div className="text-center sm:text-left pb-1">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[11px] font-bold uppercase tracking-wider border border-green-100 mb-2">
-                    <Tag size={11} /> {selected.category}
+
+                <div className="flex-1 space-y-3 md:pt-4">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-bold uppercase tracking-wider border border-green-100">
+                    <Tag size={12} /> {selected.category}
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">{selected.name}</h2>
-                  <p className="text-slate-500 font-medium flex items-center justify-center sm:justify-start gap-1.5 mt-1 text-sm">
-                    <Briefcase size={15} className="text-slate-400 shrink-0" />
-                    {selected.role}
+                  <h1 className="text-3xl md:text-4xl font-black text-slate-900 leading-tight">{selected.name}</h1>
+                  <p className="text-lg text-slate-500 font-medium flex items-center justify-center md:justify-start gap-2">
+                    <Briefcase size={18} className="text-slate-400" /> {selected.role}
                   </p>
                 </div>
               </div>
 
-              <hr className="border-slate-100 mb-6" />
+              <hr className="border-slate-100 mb-8" />
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-3">
-                  <h3 className="text-sm font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
-                    <User size={16} className="text-green-600" /> Sobre
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed text-sm bg-slate-50 rounded-2xl p-5 border border-slate-100 whitespace-pre-wrap">
-                    {selected.bio || "Nenhuma biografia informada."}
-                  </p>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div className="lg:col-span-2 space-y-4">
+                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <User size={20} className="text-green-600" /> Sobre
+                  </h2>
+                  <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed whitespace-pre-wrap text-justify bg-slate-50/50 p-6 rounded-2xl border border-slate-50">
+                    {selected.bio ?? "Nenhuma biografia detalhada foi informada."}
+                  </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h3 className="text-sm font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
-                    <ExternalLink size={16} className="text-green-600" /> Redes & Contato
-                  </h3>
-                  <div className="space-y-2.5">
+                <div className="space-y-4">
+                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <Mail size={20} className="text-green-600" /> Contato
+                  </h2>
+                  <div className="space-y-3">
                     {selected.instagram && (
-                      <a
-                        href={instagramHref(selected.instagram)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-pink-50 to-purple-50 text-pink-700 hover:from-pink-100 hover:to-purple-100 transition-all group/link border border-pink-100"
-                      >
-                        <div className="w-9 h-9 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover/link:scale-110 transition-transform">
-                          <Instagram size={18} className="text-pink-600" />
-                        </div>
-                        <span className="font-semibold text-sm truncate">{selected.instagram}</span>
+                      <a href={instagramHref(selected.instagram)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-2xl bg-pink-50 text-pink-700 hover:bg-pink-100 transition-colors group border border-pink-100">
+                        <div className="bg-white p-2 rounded-xl shadow-sm group-hover:scale-110 transition-transform shrink-0"><Instagram size={20} /></div>
+                        <span className="font-medium text-sm truncate">{selected.instagram}</span>
                       </a>
                     )}
                     {selected.email && (
-                      <a
-                        href={`mailto:${selected.email}`}
-                        className="flex items-center gap-3 p-3.5 rounded-2xl bg-green-50 text-green-700 hover:bg-green-100 transition-all group/link border border-green-100"
-                      >
-                        <div className="w-9 h-9 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover/link:scale-110 transition-transform">
-                          <Mail size={18} className="text-green-700" />
-                        </div>
-                        <span className="font-semibold text-sm truncate">{selected.email}</span>
+                      <a href={`mailto:${selected.email}`} className="flex items-center gap-3 p-4 rounded-2xl bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors group border border-blue-100">
+                        <div className="bg-white p-2 rounded-xl shadow-sm group-hover:scale-110 transition-transform shrink-0"><Mail size={20} /></div>
+                        <span className="font-medium text-sm truncate">{selected.email}</span>
                       </a>
                     )}
                     {!selected.instagram && !selected.email && (
-                      <p className="text-slate-400 text-sm italic p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
-                        Nenhum contato público disponível.
-                      </p>
+                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+                        <p className="text-slate-400 text-sm italic">Nenhum contato público disponível.</p>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div className="absolute inset-0 -z-10" onClick={() => setSelected(null)} />
         </div>
       )}
     </>
