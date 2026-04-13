@@ -26,6 +26,7 @@ export interface StudentData {
 
 export function FeaturedStudentForm({ student }: { student?: StudentData | null }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const submittingRef = useRef(false);
   const router = useRouter();
   const [previewUrl, setPreviewUrl] = useState<string | null>(student?.photoUrl || null);
   const [isPending, setIsPending] = useState(false);
@@ -59,6 +60,8 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
   }
 
   async function handleSubmit(formData: FormData) {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setIsPending(true);
     const action = student ? updateFeaturedStudent : createFeaturedStudent;
 
@@ -69,14 +72,15 @@ export function FeaturedStudentForm({ student }: { student?: StudentData | null 
                  if (student.photoUrl) formData.set("existingPhotoUrl", student.photoUrl);
             }
         }
-        
+
         await action(formData);
         showSuccess("Salvo com sucesso!", student ? "Atualizado com sucesso!" : "Aluno Destaque criado!");
         router.refresh();
-        setTimeout(() => router.push("/admin/featured-student"), 500); 
+        setTimeout(() => router.push("/admin/featured-student"), 500);
     } catch (error) {
         console.error(error);
         showError("Erro", "Erro ao salvar.");
+        submittingRef.current = false;
         setIsPending(false);
     }
   }
