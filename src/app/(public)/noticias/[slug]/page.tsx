@@ -8,6 +8,7 @@ import { PageHero } from "@/components/ui/page-hero"
 import { BackButton } from "@/components/ui/back-button"
 import { CommentForm } from "@/components/public/news/CommentForm"
 import { ShareButtons } from "@/components/public/news/ShareButtons"
+import { PostContent } from "@/components/public/news/PostContent"
 
 
 export const dynamic = "force-dynamic"
@@ -117,14 +118,14 @@ export default async function NoticiaPage(props: Props) {
               <ShareButtons title={post.title} label="esta notícia" />
 
               {/* Texto Rico */}
-              <div
+              <PostContent
+                html={post.content}
                 className="prose prose-lg prose-slate max-w-none
                         prose-headings:text-slate-900 prose-headings:font-bold
                         prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-justify
                         prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline
-                        prose-img:rounded-xl prose-img:shadow-lg prose-img:mx-auto
+                        prose-img:rounded-xl prose-img:shadow-lg prose-img:mx-auto prose-img:cursor-zoom-in
                         prose-strong:text-slate-900"
-                dangerouslySetInnerHTML={{ __html: post.content }}
               />
             </div>
           </article>
