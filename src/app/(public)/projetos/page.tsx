@@ -1,12 +1,11 @@
 import { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { getSiteSettings } from "@/lib/settings"
-import { Card, CardContent } from "@/components/ui/card"
 import { BackButton } from "@/components/ui/back-button"
-import Image from "next/image"
 import Link from "next/link"
-import { Award, Users, Target, ArrowRight, Lightbulb } from "lucide-react"
+import { Award, Users, Target, Lightbulb } from "lucide-react"
 import { PageHero } from "@/components/ui/page-hero"
+import { ProjetosGrid } from "./projetos-grid"
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
@@ -102,7 +101,7 @@ export default async function ProjetosPage({
           </div>
         </div>
 
-        {/* LISTAGEM DE PROJETOS (Mantida) */}
+        {/* LISTAGEM DE PROJETOS */}
         {projects.length === 0 ? (
           <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-300 shadow-sm">
             <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
@@ -113,58 +112,7 @@ export default async function ProjetosPage({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {projects.map((project) => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const bgImage = project.coverImage || (project as any).imageUrl || "";
-
-                return (
-                  <Link key={project.id} href={`/projetos/${project.slug}`} className="group h-full">
-                    <Card className="h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden bg-white flex flex-col rounded-2xl">
-
-                      {/* Imagem do Card */}
-                      <div className="relative h-60 overflow-hidden bg-slate-200">
-                        {bgImage ? (
-                          <Image
-                            src={bgImage}
-                            alt={project.title}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center text-emerald-400 bg-emerald-50">
-                            <Award size={48} opacity={0.5} />
-                          </div>
-                        )}
-
-                        {/* Overlay Verde */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-
-                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-emerald-700 text-[10px] font-black px-3 py-1.5 rounded-md shadow-lg uppercase tracking-wider border border-white/50">
-                          Projeto
-                        </div>
-                      </div>
-
-                      <CardContent className="p-6 md:p-8 flex flex-col flex-grow">
-                        <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-3 leading-tight">
-                          {project.title}
-                        </h3>
-
-                        <p className="text-slate-600 text-sm line-clamp-3 mb-6 leading-relaxed text-justify flex-1">
-                          {project.summary}
-                        </p>
-
-                        <div className="mt-auto pt-4 border-t border-slate-100">
-                          <span className="text-emerald-600 font-bold text-xs uppercase tracking-wide flex items-center gap-2 group-hover:gap-3 transition-all">
-                            Saiba mais <ArrowRight size={14} />
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
+            <ProjetosGrid projects={projects} />
 
             {/* PAGINAÇÃO */}
             {totalPages > 1 && (
