@@ -43,8 +43,8 @@ export async function createGallery(formData: FormData) {
   try {
   const result = await createGalleryService(formData)
   if (result.success) revalidatePath("/admin/gallery")
-  return result
-  } catch (error) { return { success: false, message: parseError(error) } }
+  return result.success ? result.id : null
+  } catch (error) { return null }
 }
 export async function deleteGallery(id: string) {
   try {

@@ -70,9 +70,9 @@ export async function createGalleryService(formData: FormData) {
   const coverFile = formData.get("coverImage") as File
   const slug = title.toLowerCase().replace(/\s+/g, "_") + "_" + Date.now().toString().slice(-4)
   const coverUrl = await saveFile(coverFile, "gallery")
-  await createGalleryRecord({ title, slug, coverUrl: coverUrl || "" })
+  const gallery = await createGalleryRecord({ title, slug, coverUrl: coverUrl || "" })
   await logAdminAction("CRIOU", "Galeria (Legado)", `Título: ${title}`)
-  return { success: true, message: "Galeria criada!" }
+  return { success: true, message: "Galeria criada!", id: gallery.id }
 }
 
 export async function deleteGalleryService(id: string) {

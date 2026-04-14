@@ -65,9 +65,13 @@ export default function NewGalleryPage() {
     setLoading(true)
     const formData = new FormData(e.currentTarget)
     const newId = await createGallery(formData)
-    
-    if (newId) router.push(`/admin/gallery/${newId}/edit`)
-    else router.push("/admin/gallery")
+
+    if (newId) {
+      router.push(`/admin/gallery/${newId}/edit`)
+    } else {
+      setError("Erro ao criar o álbum. Tente novamente.")
+      setLoading(false)
+    }
   }
 
   return (
