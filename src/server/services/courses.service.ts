@@ -19,7 +19,7 @@ export async function createCourseService(formData: FormData) {
   let sponsorLogo = null
   if (sponsorFile && sponsorFile.size > 0) sponsorLogo = await saveFile(sponsorFile, "courses")
   const slug = generateCourseSlug(title)
-  await createCourseRecord({ title, slug, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", coverImage, sponsorLogo, featured: false })
+  await createCourseRecord({ title, slug, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", coverImage, sponsorLogo, featured: formData.get("featured") === "on" })
   await logAdminAction("CRIOU", "Curso", `Título: ${title}`)
   return { success: true, message: "Curso criado com sucesso!" }
 }
@@ -34,7 +34,7 @@ export async function updateCourseService(formData: FormData) {
   let sponsorLogo = formData.get("existingSponsorLogo") as string
   if (sponsorFile && sponsorFile.size > 0) { const up = await saveFile(sponsorFile, "courses"); if (up) sponsorLogo = up }
   const title = formData.get("title") as string
-  await updateCourseRecord(id, { title, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", coverImage, sponsorLogo })
+  await updateCourseRecord(id, { title, description: formData.get("description") as string, content: formData.get("content") as string, duration: formData.get("duration") as string, targetAge: formData.get("targetAge") as string, sponsorName: formData.get("sponsorName") as string, active: formData.get("active") === "on", featured: formData.get("featured") === "on", coverImage, sponsorLogo })
   await logAdminAction("EDITOU", "Curso", `Título: ${title}`)
   return { success: true, message: "Curso atualizado com sucesso!" }
 }

@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch"
 import { createCourse, updateCourse } from "@/server/actions/courses"
 import { useRouter } from "next/navigation"
 
-import { BookOpen, Clock, Users, FileText, UploadCloud, X, Image as ImageIcon, Handshake, Loader2, Save, AlertTriangle } from "lucide-react"
+import { BookOpen, Clock, Users, FileText, UploadCloud, X, Image as ImageIcon, Handshake, Loader2, Save, AlertTriangle, Star } from "lucide-react"
 import Image from "next/image"
 import { RichTextEditor } from "@/components/admin/shared/RichTextEditor"
 import { Course } from "@prisma/client"
@@ -176,12 +176,24 @@ export function CourseForm({ course }: { course?: Course | null }) {
             <div className="space-y-6">
 
                 {/* CARD: STATUS */}
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-                    <div className="space-y-0.5">
-                        <Label className="text-base font-bold text-slate-800">Curso Ativo?</Label>
-                        <p className="text-xs text-slate-500">Exibir no site público.</p>
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label className="text-base font-bold text-slate-800">Curso Ativo?</Label>
+                            <p className="text-xs text-slate-500">Exibir no site público.</p>
+                        </div>
+                        <Switch name="active" defaultChecked={course?.active ?? true} />
                     </div>
-                    <Switch name="active" defaultChecked={course?.active ?? true} />
+
+                    <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label className="text-base font-bold text-slate-800 flex items-center gap-1.5">
+                                <Star size={15} className="text-yellow-500" /> Destaque (Hero)?
+                            </Label>
+                            <p className="text-xs text-slate-500">Exibir em destaque no topo da página.</p>
+                        </div>
+                        <Switch name="featured" defaultChecked={course?.featured ?? false} />
+                    </div>
                 </div>
 
                 {/* CARD: CAPA DO CURSO (Com Upload) */}
