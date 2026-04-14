@@ -46,15 +46,15 @@ export default async function Home() {
     institutionData,   // 12
     teamBirthdays,     // 13
   ] = await Promise.all([
-    // 1. Posts Gerais (Lista de baixo)
+    // 1. Posts Gerais — apenas notícias (exclui projetos para evitar duplicação)
     prisma.post.findMany({
-      where: { published: true },
+      where: { published: true, type: "NEWS" },
       orderBy: { createdAt: 'desc' },
       take: 3,
     }),
-    // 2. Projetos
+    // 2. Projetos em destaque — apenas os marcados como featured
     prisma.post.findMany({
-      where: { published: true, type: "PROJECT" },
+      where: { published: true, type: "PROJECT", featured: true },
       orderBy: { createdAt: 'desc' },
       take: 3,
     }),

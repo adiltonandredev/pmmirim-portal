@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Plus, Briefcase, Pencil, Calendar } from "lucide-react"
+import { Plus, Briefcase, Pencil, Calendar, Star } from "lucide-react"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { DeleteButton } from "@/components/admin/shared/DeleteButton"
 import { deleteProject } from "@/server/actions/projects"
@@ -58,11 +58,16 @@ export default async function AdminProjectsPage() {
                             </div>
                         )}
 
-                        <div className="absolute top-2 right-2">
+                        <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
                              {project.published ? (
                                 <span className="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded shadow-sm">PUBLICADO</span>
                              ) : (
                                 <span className="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-1 rounded shadow-sm">RASCUNHO</span>
+                             )}
+                             {project.featured && (
+                                <span className="bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-1 rounded shadow-sm flex items-center gap-1">
+                                    <Star size={10} /> DESTAQUE
+                                </span>
                              )}
                         </div>
                     </div>
