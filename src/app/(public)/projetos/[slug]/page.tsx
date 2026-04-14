@@ -92,27 +92,35 @@ export default async function ProjetoPage(props: Props) {
             {/* COLUNA ESQUERDA: Conteúdo Principal */}
             <article className="lg:col-span-2 space-y-8">
                 
-                {/* Cards de Destaque (Objetivo, Público, Impacto) */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
-                        <div className="flex items-center gap-3 mb-2 text-emerald-700 font-bold">
-                            <Target size={20} /> <h3>Objetivo</h3>
-                        </div>
-                        <p className="text-xs text-slate-500 leading-relaxed">Promover cidadania e valores através da educação.</p>
+                {/* Cards de Destaque (Objetivo, Público, Impacto) — só exibe se houver conteúdo */}
+                {(project.objective || project.targetAudience || project.impact) && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {project.objective && (
+                            <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                                <div className="flex items-center gap-3 mb-2 text-emerald-700 font-bold">
+                                    <Target size={20} /> <h3>Objetivo</h3>
+                                </div>
+                                <p className="text-xs text-slate-500 leading-relaxed">{project.objective}</p>
+                            </div>
+                        )}
+                        {project.targetAudience && (
+                            <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                                <div className="flex items-center gap-3 mb-2 text-blue-700 font-bold">
+                                    <Users size={20} /> <h3>Público</h3>
+                                </div>
+                                <p className="text-xs text-slate-500 leading-relaxed">{project.targetAudience}</p>
+                            </div>
+                        )}
+                        {project.impact && (
+                            <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
+                                <div className="flex items-center gap-3 mb-2 text-yellow-600 font-bold">
+                                    <Award size={20} /> <h3>Impacto</h3>
+                                </div>
+                                <p className="text-xs text-slate-500 leading-relaxed">{project.impact}</p>
+                            </div>
+                        )}
                     </div>
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
-                        <div className="flex items-center gap-3 mb-2 text-blue-700 font-bold">
-                            <Users size={20} /> <h3>Público</h3>
-                        </div>
-                        <p className="text-xs text-slate-500 leading-relaxed">Jovens de 10 a 17 anos da comunidade.</p>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-slate-100 hover:-translate-y-1 transition-transform">
-                        <div className="flex items-center gap-3 mb-2 text-yellow-600 font-bold">
-                            <Award size={20} /> <h3>Impacto</h3>
-                        </div>
-                        <p className="text-xs text-slate-500 leading-relaxed">Transformação social e desenvolvimento pessoal.</p>
-                    </div>
-                </div>
+                )}
 
                 {/* Botões de compartilhamento */}
                 <ShareButtons title={project.title} label="este projeto" />

@@ -18,7 +18,7 @@ export async function createProjectService(formData: FormData) {
   const file = formData.get("coverImage") as File
   let coverImage = null
   if (file && file.size > 0) coverImage = await saveFile(file, "projects")
-  await createProjectRecord({ title, slug, summary: formData.get("summary") as string || "", content: formData.get("content") as string || "", coverImage, published: formData.get("published") === "on", type: "PROJECT", featured: formData.get("featured") === "on" })
+  await createProjectRecord({ title, slug, summary: formData.get("summary") as string || "", content: formData.get("content") as string || "", coverImage, published: formData.get("published") === "on", type: "PROJECT", featured: formData.get("featured") === "on", objective: formData.get("objective") as string || null, targetAudience: formData.get("targetAudience") as string || null, impact: formData.get("impact") as string || null })
   await logAdminAction("CRIOU", "Projeto", `Título: ${title}`)
   return { success: true, message: "Projeto criado com sucesso!" }
 }
@@ -30,7 +30,7 @@ export async function updateProjectService(formData: FormData) {
   const file = formData.get("coverImage") as File
   let coverImage = formData.get("existingCoverImage") as string
   if (file && file.size > 0) { const up = await saveFile(file, "projects"); if (up) coverImage = up }
-  await updateProjectRecord(id, { title, summary: formData.get("summary"), content: formData.get("content"), coverImage, published: formData.get("published") === "on", featured: formData.get("featured") === "on" })
+  await updateProjectRecord(id, { title, summary: formData.get("summary"), content: formData.get("content"), coverImage, published: formData.get("published") === "on", featured: formData.get("featured") === "on", objective: formData.get("objective") as string || null, targetAudience: formData.get("targetAudience") as string || null, impact: formData.get("impact") as string || null })
   await logAdminAction("EDITOU", "Projeto", `Título: ${title}`)
   return { success: true, message: "Projeto atualizado com sucesso!" }
 }

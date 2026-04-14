@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { useState, useRef } from "react"
-import { Save, Loader2, UploadCloud, Image as ImageIcon, X, Star } from "lucide-react"
+import { Save, Loader2, UploadCloud, Image as ImageIcon, X, Star, Target, Users, Award } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -107,6 +107,36 @@ export function ProjectForm({ project }: ProjectFormProps) {
                         <div className="space-y-2">
                             <Label>Resumo Curto (Para o Card)</Label>
                             <Textarea name="summary" defaultValue={project?.summary} rows={3} placeholder="Breve descrição que aparece na listagem..." className="resize-none" />
+                        </div>
+                    </div>
+
+                    {/* CARDS: OBJETIVO, PÚBLICO E IMPACTO */}
+                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                            <Target className="text-emerald-600" size={18} />
+                            <h3 className="font-bold text-slate-800">Informações do Projeto</h3>
+                        </div>
+                        <p className="text-xs text-slate-500">Estes campos aparecem nos cards de destaque na página do projeto.</p>
+
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-1.5 text-xs font-bold text-slate-500 uppercase">
+                                <Target size={14} className="text-emerald-600" /> Objetivo
+                            </Label>
+                            <Textarea name="objective" defaultValue={project?.objective || ""} rows={2} placeholder="Ex: Promover cidadania e valores através da educação..." className="resize-none text-sm" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-1.5 text-xs font-bold text-slate-500 uppercase">
+                                <Users size={14} className="text-blue-600" /> Público-Alvo
+                            </Label>
+                            <Textarea name="targetAudience" defaultValue={project?.targetAudience || ""} rows={2} placeholder="Ex: Jovens de 10 a 17 anos da comunidade..." className="resize-none text-sm" />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-1.5 text-xs font-bold text-slate-500 uppercase">
+                                <Award size={14} className="text-yellow-600" /> Impacto
+                            </Label>
+                            <Textarea name="impact" defaultValue={project?.impact || ""} rows={2} placeholder="Ex: Transformação social e desenvolvimento pessoal..." className="resize-none text-sm" />
                         </div>
                     </div>
 
