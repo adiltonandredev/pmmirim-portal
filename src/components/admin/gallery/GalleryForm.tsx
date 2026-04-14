@@ -32,14 +32,14 @@ export function GalleryForm({ item }: GalleryFormProps) {
   async function handleSubmit(formData: FormData) {
     setLoading(true)
     try {
-      const result = await createGallery(formData)
+      const newId = await createGallery(formData)
 
-      if (result?.success) {
+      if (newId) {
         toast.success("Criado com sucesso!")
-        router.push("/admin/gallery")
+        router.push(`/admin/gallery/${newId}/edit`)
         router.refresh()
       } else {
-        toast.error(result?.message || "Erro ao salvar")
+        toast.error("Erro ao salvar o álbum")
       }
     } catch (error) {
       toast.error("Ocorreu um erro ao processar a requisição")

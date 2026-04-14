@@ -39,11 +39,11 @@ export async function deletePhoto(data: string | FormData) {
   return result
   } catch (error) { return { success: false, message: parseError(error) } }
 }
-export async function createGallery(formData: FormData) {
+export async function createGallery(formData: FormData): Promise<string | null> {
   try {
   const result = await createGalleryService(formData)
   if (result.success) revalidatePath("/admin/gallery")
-  return result.success ? result.id : null
+  return result.id ?? null
   } catch (error) { return null }
 }
 export async function deleteGallery(id: string) {

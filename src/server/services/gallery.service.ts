@@ -65,7 +65,7 @@ export async function deletePhotoService(id: string) {
   return { success: true, message: "Foto excluída!" }
 }
 
-export async function createGalleryService(formData: FormData) {
+export async function createGalleryService(formData: FormData): Promise<{ success: boolean; message: string; id: string | null }> {
   const title = formData.get("title") as string
   const coverFile = formData.get("coverImage") as File
   const slug = title.toLowerCase().replace(/\s+/g, "_") + "_" + Date.now().toString().slice(-4)
