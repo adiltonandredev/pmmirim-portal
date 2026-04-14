@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { deleteSingleImage } from "@/server/actions/gallery"
+import { deleteGalleryImage } from "@/server/actions/gallery"
 import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/admin/shared/PageLayout"
 import { Image as ImageIcon, LayoutGrid } from "lucide-react"
 import { notFound } from "next/navigation"
@@ -80,7 +80,7 @@ export default async function ManageGalleryPage(props: { params: Promise<{ id: s
                                     {/* --- BOTÃO DE DELETAR SEGURO (FOTO) --- */}
                                     <div className="absolute top-2 right-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20">
                                         <DeleteButton
-                                            action={async (_) => await deleteSingleImage(img.id, gallery.id)}
+                                            action={deleteGalleryImage}
                                             itemId={img.id}
                                             itemName="esta foto"
                                             className="h-8 w-8 p-0 bg-white/90 border border-slate-200 rounded-md text-red-500 hover:text-red-600 flex items-center justify-center shadow-sm"
