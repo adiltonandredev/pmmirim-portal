@@ -76,8 +76,11 @@ export async function createGalleryService(formData: FormData): Promise<{ succes
 }
 
 export async function deleteGalleryService(id: string) {
+  const gallery = await findGalleryById(id)
+  if (gallery && gallery.images.length > 0)
+    return { success: false, message: `Não é possível excluir: o álbum ainda contém ${gallery.images.length} foto(s). Remova todas as fotos antes de excluir o álbum.` }
   await deleteGalleryRecord(id)
-  return { success: true }
+  return { success: true, message: "Álbum excluído com sucesso!" }
 }
 
 export async function uploadGalleryImagesService(galleryId: string, formData: FormData) {
