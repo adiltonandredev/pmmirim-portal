@@ -67,6 +67,13 @@ export async function deleteSingleImage(imageId: string, galleryId: string) {
   return result
   } catch (error) { return { success: false, message: parseError(error) } }
 }
+export async function deleteGalleryImage(imageId: string) {
+  try {
+  const result = await deleteSingleImageService(imageId)
+  if (result.success) revalidatePath("/admin/gallery")
+  return result
+  } catch (error) { return { success: false, message: parseError(error) } }
+}
 export async function getAlbums() { return getAlbumsService() }
 export async function getAlbum(slugOrId: string) { return getAlbumService(slugOrId) }
 export async function getGallery(id: string) { return getGalleryService(id) }
