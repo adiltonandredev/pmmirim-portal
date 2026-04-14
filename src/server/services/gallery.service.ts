@@ -75,6 +75,13 @@ export async function createGalleryService(formData: FormData): Promise<{ succes
   return { success: true, message: "Galeria criada!", id: gallery.id }
 }
 
+export async function updateGalleryTitleService(id: string, title: string) {
+  if (!title.trim()) return { success: false, message: "O título não pode estar vazio." }
+  await updateGalleryRecord(id, { title: title.trim() })
+  await logAdminAction("EDITOU", "Galeria", `Novo título: ${title.trim()}`)
+  return { success: true, message: "Nome atualizado com sucesso!" }
+}
+
 export async function deleteGalleryService(id: string) {
   const gallery = await findGalleryById(id)
   if (gallery && gallery.images.length > 0)

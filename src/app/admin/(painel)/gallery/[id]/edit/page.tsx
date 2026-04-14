@@ -4,7 +4,8 @@ import { PageContainer, PageHeader, PageTitle, PageContent } from "@/components/
 import { Image as ImageIcon, LayoutGrid } from "lucide-react"
 import { notFound } from "next/navigation"
 import { GalleryUploader } from "@/components/admin/gallery/GalleryUploader"
-import { DeleteButton } from "@/components/admin/shared/DeleteButton" // <--- Importamos aqui também
+import { GalleryTitleForm } from "@/components/admin/gallery/GalleryTitleForm"
+import { DeleteButton } from "@/components/admin/shared/DeleteButton"
 
 export default async function ManageGalleryPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -22,10 +23,11 @@ export default async function ManageGalleryPage(props: { params: Promise<{ id: s
 
             <PageHeader>
                 <PageTitle
-                    title={gallery.title}
+                    title=""
                     subtitle={`Gerenciando ${gallery.images.length} fotos em /${gallery.slug}`}
                     icon={LayoutGrid}
                     backLink="/admin/gallery"
+                    customTitle={<GalleryTitleForm galleryId={gallery.id} currentTitle={gallery.title} />}
                 />
             </PageHeader>
 

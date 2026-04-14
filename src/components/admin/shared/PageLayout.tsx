@@ -23,15 +23,16 @@ export function PageHeader({ children }: { children: React.ReactNode }) {
   )
 }
 
-// 3. TÍTULO PADRÃO (Com suporte a botão voltar automático)
+// 3. TÍTULO PADRÃO (Com suporte a botão voltar automático e título customizado)
 interface PageTitleProps {
   title: string
   subtitle?: string
   icon?: React.ElementType
-  backLink?: string // Se passar isso, aparece o botão voltar
+  backLink?: string
+  customTitle?: React.ReactNode
 }
 
-export function PageTitle({ title, subtitle, icon: Icon, backLink }: PageTitleProps) {
+export function PageTitle({ title, subtitle, icon: Icon, backLink, customTitle }: PageTitleProps) {
   return (
     <div className="flex items-center gap-3">
       {backLink && (
@@ -41,16 +42,18 @@ export function PageTitle({ title, subtitle, icon: Icon, backLink }: PageTitlePr
           </Button>
         </Link>
       )}
-      
+
       <div>
-        <h1 className="text-base md:text-2xl font-bold text-slate-800 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {Icon && (
-            <span className="bg-blue-100 text-blue-600 p-1 md:p-1.5 rounded-lg">
-               <Icon className="h-3 w-3 md:h-5 md:w-5" /> 
+            <span className="bg-blue-100 text-blue-600 p-1 md:p-1.5 rounded-lg shrink-0">
+               <Icon className="h-3 w-3 md:h-5 md:w-5" />
             </span>
           )}
-          {title}
-        </h1>
+          {customTitle ?? (
+            <h1 className="text-base md:text-2xl font-bold text-slate-800">{title}</h1>
+          )}
+        </div>
         {subtitle && (
             <p className="text-xs md:text-sm text-slate-500 mt-0.5 hidden md:block">
                 {subtitle}

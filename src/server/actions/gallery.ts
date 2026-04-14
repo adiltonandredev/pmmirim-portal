@@ -4,7 +4,7 @@ import { parseError } from "@/lib/errors"
 import { revalidatePath } from "next/cache"
 import {
   saveAlbumService, deleteAlbumService, uploadAlbumPhotosService, deletePhotoService,
-  createGalleryService, deleteGalleryService, uploadGalleryImagesService, deleteSingleImageService,
+  createGalleryService, updateGalleryTitleService, deleteGalleryService, uploadGalleryImagesService, deleteSingleImageService,
   getAlbumsService, getAlbumService, getGalleryService,
 } from "@/server/services/gallery.service"
 
@@ -45,6 +45,13 @@ export async function createGallery(formData: FormData): Promise<string | null> 
   if (result.success) revalidatePath("/admin/gallery")
   return result.id ?? null
   } catch (error) { return null }
+}
+export async function updateGalleryTitle(id: string, title: string) {
+  try {
+  const result = await updateGalleryTitleService(id, title)
+  if (result.success) { revalidatePath(`/admin/gallery/${id}/edit`); revalidatePath("/admin/gallery") }
+  return result
+  } catch (error) { return { success: false, message: parseError(error) } }
 }
 export async function deleteGallery(id: string) {
   try {
