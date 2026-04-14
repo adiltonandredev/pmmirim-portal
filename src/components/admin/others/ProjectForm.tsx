@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { useState, useRef } from "react"
-import { Save, Loader2, UploadCloud, Image as ImageIcon, X } from "lucide-react"
+import { Save, Loader2, UploadCloud, Image as ImageIcon, X, Star } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -119,12 +119,24 @@ export function ProjectForm({ project }: ProjectFormProps) {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
-                        <div className="space-y-0.5">
-                            <Label className="font-bold">Publicar Projeto?</Label>
-                            <p className="text-xs text-slate-500">Se desligado, fica como rascunho.</p>
+                    <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                                <Label className="font-bold">Publicar Projeto?</Label>
+                                <p className="text-xs text-slate-500">Se desligado, fica como rascunho.</p>
+                            </div>
+                            <Switch name="published" defaultChecked={project?.published ?? true} />
                         </div>
-                        <Switch name="published" defaultChecked={project?.published ?? true} />
+
+                        <div className="border-t border-slate-100 pt-4 flex items-center justify-between">
+                            <div className="space-y-0.5">
+                                <Label className="font-bold flex items-center gap-1.5">
+                                    <Star size={15} className="text-yellow-500" /> Destaque (Hero)?
+                                </Label>
+                                <p className="text-xs text-slate-500">Exibir em destaque no topo da página.</p>
+                            </div>
+                            <Switch name="featured" defaultChecked={project?.featured ?? false} />
+                        </div>
                     </div>
 
                     <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
