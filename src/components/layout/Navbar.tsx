@@ -50,9 +50,11 @@ export function Navbar({ logoUrl, categories = [] }: NavbarProps) {
       : [{ label: "Nossa Equipe", href: "/instituicao/equipe", isHighlight: false }]
     ),
     { label: "Cursos", href: "/cursos"},
-    { label: "Notícias", href: "/noticias" },    
+    { label: "Notícias", href: "/noticias" },
+    { label: "Eventos", href: "/eventos" },
     { label: "Projetos", href: "/projetos" },
     { label: "Parceiros", href: "/parceiros" },
+    { label: "Patrocinadores", href: "/patrocinadores" },
     { label: "Galeria de Fotos", href: "/galeria" },
     { label: "Fale Conosco", href: "/contato", isHighlight: true },
   ];

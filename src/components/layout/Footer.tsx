@@ -127,6 +127,8 @@ export async function Footer({ siteInfo }: { siteInfo?: SiteInfo }) {
               <li><FooterLink href="/instituicao/historia">Nossa História</FooterLink></li>
               <li><FooterLink href="/projetos">Projetos Sociais</FooterLink></li>
               <li><FooterLink href="/noticias">Notícias</FooterLink></li>
+              <li><FooterLink href="/eventos">Eventos</FooterLink></li>
+              <li><FooterLink href="/patrocinadores">Patrocinadores</FooterLink></li>
               <li><FooterLink href="/contato">Fale Conosco</FooterLink></li>
             </ul>
           </div>

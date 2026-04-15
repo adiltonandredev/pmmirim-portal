@@ -44,42 +44,52 @@ export function InfoCards({ nextEvent, latestNews, missionText }: InfoCardsProps
         </Card>
 
         {/* CARD 2 — PRÓXIMO EVENTO */}
-        <Card className="shadow-xl border-0 border-t-[3px] border-t-green-600 bg-white/97 backdrop-blur-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group h-full animate-fade-in-up animation-delay-200">
-          <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-5 px-5">
-            <div className="p-2.5 bg-green-600 rounded-xl text-white shadow-md group-hover:scale-110 transition-transform duration-300 shrink-0">
-              <CalendarDays size={26} />
-            </div>
-            <CardTitle className="text-slate-800 group-hover:text-green-600 transition-colors text-base font-black uppercase tracking-wide">
-              Próximo Evento
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-5 pb-5">
-            {nextEvent ? (
-              <div className="space-y-2">
-                <span className="text-green-700 font-black text-lg capitalize leading-none block">
-                  {new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long" }).format(
-                    new Date(nextEvent.date)
-                  )}
-                </span>
-                <span className="text-slate-400 text-xs font-bold uppercase block">
-                  {new Intl.DateTimeFormat("pt-BR", {
-                    weekday: "long",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }).format(new Date(nextEvent.date))}
-                </span>
-                <p className="font-bold text-slate-800 leading-tight line-clamp-2">{nextEvent.title}</p>
-                {nextEvent.location && (
-                  <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
-                    <MapPin size={11} /> {nextEvent.location}
-                  </p>
-                )}
+        <Link href="/eventos" className="block h-full">
+          <Card className="shadow-xl border-0 border-t-[3px] border-t-green-600 bg-white/97 backdrop-blur-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group h-full animate-fade-in-up animation-delay-200 cursor-pointer">
+            <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-5 px-5">
+              <div className="p-2.5 bg-green-600 rounded-xl text-white shadow-md group-hover:scale-110 transition-transform duration-300 shrink-0">
+                <CalendarDays size={26} />
               </div>
-            ) : (
-              <p className="text-sm text-slate-400 italic">Nenhum evento futuro agendado.</p>
-            )}
-          </CardContent>
-        </Card>
+              <CardTitle className="text-slate-800 group-hover:text-green-600 transition-colors text-base font-black uppercase tracking-wide">
+                Próximo Evento
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-5 pb-5">
+              {nextEvent ? (
+                <div className="space-y-2">
+                  <span className="text-green-700 font-black text-lg capitalize leading-none block">
+                    {new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long" }).format(
+                      new Date(nextEvent.date)
+                    )}
+                  </span>
+                  <span className="text-slate-400 text-xs font-bold uppercase block">
+                    {new Intl.DateTimeFormat("pt-BR", {
+                      weekday: "long",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }).format(new Date(nextEvent.date))}
+                  </span>
+                  <p className="font-bold text-slate-800 leading-tight line-clamp-2">{nextEvent.title}</p>
+                  {nextEvent.location && (
+                    <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                      <MapPin size={11} /> {nextEvent.location}
+                    </p>
+                  )}
+                  <span className="inline-flex items-center text-xs font-black text-green-600 uppercase mt-1 group-hover:translate-x-1 transition-transform gap-1">
+                    Ver todos os eventos <ArrowRight size={13} />
+                  </span>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm text-slate-400 italic">Nenhum evento futuro agendado.</p>
+                  <span className="inline-flex items-center text-xs font-black text-green-600 uppercase mt-1 group-hover:translate-x-1 transition-transform gap-1">
+                    Ver agenda <ArrowRight size={13} />
+                  </span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </Link>
 
         {/* CARD 3 — ÚLTIMA NOTÍCIA */}
         <Link href={latestNews ? `/noticias/${latestNews.slug}` : "/noticias"} className="block h-full">
