@@ -21,8 +21,9 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [preview, setPreview] = useState(birthday?.photoUrl || null)
-  const { feedback, showSuccess, showError, close } = useFeedback()
+    const { feedback, showSuccess, showError, close } = useFeedback()
     const formRef = useRef<HTMLFormElement>(null)
+    const submittingRef = useRef(false)
 
     // Ajusta a data para o input date (YYYY-MM-DD)
     const defaultDate = birthday?.date
@@ -61,6 +62,8 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
     }
 
     const handleSubmit = async (formData: FormData) => {
+        if (submittingRef.current) return
+        submittingRef.current = true
         setLoading(true)
         try {
             let result: any;
@@ -85,7 +88,8 @@ export function BirthdayForm({ birthday }: BirthdayFormProps) {
         } catch (error) {
             showError("Erro", "Erro inesperado.");
         } finally {
-            setLoading(false);
+            setLoading(false)
+            submittingRef.current = false
         }
     }
 
