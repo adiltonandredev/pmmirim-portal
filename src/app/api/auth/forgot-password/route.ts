@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/get-ip";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
@@ -13,13 +14,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "E-mail obrigatório" }, { status: 400 });
     }
 
-    // Rate limiting: máximo 3 tentativas por e-mail a cada 15 minutos
-    const rateLimit = checkRateLimit(`forgot-password:${email}`);
+    const ip = getClientIp(req);
+
+    const rateLimit = await checkRateLimit("forgot-password", email);
     if (!rateLimit.allowed) {
       const resetMinutes = Math.ceil((rateLimit.resetTime! - Date.now()) / 60000);
       return NextResponse.json(
         { error: `Muitas tentativas. Tente novamente em ${resetMinutes} minutos.` },
-        { status: 429 }
+        { status: 429, headers: { "Retry-After": String(resetMinutes * 60) } }
+      );
+    }
+
+    // Secondary IP-based check (shares the same window/max as email-based)
+    const ipLimit = await checkRateLimit("forgot-password", `ip:${ip}`);
+    if (!ipLimit.allowed) {
+      const resetMinutes = Math.ceil((ipLimit.resetTime! - Date.now()) / 60000);
+      return NextResponse.json(
+        { error: `Muitas tentativas. Tente novamente em ${resetMinutes} minutos.` },
+        { status: 429, headers: { "Retry-After": String(resetMinutes * 60) } }
       );
     }
 

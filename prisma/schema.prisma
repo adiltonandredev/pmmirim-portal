@@ -26,6 +26,8 @@ model User {
   createdAt        DateTime   @default(now())
   resetToken       String?
   resetTokenExpiry DateTime?
+  twoFactorSecret  String?
+  twoFactorEnabled Boolean    @default(false)
   logs             AuditLog[]
 }
 
@@ -387,7 +389,17 @@ model Attendance {
   date          DateTime
   status        String    // "PRESENTE", "FALTA", "JUSTIFICADO"
   observation   String?   // Ex: "Chegou atrasado", "Sem uniforme"
-  
+
   student       Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId     String
+}
+
+model RateLimitAttempt {
+  identifier String   @id
+  attempts   Int      @default(1)
+  resetAt    DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([resetAt])
+  @@map("rate_limit_attempts")
 }

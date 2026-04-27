@@ -1,18 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { createComment } from "@/server/actions/comments" // <-- Verifique se o caminho da sua action está correto
+import { useRef, useState } from "react"
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile"
+import { createComment } from "@/server/actions/comments"
 import { MessageCircle } from "lucide-react"
 
 export function CommentForm({ postId }: { postId: string }) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
-    // 👇 SALVAMOS O FORMULÁRIO AQUI ANTES DO AWAIT
-    const form = e.currentTarget;
+    const form = e.currentTarget
 
     setLoading(true)
     setMessage(null)
@@ -20,16 +20,16 @@ export function CommentForm({ postId }: { postId: string }) {
     const formData = new FormData(form)
     formData.append("postId", postId)
 
-    // Chama a nossa Action
     const result = await createComment(formData)
 
     if (result.success) {
       setMessage({ type: "success", text: result.message })
-      form.reset() // 👇 USAMOS A VARIÁVEL SALVA AQUI!
+      form.reset()
     } else {
       setMessage({ type: "error", text: result.message || "Ocorreu um erro ao comentar." })
     }
 
+    turnstileRef.current?.reset()
     setLoading(false)
   }
 
@@ -63,6 +63,12 @@ export function CommentForm({ postId }: { postId: string }) {
             className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all resize-y"
           />
         </div>
+
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          options={{ language: "pt-BR" }}
+        />
 
         {message && (
           <div className={`p-4 rounded-lg font-medium text-sm transition-all duration-300 ${message.type === "success"

@@ -1,9 +1,22 @@
 import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/get-ip";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+
+    const rateLimit = await checkRateLimit("reset-password", `ip:${ip}`);
+    if (!rateLimit.allowed) {
+      const resetMinutes = Math.ceil((rateLimit.resetTime! - Date.now()) / 60000);
+      return NextResponse.json(
+        { error: `Muitas tentativas. Tente novamente em ${resetMinutes} minutos.` },
+        { status: 429, headers: { "Retry-After": String(resetMinutes * 60) } }
+      );
+    }
+
     const { token, newPassword } = await req.json();
 
     if (!token || !newPassword) {

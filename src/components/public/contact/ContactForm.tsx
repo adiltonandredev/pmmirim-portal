@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { sendContactMessage } from "@/server/actions/contact" // Se der erro no import, troque para o caminho correto onde está a action
+import { useRef, useState } from "react"
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile"
+import { sendContactMessage } from "@/server/actions/contact"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 export function ContactForm() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -17,18 +19,16 @@ export function ContactForm() {
     setMessage(null)
 
     const formData = new FormData(e.currentTarget)
-    
-    // Chama a nossa Action blindada
     const result = await sendContactMessage(formData)
 
-    // O retorno agora é sempre um objeto com { success: true/false, message: "Texto..." }
     if (result.success) {
       setMessage({ type: "success", text: result.message })
-      e.currentTarget.reset() // Limpa o formulário após o sucesso
+      e.currentTarget.reset()
     } else {
       setMessage({ type: "error", text: result.message || "Ocorreu um erro ao enviar." })
     }
 
+    turnstileRef.current?.reset()
     setLoading(false)
   }
 
@@ -78,6 +78,12 @@ export function ContactForm() {
           className="mt-1"
         />
       </div>
+
+      <Turnstile
+        ref={turnstileRef}
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+        options={{ language: "pt-BR" }}
+      />
 
       {message && (
         <div

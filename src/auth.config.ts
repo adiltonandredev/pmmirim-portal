@@ -6,39 +6,51 @@ export const authConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const path = nextUrl.pathname;
+      const isLoggedIn = !!auth?.user
+      const path = nextUrl.pathname
+      const twoFactorEnabled = auth?.user?.twoFactorEnabled ?? false
+      const twoFactorVerified = auth?.user?.twoFactorVerified ?? true
+      const is2FAPage = path === "/admin/2fa"
+      const isLoginArea = path.startsWith("/admin/login")
 
-      // Rotas de login são sempre públicas (login, esqueci senha, redefinir senha)
-      const isLoginArea = path.startsWith("/admin/login");
       if (isLoginArea) {
-        // Se já está logado e tenta acessar o login, redireciona pro painel
-        if (isLoggedIn) return Response.redirect(new URL("/admin", nextUrl));
-        return true;
+        if (isLoggedIn && twoFactorVerified) {
+          return Response.redirect(new URL("/admin", nextUrl))
+        }
+        return true
       }
 
-      // Demais rotas /admin exigem autenticação
+      if (!isLoggedIn) return false
+
+      // Bloqueia admin enquanto 2FA não for verificado
       if (path.startsWith("/admin")) {
-        return isLoggedIn;
+        if (twoFactorEnabled && !twoFactorVerified) {
+          if (is2FAPage) return true
+          return Response.redirect(new URL("/admin/2fa", nextUrl))
+        }
+        return true
       }
 
-      // Site público — sempre acessível
-      return true;
+      return true
     },
     jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
+        token.id = user.id
+        token.role = user.role
+        token.twoFactorEnabled = user.twoFactorEnabled ?? false
+        token.twoFactorVerified = !(user.twoFactorEnabled ?? false)
       }
-      return token;
+      return token
     },
     session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+        session.user.twoFactorEnabled = Boolean(token.twoFactorEnabled)
+        session.user.twoFactorVerified = token.twoFactorVerified !== false
       }
-      return session;
-    }
+      return session
+    },
   },
-  providers: [], 
+  providers: [],
 } satisfies NextAuthConfig;

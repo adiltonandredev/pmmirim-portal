@@ -1,6 +1,13 @@
-﻿import { createContactMessageRecord } from "@/server/repositories/contact.repository"
+import { createContactMessageRecord } from "@/server/repositories/contact.repository"
+import { verifyTurnstile } from "@/lib/turnstile"
 
 export async function sendContactMessageService(formData: FormData) {
+  const token = formData.get("cf-turnstile-response") as string
+  if (!token) return { success: false, message: "Verificação de segurança necessária." }
+
+  const isHuman = await verifyTurnstile(token)
+  if (!isHuman) return { success: false, message: "Verificação de segurança falhou. Tente novamente." }
+
   const name = (formData.get("name") as string)?.trim()
   const email = (formData.get("email") as string)?.trim()
   const subject = (formData.get("subject") as string)?.trim()

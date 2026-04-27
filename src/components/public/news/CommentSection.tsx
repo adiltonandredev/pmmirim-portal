@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { User, MessageSquare } from "lucide-react"
 import { useRef } from "react"
 import { toast } from "sonner"
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile"
 
 interface CommentProps {
     postId: string
@@ -18,17 +19,19 @@ interface CommentProps {
 
 export function CommentSection({ postId, comments }: CommentProps) {
     const formRef = useRef<HTMLFormElement>(null)
+    const turnstileRef = useRef<TurnstileInstance>(null)
 
     async function handleSubmit(formData: FormData) {
         const res = await createComment(formData)
 
-        // ALTERAÇÃO: Trocamos .error por .success para validar o retorno
         if (!res?.success) {
             toast.error(res?.message || "Erro ao enviar comentário")
         } else {
             toast.success("Comentário enviado!")
             formRef.current?.reset()
         }
+
+        turnstileRef.current?.reset()
     }
 
     return (
@@ -76,6 +79,12 @@ export function CommentSection({ postId, comments }: CommentProps) {
                         <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mensagem</label>
                         <textarea required name="content" rows={3} placeholder="Escreva sua opinião aqui..." className="w-full p-3 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+
+                    <Turnstile
+                        ref={turnstileRef}
+                        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                        options={{ language: "pt-BR" }}
+                    />
 
                     <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold w-full md:w-auto">
                         Enviar Comentário
